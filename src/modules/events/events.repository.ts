@@ -1,0 +1,47 @@
+import { Prisma } from '@prisma/client';
+import { prisma } from '@/prisma/client.prisma';
+
+export class EventsRepository {
+  static create(data: Prisma.EventCreateInput) {
+    return prisma.event.create({
+      data,
+    });
+  }
+
+  static findById(id: string) {
+    return prisma.event.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
+//   static findByEmail(email: string) {
+//     return prisma.event.findUnique({
+//       where: {
+//         email,
+//       },
+//     });
+//   }
+
+  static findAll() {
+    return prisma.event.findMany();
+  }
+
+//   static update(id: string, data: Prisma.EventUpdateInput) {
+//     return prisma.event.update({
+//       where: {
+//         id,
+//       },
+//       data,
+//     });
+//   }
+
+  static delete(id: string) {
+    return prisma.event.delete({
+      where: {
+        id,
+      },
+    });
+  }
+}

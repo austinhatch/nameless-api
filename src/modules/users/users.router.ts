@@ -1,7 +1,7 @@
 import Router from '@koa/router';
 import { object } from 'yup';
-import { vaidateRequestBodyMiddleware } from '@/shared/middlewares/validation/validate-request-body.middleware';
-import { vaidateRequestParamsMiddleware } from '@/shared/middlewares/validation/validate-request-params.middleware';
+import { validateRequestBodyMiddleware } from '@/shared/middlewares/validation/validate-request-body.middleware';
+import { validateRequestParamsMiddleware } from '@/shared/middlewares/validation/validate-request-params.middleware';
 import { isCurrentUserMiddleware } from '@/shared/middlewares/authorization/is-current-user.middleware';
 import { objectId } from '@/shared/yup/custom-schemas/object-id.schema';
 import { UsersController } from './users.controller';
@@ -15,15 +15,15 @@ usersRouter.get('/', UsersController.list);
 
 usersRouter.get(
   '/:id',
-  vaidateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),
+  validateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),
   findUserByIdMiddleware,
   UsersController.detail,
 );
 
 usersRouter.patch(
   '/:id',
-  vaidateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),
-  vaidateRequestBodyMiddleware<IUpdateUserDTO>(
+  validateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),
+  validateRequestBodyMiddleware<IUpdateUserDTO>(
     udpateUserSchema.strict().noUnknown(),
   ),
   findUserByIdMiddleware,
@@ -33,7 +33,7 @@ usersRouter.patch(
 
 usersRouter.del(
   '/:id',
-  vaidateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),
+  validateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),
   findUserByIdMiddleware,
   isCurrentUserMiddleware,
   UsersController.delete,

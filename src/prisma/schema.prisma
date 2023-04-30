@@ -17,3 +17,16 @@ model User {
   lastName String
   password String
 }
+
+
+model Event {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  date          String
+  startTime     String
+  endTime       String
+  tz            String
+  location      String
+  imgUrl        String
+  description   String
+}

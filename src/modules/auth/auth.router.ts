@@ -1,6 +1,6 @@
 import Router from '@koa/router';
 import { object, string, ref } from 'yup';
-import { vaidateRequestBodyMiddleware } from '@/shared/middlewares/validation/validate-request-body.middleware';
+import { validateRequestBodyMiddleware } from '@/shared/middlewares/validation/validate-request-body.middleware';
 import { AuthController } from './auth.controller';
 import { ISignInDTO } from './dtos/sign-in.dto';
 import { ISignUpDTO } from './dtos/sign-up.dto';
@@ -11,12 +11,12 @@ export const authRouter = new Router({ prefix: '/auth' });
 
 authRouter.post(
   '/sign-up',
-  vaidateRequestBodyMiddleware<ISignUpDTO>(signUpSchema.strict()),
+  validateRequestBodyMiddleware<ISignUpDTO>(signUpSchema.strict()),
   AuthController.signUp,
 );
 
 authRouter.post(
   '/sign-in',
-  vaidateRequestBodyMiddleware<ISignInDTO>(signInSchema.strict()),
+  validateRequestBodyMiddleware<ISignInDTO>(signInSchema.strict()),
   AuthController.signIn,
 );

@@ -2,7 +2,7 @@ import { Next } from 'koa';
 import { RouterContext } from '@koa/router';
 import { SchemaOf, ValidationError } from 'yup';
 
-export function vaidateRequestBodyMiddleware<Type>(
+export function validateRequestBodyMiddleware<Type>(
   validationSchema: SchemaOf<Type>,
 ) {
   return async function validate(ctx: RouterContext, next: Next) {

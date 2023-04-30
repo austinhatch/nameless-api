@@ -1,5 +1,5 @@
 {
-  "name": "koa-mongodb-starter",
+  "name": "nameless-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -19,15 +19,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/meretamal/koa-mongodb-starter.git"
+    "url": "git@github.com:sness8/nameless-api.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/meretamal/koa-mongodb-starter/issues"
+    "url": "https://github.com/sness8/nameless-api/issues"
   },
-  "homepage": "https://github.com/meretamal/koa-mongodb-starter#readme",
+  "homepage": "https://github.com/sness8/nameless-api#readme",
   "devDependencies": {
     "@faker-js/faker": "^7.2.0",
     "@types/bcrypt": "^5.0.0",
