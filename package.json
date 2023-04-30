@@ -1,0 +1,78 @@
+{
+  "name": "koa-mongodb-starter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node ./src/index.ts",
+    "start:dev": "nodemon ./src/index.ts",
+    "start:prod": "node ./dist/index.js",
+    "build": "tsc --project tsconfig.build.json && tsc-alias",
+    "prebuild": "yarn clean",
+    "clean": "rm -rf ./dist",
+    "lint": "eslint --ext .ts src",
+    "lint:fix": "eslint --ext .ts src --fix",
+    "test": "jest --runInBand"
+  },
+  "prisma": {
+    "schema": "./src/prisma/schema.prisma"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meretamal/koa-mongodb-starter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/meretamal/koa-mongodb-starter/issues"
+  },
+  "homepage": "https://github.com/meretamal/koa-mongodb-starter#readme",
+  "devDependencies": {
+    "@faker-js/faker": "^7.2.0",
+    "@types/bcrypt": "^5.0.0",
+    "@types/jest": "^28.1.1",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/koa": "^2.13.4",
+    "@types/koa-logger": "^3.1.2",
+    "@types/koa__cors": "^3.1.1",
+    "@types/koa__router": "^8.0.11",
+    "@types/node": "^17.0.22",
+    "@types/supertest": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.10.2",
+    "@typescript-eslint/parser": "^5.10.2",
+    "copyfiles": "^2.4.1",
+    "eslint": "^8.8.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^16.1.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "fishery": "^2.2.2",
+    "jest": "^28.1.1",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.1",
+    "prisma": "^3.14.0",
+    "supertest": "^6.2.3",
+    "ts-jest": "^28.0.5",
+    "ts-node": "^10.4.0",
+    "tsc-alias": "^1.6.4",
+    "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "@koa/cors": "^3.2.0",
+    "@koa/router": "^10.1.1",
+    "@prisma/client": "^3.14.0",
+    "bcrypt": "^5.0.1",
+    "bson": "^4.6.4",
+    "dotenv": "^16.0.0",
+    "http-errors": "^2.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "koa": "^2.13.4",
+    "koa-body": "^4.2.0",
+    "koa-jwt": "^4.0.3",
+    "koa-logger": "^3.2.1",
+    "yup": "^0.32.11"
+  }
+}
