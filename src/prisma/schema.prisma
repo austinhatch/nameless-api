@@ -11,11 +11,11 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  email    String @unique
-  name     String
-  lastName String
-  password String
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  email         String @unique
+  name          String
+  lastName      String
+  password      String
 }
 
 
@@ -29,4 +29,11 @@ model Event {
   location      String
   imgUrl        String
   description   String
+}
+
+model Reward {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  description   String
+  imgUrl        String
 }
