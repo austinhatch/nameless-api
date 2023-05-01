@@ -2,6 +2,7 @@ import { RouterContext } from '@koa/router';
 import { Request } from 'koa';
 // import { IUpdateUserDTO } from './dtos/update-user.dto';
 import { IEventDTO } from './dtos/event.dto'
+import { IUpdateEventDTO } from './dtos/update-event.dto';
 import { EventsRepository } from './events.repository';
 
 export class EventsController {
@@ -15,11 +16,11 @@ export class EventsController {
     ctx.body = event;
   }
 
-//   static async update(ctx: RouterContext) {
-//     const data = <IUpdateEventDTO>ctx.request.body;
-//     const user = await EventsRepository.update(ctx.params.id, data);
-//     ctx.body = user;
-//   }
+  static async update(ctx: RouterContext) {
+    const data = <IUpdateEventDTO>ctx.request.body;
+    const event = await EventsRepository.update(ctx.params.id, data);
+    ctx.body = event;
+  }
 
   static async delete(ctx: RouterContext) {
     await EventsRepository.delete(ctx.params.id);

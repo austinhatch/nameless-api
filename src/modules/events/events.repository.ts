@@ -28,14 +28,14 @@ export class EventsRepository {
     return prisma.event.findMany();
   }
 
-//   static update(id: string, data: Prisma.EventUpdateInput) {
-//     return prisma.event.update({
-//       where: {
-//         id,
-//       },
-//       data,
-//     });
-//   }
+  static update(id: string, data: Prisma.EventUpdateInput) {
+    return prisma.event.update({
+      where: {
+        id,
+      },
+      data,
+    });
+  }
 
   static delete(id: string) {
     return prisma.event.delete({

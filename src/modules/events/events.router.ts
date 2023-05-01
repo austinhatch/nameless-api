@@ -22,16 +22,16 @@ eventsRouter.get(
   EventsController.detail,
 );
 
-// eventsRouter.patch(
-//   '/:id',
-//   vaidateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),
-//   vaidateRequestBodyMiddleware<IUpdateEventDTO>(
-//     updateEventSchema.strict().noUnknown(),
-//   ),
-//   findEventByIdMiddleware,
-//   isCurrentUserMiddleware,
-//   EventsController.update,
-// );
+eventsRouter.patch(
+  '/:id',
+  validateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),
+  validateRequestBodyMiddleware<IUpdateEventDTO>(
+    updateEventSchema.strict().noUnknown(),
+  ),
+  findEventByIdMiddleware,
+  // isCurrentUserMiddleware,
+  EventsController.update,
+);
 
 eventsRouter.del(
   '/:id',
