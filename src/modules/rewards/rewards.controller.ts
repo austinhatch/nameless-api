@@ -3,6 +3,7 @@ import { Request } from 'koa';
 // import { IUpdateUserDTO } from './dtos/update-user.dto';
 // import { IRewardDTO } from './dtos/reward.dto'
 import { RewardsRepository } from './rewards.repository';
+import { UsersRepository } from '../users/users.repository';
 
 export class RewardsController {
   static async list(ctx: RouterContext) {
@@ -29,9 +30,10 @@ export class RewardsController {
   // }
 
   static async updateUserIDs(ctx: RouterContext) {
-    const userID = <string>ctx.request.body.id || 'test'
+    const userID = <string>ctx.request.body.id
     const res = await RewardsRepository.updateUserIDs(ctx.params.id, userID)
-    ctx.body = res;
+    const userRes = await UsersRepository.updateRewardIDs(ctx.params.id, userID)
+    ctx.body = {res, userRes};
   }
 
   static async create(ctx: RouterContext) {

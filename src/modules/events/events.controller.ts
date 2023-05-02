@@ -4,6 +4,7 @@ import { Request } from 'koa';
 import { IUserIdUpdateDTO } from './dtos/user-id-update.dto'
 import { IUpdateEventDTO } from './dtos/update-event.dto';
 import { EventsRepository } from './events.repository';
+import { UsersRepository } from '../users/users.repository';
 
 export class EventsController {
   static async list(ctx: RouterContext) {
@@ -25,7 +26,8 @@ export class EventsController {
   static async updateUserIDs(ctx: RouterContext) {
     const userID = <string>ctx.request.body.id || 'test'
     const res = await EventsRepository.updateUserIDs(ctx.params.id, userID)
-    ctx.body = res;
+    const userRes = await UsersRepository.updateEventIDs(ctx.params.id, userID)
+    ctx.body = {res, userRes};
   }
 
   static async delete(ctx: RouterContext) {
