@@ -1,7 +1,7 @@
 import { RouterContext } from '@koa/router';
 import { Request } from 'koa';
 // import { IUpdateUserDTO } from './dtos/update-user.dto';
-import { IEventDTO } from './dtos/event.dto'
+import { IUserIdUpdateDTO } from './dtos/user-id-update.dto'
 import { IUpdateEventDTO } from './dtos/update-event.dto';
 import { EventsRepository } from './events.repository';
 
@@ -22,6 +22,12 @@ export class EventsController {
     ctx.body = event;
   }
 
+  static async updateUserIDs(ctx: RouterContext) {
+    const userID = <string>ctx.request.body.id || 'test'
+    const res = await EventsRepository.updateUserIDs(ctx.params.id, userID)
+    ctx.body = res;
+  }
+
   static async delete(ctx: RouterContext) {
     await EventsRepository.delete(ctx.params.id);
     ctx.body = {
@@ -40,7 +46,8 @@ export class EventsController {
         tz: body.tz,
         location: body.location,
         imgUrl: body.imgUrl,
-        description: body.description
+        description: body.description,
+        userIDs: []
       }
     )
     ctx.status = 201;

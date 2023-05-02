@@ -10,6 +10,8 @@ import { IUpdateEventDTO } from './dtos/update-event.dto';
 import { updateEventSchema } from './schemas/update-event.schema';
 import { IEventDTO } from './dtos/event.dto';
 import { eventSchema } from './schemas/event.schema';
+import { IUserIdUpdateDTO } from './dtos/user-id-update.dto';
+import { userIdUpdateSchema } from './schemas/user-id-update.schema';
 
 export const eventsRouter = new Router({ prefix: '/events' });
 
@@ -31,6 +33,17 @@ eventsRouter.patch(
   findEventByIdMiddleware,
   // isCurrentUserMiddleware,
   EventsController.update,
+);
+
+eventsRouter.patch(
+  '/:id/addUser',
+  validateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),
+  validateRequestBodyMiddleware<IUserIdUpdateDTO>(
+    userIdUpdateSchema.strict().noUnknown(),
+  ),
+  findEventByIdMiddleware,
+  // isCurrentUserMiddleware,
+  EventsController.updateUserIDs,
 );
 
 eventsRouter.del(

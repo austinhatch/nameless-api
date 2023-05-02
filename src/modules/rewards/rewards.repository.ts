@@ -21,6 +21,23 @@ export class RewardsRepository {
   }
 
 
+  static updateUserIDs(id: string, userID: string) {
+    return prisma.reward.update({
+      where: {
+        id
+      },
+      data: {
+        userIDs: {
+          push: userID
+        }
+      },
+      include: {
+        users: true
+      }
+    })
+  }
+
+
   // static delete(id: string) {
   //   return prisma.event.delete({
   //     where: {

@@ -8,6 +8,8 @@ import { RewardsController } from './rewards.controller';
 import { findRewardByIdMiddleware } from './middlewares/find-reward-by-id.middleware';
 import { IRewardDTO } from './dtos/reward.dto';
 import { rewardSchema } from './schemas/reward.schema';
+import { userIdUpdateSchema } from './schemas/user-id-update.schema';
+import { IUserIdUpdateDTO } from './dtos/user-id-update.dto';
 
 export const rewardsRouter = new Router({ prefix: '/rewards' });
 
@@ -20,16 +22,16 @@ rewardsRouter.get(
   RewardsController.detail,
 );
 
-// eventsRouter.patch(
-//   '/:id',
-//   vaidateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),
-//   vaidateRequestBodyMiddleware<IUpdateEventDTO>(
-//     updateEventSchema.strict().noUnknown(),
-//   ),
-//   findEventByIdMiddleware,
-//   isCurrentUserMiddleware,
-//   EventsController.update,
-// );
+rewardsRouter.patch(
+  '/:id/addUser',
+  validateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),
+  validateRequestBodyMiddleware<IUserIdUpdateDTO>(
+    userIdUpdateSchema.strict().noUnknown(),
+  ),
+  findRewardByIdMiddleware,
+  // isCurrentUserMiddleware,
+  RewardsController.updateUserIDs,
+);
 
 // eventsRouter.del(
 //   '/:id',

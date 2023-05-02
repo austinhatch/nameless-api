@@ -28,6 +28,12 @@ export class RewardsController {
   //   };
   // }
 
+  static async updateUserIDs(ctx: RouterContext) {
+    const userID = <string>ctx.request.body.id || 'test'
+    const res = await RewardsRepository.updateUserIDs(ctx.params.id, userID)
+    ctx.body = res;
+  }
+
   static async create(ctx: RouterContext) {
     const  {body} = <Request>ctx.request;
     const event = await RewardsRepository.create(

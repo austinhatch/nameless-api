@@ -16,14 +16,6 @@ export class EventsRepository {
     });
   }
 
-//   static findByEmail(email: string) {
-//     return prisma.event.findUnique({
-//       where: {
-//         email,
-//       },
-//     });
-//   }
-
   static findAll() {
     return prisma.event.findMany();
   }
@@ -33,8 +25,24 @@ export class EventsRepository {
       where: {
         id,
       },
-      data,
+      data
     });
+  }
+
+  static updateUserIDs(id: string, userID: string) {
+    return prisma.event.update({
+      where: {
+        id
+      },
+      data: {
+        userIDs: {
+          push: userID
+        }
+      },
+      include: {
+        users: true
+      }
+    })
   }
 
   static delete(id: string) {

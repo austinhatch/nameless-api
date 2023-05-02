@@ -21,6 +21,8 @@ export class AuthController {
         lastName,
         email,
         password: hashedPassword,
+        eventIDs: [],
+        rewardIDs: []
       });
       ctx.status = 201;
       ctx.body = user;
