@@ -12,6 +12,7 @@ import { IEventDTO } from './dtos/event.dto';
 import { eventSchema } from './schemas/event.schema';
 import { IUserIdUpdateDTO } from './dtos/user-id-update.dto';
 import { userIdUpdateSchema } from './schemas/user-id-update.schema';
+import { validateUniqueAssociation } from '@/shared/middlewares/validation/validate-unique-association.middleware';
 
 export const eventsRouter = new Router({ prefix: '/events' });
 
@@ -40,6 +41,9 @@ eventsRouter.patch(
   validateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),
   validateRequestBodyMiddleware<IUserIdUpdateDTO>(
     userIdUpdateSchema.strict().noUnknown(),
+  ),
+  validateUniqueAssociation(
+    'events'
   ),
   findEventByIdMiddleware,
   // isCurrentUserMiddleware,

@@ -24,7 +24,7 @@ export class EventsController {
   }
 
   static async updateUserIDs(ctx: RouterContext) {
-    const userID = <string>ctx.request.body.id || 'test'
+    const userID = <string>ctx.request.body.id
     const res = await EventsRepository.updateUserIDs(ctx.params.id, userID)
     const userRes = await UsersRepository.updateEventIDs(ctx.params.id, userID)
     ctx.body = {res, userRes};

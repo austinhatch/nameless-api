@@ -10,6 +10,7 @@ import { IRewardDTO } from './dtos/reward.dto';
 import { rewardSchema } from './schemas/reward.schema';
 import { userIdUpdateSchema } from './schemas/user-id-update.schema';
 import { IUserIdUpdateDTO } from './dtos/user-id-update.dto';
+import { validateUniqueAssociation } from '@/shared/middlewares/validation/validate-unique-association.middleware';
 
 export const rewardsRouter = new Router({ prefix: '/rewards' });
 
@@ -28,6 +29,7 @@ rewardsRouter.patch(
   validateRequestBodyMiddleware<IUserIdUpdateDTO>(
     userIdUpdateSchema.strict().noUnknown(),
   ),
+  validateUniqueAssociation('rewards'),
   findRewardByIdMiddleware,
   // isCurrentUserMiddleware,
   RewardsController.updateUserIDs,
