@@ -1,29 +1,6 @@
 import { Next } from 'koa';
 import { RouterContext } from '@koa/router';
 import { prisma } from '@/prisma/client.prisma';
-// import { SchemaOf, ValidationError } from 'yup';
-
-// export function validateRequestParamsMiddleware<Type>(
-//   validationSchema: SchemaOf<Type>,
-// ) {
-//   return async function validate(ctx: RouterContext, next: Next) {
-//     try {
-//       await validationSchema.validate(ctx.params, {
-//         abortEarly: false,
-//       });
-//       await next();
-//     } catch (error) {
-//       if (error instanceof ValidationError) {
-//         ctx.throw(400, {
-//           errors: error.errors,
-//         });
-//       } else {
-//         throw error;
-//       }
-//     }
-//   };
-// }
-
 
 class NonUniqueError extends Error {
     constructor(msg: string) {
@@ -61,7 +38,7 @@ export function validateUniqueAssociation(type: string) {
             }
             
             if (user) {
-                throw new NonUniqueError(`${type} already exists for user`)
+                throw new NonUniqueError(`${type} with id ${ctx.params.id} already exists for user`)
             }
             else await next()
 
