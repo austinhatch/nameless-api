@@ -37,6 +37,38 @@ export class UsersRepository {
     });
   }
 
+  static updateEventIDs(eventID: string, userID: string) {
+    return prisma.user.update({
+      where: {
+        id: userID
+      },
+      data: {
+        eventIDs: {
+          push: eventID
+        }
+      },
+      include: {
+        events: true
+      }
+    })
+  }
+
+  static updateRewardIDs(rewardID: string, userID: string) {
+    return prisma.user.update({
+      where: {
+        id: userID
+      },
+      data: {
+        rewardIDs: {
+          push: rewardID
+        }
+      },
+      include: {
+        rewards: true
+      }
+    })
+  }
+
   static delete(id: string) {
     return prisma.user.delete({
       where: {

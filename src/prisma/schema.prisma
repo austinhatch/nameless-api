@@ -16,8 +16,15 @@ model User {
   name          String
   lastName      String
   password      String
-}
 
+  eventIDs      String[] @db.ObjectId
+  events        Event[] @relation(fields: [eventIDs], references: [id])
+
+  rewardIDs     String[] @db.ObjectId
+  rewards       Reward[] @relation(fields: [rewardIDs], references: [id])
+
+
+}
 
 model Event {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
@@ -29,6 +36,9 @@ model Event {
   location      String
   imgUrl        String
   description   String
+
+  userIDs       String[] @db.ObjectId
+  users         User[] @relation(fields: [userIDs], references: [id])
 }
 
 model Reward {
@@ -36,4 +46,7 @@ model Reward {
   name          String
   description   String
   imgUrl        String
+
+  userIDs       String[] @db.ObjectId
+  users         User[] @relation(fields: [userIDs], references: [id])
 }
