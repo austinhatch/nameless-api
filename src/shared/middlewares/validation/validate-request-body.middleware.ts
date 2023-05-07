@@ -7,7 +7,7 @@ export function validateRequestBodyMiddleware<Type>(
 ) {
   return async function validate(ctx: RouterContext, next: Next) {
     try {
-      await validationSchema.validate(ctx.request.body, { abortEarly: false });
+      await validationSchema.validate(JSON.parse(ctx.request.body), { abortEarly: false });
       await next();
     } catch (error) {
       if (error instanceof ValidationError) {

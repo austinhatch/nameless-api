@@ -25,6 +25,13 @@ eventsRouter.get(
   EventsController.detail,
 );
 
+
+eventsRouter.get(
+  '/user/:id',
+  validateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),
+  EventsController.getAllByUserId,
+);
+
 eventsRouter.patch(
   '/:id',
   validateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),

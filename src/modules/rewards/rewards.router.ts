@@ -23,6 +23,12 @@ rewardsRouter.get(
   RewardsController.detail,
 );
 
+rewardsRouter.get(
+  '/user/:id',
+  validateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),
+  RewardsController.findAllByUserId,
+);
+
 rewardsRouter.patch(
   '/:id/addUser',
   validateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),

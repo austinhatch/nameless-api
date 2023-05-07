@@ -37,6 +37,16 @@ export class RewardsRepository {
     })
   }
 
+  static findAllByUserId(id: string) {
+    return prisma.reward.findMany({
+      where: {
+        userIDs: {
+          has: id
+        }
+      }
+    })
+  }
+
 
   // static delete(id: string) {
   //   return prisma.event.delete({

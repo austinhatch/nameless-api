@@ -1,4 +1,4 @@
-import { RouterContext } from '@koa/router';
+import Router, { RouterContext } from '@koa/router';
 import { Request } from 'koa';
 // import { IUpdateUserDTO } from './dtos/update-user.dto';
 // import { IRewardDTO } from './dtos/reward.dto'
@@ -28,6 +28,11 @@ export class RewardsController {
   //     message: 'Deleted',
   //   };
   // }
+
+  static async findAllByUserId(ctx: RouterContext) {
+    const res = await RewardsRepository.findAllByUserId(ctx.params.id)
+    ctx.body = res
+  }
 
   static async updateUserIDs(ctx: RouterContext) {
     const userID = <string>ctx.request.body.id

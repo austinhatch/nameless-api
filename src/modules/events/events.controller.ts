@@ -30,6 +30,11 @@ export class EventsController {
     ctx.body = {res, userRes};
   }
 
+  static async getAllByUserId(ctx: RouterContext) {
+    const res = await EventsRepository.findAllByUserId(ctx.params.id)
+    ctx.body = res
+  }
+
   static async delete(ctx: RouterContext) {
     await EventsRepository.delete(ctx.params.id);
     ctx.body = {

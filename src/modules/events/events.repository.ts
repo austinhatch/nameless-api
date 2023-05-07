@@ -16,6 +16,16 @@ export class EventsRepository {
     });
   }
 
+  static findAllByUserId(id: string) {
+    return prisma.event.findMany({
+      where: {
+        userIDs: {
+          has: id
+        }
+      }
+    })
+  }
+
   static findAll() {
     return prisma.event.findMany();
   }

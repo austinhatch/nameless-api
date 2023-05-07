@@ -30,7 +30,7 @@ export class AuthController {
   }
 
   static async signIn(ctx: RouterContext) {
-    const { email, password } = <ISignInDTO>ctx.request.body;
+    const { email, password } = <ISignInDTO>JSON.parse(ctx.request.body);
     const user = await UsersRepository.findByEmail(email);
     if (!user) {
       ctx.throw(404, { errors: [`user with email ${email} does not exist`] });
@@ -40,6 +40,7 @@ export class AuthController {
         const token = await generateToken(user);
         ctx.status = 201;
         ctx.body = {
+          user,
           token,
           type: 'Bearer',
         };
