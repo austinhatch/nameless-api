@@ -5,6 +5,7 @@ import { IUserIdUpdateDTO } from './dtos/user-id-update.dto'
 import { IUpdateEventDTO } from './dtos/update-event.dto';
 import { EventsRepository } from './events.repository';
 import { UsersRepository } from '../users/users.repository';
+import { IEventDTO } from './dtos/event.dto';
 
 export class EventsController {
   static async list(ctx: RouterContext) {
@@ -24,7 +25,7 @@ export class EventsController {
   }
 
   static async updateUserIDs(ctx: RouterContext) {
-    const userID = <string>ctx.request.body.id
+    const userID = <string>JSON.parse(ctx.request.body).id
     const res = await EventsRepository.updateUserIDs(ctx.params.id, userID)
     const userRes = await UsersRepository.updateEventIDs(ctx.params.id, userID)
     ctx.body = {res, userRes};
@@ -43,13 +44,13 @@ export class EventsController {
   }
 
   static async create(ctx: RouterContext) {
-    const  {body} = <Request>ctx.request;
+    const  body = <IEventDTO>JSON.parse(ctx.request.body);
     const event = await EventsRepository.create(
       {
-        name: body.name!,
+        name: body.name,
         date: body.date,
         startTime: body.startTime,
-        endTime: body.endTime,
+        endTime: body.endTime ? body.endTime : '',
         tz: body.tz,
         location: body.location,
         imgUrl: body.imgUrl,

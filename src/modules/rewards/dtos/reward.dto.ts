@@ -1,6 +1,6 @@
 export interface IRewardDTO {
-    name?: string;
-    description?: string;
-    imgUrl?: string;
+    name: string;
+    description: string;
+    imgUrl: string;
   }
   

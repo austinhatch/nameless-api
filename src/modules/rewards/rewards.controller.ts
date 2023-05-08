@@ -35,7 +35,7 @@ export class RewardsController {
   }
 
   static async updateUserIDs(ctx: RouterContext) {
-    const userID = <string>ctx.request.body.id
+    const userID = <string>JSON.parse(ctx.request.body).id
     const res = await RewardsRepository.updateUserIDs(ctx.params.id, userID)
     const userRes = await UsersRepository.updateRewardIDs(ctx.params.id, userID)
     ctx.body = {res, userRes};
@@ -43,11 +43,12 @@ export class RewardsController {
 
   static async create(ctx: RouterContext) {
     const  {body} = <Request>ctx.request;
+    const parsed = JSON.parse(body)
     const event = await RewardsRepository.create(
       {
-        name: body.name!,
-        description: body.description!,
-        imgUrl: body.imgUrl!
+        name: parsed.name,
+        description: parsed.description,
+        imgUrl: parsed.imgUrl
       }
     )
     ctx.status = 201;

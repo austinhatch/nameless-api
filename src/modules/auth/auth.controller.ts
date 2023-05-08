@@ -8,7 +8,7 @@ import { UsersRepository } from '../users/users.repository';
 
 export class AuthController {
   static async signUp(ctx: RouterContext) {
-    const { name, lastName, email, password } = <ISignUpDTO>ctx.request.body;
+    const { name, lastName, email, password, username } = <ISignUpDTO>JSON.parse(ctx.request.body);
     const existingUser = await UsersRepository.findByEmail(email);
     if (existingUser) {
       ctx.throw(409, {
@@ -20,12 +20,14 @@ export class AuthController {
         name,
         lastName,
         email,
+        username,
         password: hashedPassword,
         eventIDs: [],
         rewardIDs: []
       });
+      const token = await generateToken(user);
       ctx.status = 201;
-      ctx.body = user;
+      ctx.body = {user, token};
     }
   }
 

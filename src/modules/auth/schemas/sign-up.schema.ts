@@ -4,6 +4,7 @@ export const signUpSchema = object({
   name: string().required(),
   lastName: string().required(),
   email: string().email().required(),
+  username: string().required(),
   password: string().required(),
   confirmPassword: string()
     .required()

@@ -1,12 +1,12 @@
 import { object, string } from 'yup';
 
 export const eventSchema = object({
-    name: string(),
-    date: string(),
-    startTime: string(),
+    name: string().required(),
+    date: string().required(),
+    startTime: string().required(),
     endTime: string(),
-    tz: string(),
-    location: string(),
-    imgUrl: string(),
-    description: string()
+    tz: string().required(),
+    location: string().required(),
+    imgUrl: string().required(),
+    description: string().required()
 });
