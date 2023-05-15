@@ -5,4 +5,6 @@ export interface ISignUpDTO {
   password: string;
   confirmPassword: string;
   username: string;
+  walletAddress: string;
+  privateKey: string;
 }

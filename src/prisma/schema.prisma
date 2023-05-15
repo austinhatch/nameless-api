@@ -16,6 +16,8 @@ model User {
   username      String @unique
   name          String
   lastName      String
+  walletAddress String @unique
+  privateKey    String @unique
   password      String
 
   eventIDs      String[] @db.ObjectId
