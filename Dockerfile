@@ -1,12 +1,12 @@
-FROM node:16 AS development
+FROM --platform=linux/amd64 node:16 AS development
 
 WORKDIR /usr/src
 
 COPY package.json .
-COPY yarn.lock .
-ENV PATH=/usr/src/node_modules/.bin:$PATH
+COPY package-lock.json .
+# ENV PATH=/usr/src/node_modules/.bin:$PATH
 
-RUN yarn install
+RUN npm install
 
 WORKDIR /usr/src/app
 
@@ -14,16 +14,16 @@ COPY . .
 
 RUN npx prisma generate
 
-CMD [ "yarn", "start:dev" ]
+CMD [ "npm", "run", "start:dev" ]
 
-FROM node:16 AS production
+FROM --platform=linux/amd64 node:16 AS production
 
 WORKDIR /usr/src
 
 COPY package.json .
-COPY yarn.lock .
+COPY package-lock.json .
 
-RUN yarn install
+RUN npm install
 
 WORKDIR /usr/src/app
 
@@ -31,6 +31,6 @@ COPY . .
 
 RUN npx prisma generate
 
-RUN yarn build
+RUN npm run build
 
 CMD [ "yarn", "start:prod" ]
