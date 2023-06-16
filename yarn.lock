@@ -4175,7 +4175,7 @@
     "ansi-styles" "^5.0.0"
     "react-is" "^18.0.0"
 
-"prisma@*", "prisma@^3.14.0":
+"prisma@*", "prisma@^3.15.2":
   "integrity" "sha512-nMNSMZvtwrvoEQ/mui8L/aiCLZRCj5t6L3yujKpcDhIPk7garp8tL4nMx2+oYsN0FWBacevJhazfXAbV1kfBzA=="
   "resolved" "https://registry.npmjs.org/prisma/-/prisma-3.15.2.tgz"
   "version" "3.15.2"
