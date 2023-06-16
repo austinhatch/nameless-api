@@ -12,7 +12,8 @@
     "clean": "rm -rf ./dist",
     "lint": "eslint --ext .ts src",
     "lint:fix": "eslint --ext .ts src --fix",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "generate": "prisma generate"
   },
   "prisma": {
     "schema": "./src/prisma/schema.prisma"
