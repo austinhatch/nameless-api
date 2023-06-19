@@ -6,7 +6,7 @@ import { authRouter } from './modules/auth/auth.router';
 import { eventsRouter } from './modules/events/events.router';
 import { rewardsRouter } from './modules/rewards/rewards.router';
 
-export const router = new Router();
+export const router = new Router({prefix: '/api'});
 
 router.get('/', (ctx: RouterContext) => {
   ctx.body = {
