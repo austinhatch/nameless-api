@@ -5,6 +5,7 @@ import { usersRouter } from './modules/users/users.router';
 import { authRouter } from './modules/auth/auth.router';
 import { eventsRouter } from './modules/events/events.router';
 import { rewardsRouter } from './modules/rewards/rewards.router';
+import { web3Router } from './modules/web3/web3router';
 
 export const router = new Router({prefix: '/api'});
 
@@ -21,3 +22,4 @@ router.use(jwt({ secret: environment.jwt.secret, key: 'authData' }));
 router.use(usersRouter.routes());
 router.use(eventsRouter.routes());
 router.use(rewardsRouter.routes());
+router.use(web3Router.routes())

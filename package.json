@@ -65,10 +65,12 @@
     "@koa/cors": "^3.2.0",
     "@koa/router": "^10.1.1",
     "@prisma/client": "^3.14.0",
+    "@thirdweb-dev/sdk": "^3.10.22",
     "bcrypt": "^5.0.1",
     "bson": "^4.6.4",
     "debug": "^4.3.4",
     "dotenv": "^16.0.0",
+    "ethers": "^5.7.2",
     "http-errors": "^2.0.0",
     "jsonwebtoken": "^9.0.0",
     "koa": "^2.13.4",
@@ -76,6 +78,7 @@
     "koa-convert": "^2.0.0",
     "koa-jwt": "^4.0.3",
     "koa-logger": "^3.2.1",
+    "moment": "^2.29.4",
     "yup": "^0.32.11"
   }
 }
