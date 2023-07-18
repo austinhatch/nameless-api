@@ -15,6 +15,12 @@ web3Router.post(
   Web3Controller.grantContractKey,
 );
 
+web3Router.post(
+  '/mint-nft',
+  //   validateRequestBodyMiddleware<ISignUpDTO>(signUpSchema.strict()),
+  Web3Controller.mintNFT,
+)
+
 // authRouter.post(
 //   '/sign-in',
 // //   validateRequestBodyMiddleware<ISignInDTO>(signInSchema.strict()),
