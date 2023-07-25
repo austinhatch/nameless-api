@@ -39,6 +39,9 @@ model Event {
   location      String
   imgUrl        String
   description   String
+  costUSD       Float
+  unlockAddress String
+  organization  String
 
   userIDs       String[] @db.ObjectId
   users         User[] @relation(fields: [userIDs], references: [id])

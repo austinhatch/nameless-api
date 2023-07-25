@@ -1,4 +1,4 @@
-import { object, string } from 'yup';
+import { number, object, string } from 'yup';
 
 export const eventSchema = object({
     name: string().required(),
@@ -8,5 +8,8 @@ export const eventSchema = object({
     tz: string().required(),
     location: string().required(),
     imgUrl: string().required(),
-    description: string().required()
+    description: string().required(),
+    costUSD: number().required(),
+    unlockAddress: string().required(),
+    organization: string().required(),
 });

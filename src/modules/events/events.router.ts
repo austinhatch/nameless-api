@@ -25,7 +25,6 @@ eventsRouter.get(
   EventsController.detail,
 );
 
-
 eventsRouter.get(
   '/user/:id',
   validateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),
