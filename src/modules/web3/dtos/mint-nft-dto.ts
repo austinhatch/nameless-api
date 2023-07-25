@@ -1,6 +1,6 @@
 export interface IMintNFTDTO {
-    nftAddress: string;
-    metadata: any;
-    walletAddress: string;
+  nftAddress: string;
+  metadata: any;
+  walletAddress: string;
+  tokenId: number;
 }
-  
