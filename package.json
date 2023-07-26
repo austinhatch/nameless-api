@@ -64,6 +64,7 @@
   "dependencies": {
     "@koa/cors": "^3.2.0",
     "@koa/router": "^10.1.1",
+    "@mailchimp/mailchimp_transactional": "^1.0.50",
     "@prisma/client": "^3.14.0",
     "@thirdweb-dev/sdk": "^3.10.22",
     "bcrypt": "^5.0.1",
