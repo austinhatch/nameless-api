@@ -32,7 +32,7 @@ app.use(koaCors());
 
 
 
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV === 'development') {
   app.use(koaLogger());
 }
 
