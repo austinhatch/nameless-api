@@ -5,6 +5,7 @@ import { environment } from '@/config/environment';
 export const sdk = ThirdwebSDK.fromPrivateKey(
   process.env.PK!,
   "Mumbai",
+  {secretKey: process.env.THIRDWEB_SECRET_KEY}
 );
 
 export const calcExpiryDate = (event: any) => {
