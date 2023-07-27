@@ -17,6 +17,7 @@ export const calcExpiryDate = (event: any) => {
     }
     const format = "M/D/YYYY hA";
     const expiry_date = moment(expiry_string, format).toDate();
+    expiry_date.setFullYear(expiry_date.getFullYear() + 1)
     var expiry_seconds = Math.floor(expiry_date.getTime() / 1000)
     console.log(expiry_seconds)
     return expiry_seconds
