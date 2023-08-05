@@ -15,4 +15,8 @@ export const environment = {
     secret: process.env.JWT_SECRET!,
     expiration: process.env.JWT_EXPIRATION,
   },
+  pk: process.env.PK!,
+  thirdweb: {
+    secret: process.env.THIRDWEB_SECRET_KEY!
+  }
 };

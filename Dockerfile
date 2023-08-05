@@ -35,4 +35,4 @@ RUN npm run build
 
 EXPOSE 8000
 
-CMD [ "yarn", "start:prod" ]
+CMD [ "npm", "start:prod" ]
