@@ -4,16 +4,16 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const environment = {
-  port: Number(process.env.PORT || 3000),
+  port: Number(process.env.PORT || 8000),
   app: {
-    name: process.env.APP_NAME || 'Koa MongoDB Starter',
+    name: process.env.APP_NAME || 'Nameless API',
   },
   database: {
     url: process.env.DATABASE_URL!,
   },
   jwt: {
     secret: process.env.JWT_SECRET!,
-    expiration: process.env.JWT_EXPIRATION,
+    expiration: process.env.JWT_EXPIRATION || 10000,
   },
   pk: process.env.PK!,
   thirdweb: {
