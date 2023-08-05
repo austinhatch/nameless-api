@@ -25,6 +25,32 @@ spec:
       containers:
       - name: nameless-api
         image: us-east4-docker.pkg.dev/ageless-domain-360522/nameless/nameless-api
+        env: 
+        - name: DB_URL
+          valueFrom: 
+            secretKeyRef: 
+              name: dev-secret-map 
+              key: dburl 
+        - name: PK 
+          valueFrom: 
+            secretKeyRef: 
+              name: dev-secret-map 
+              key: pk 
+        - name: THIRDWEB_SECRET_KEY 
+          valueFrom: 
+            secretKeyRef: 
+              name: dev-secret-map 
+              key: thirdwebSecret
+        - name: MAILCHIMP_API 
+          valueFrom: 
+            secretKeyRef: 
+              name: dev-secret-map 
+              key: mailchimpToken
+        - name: JWT_SECRET 
+          valueFrom: 
+            secretKeyRef: 
+              name: dev-secret-map 
+              key: jwtSecret 
         imagePullPolicy: IfNotPresent
         resources:
           limits:
