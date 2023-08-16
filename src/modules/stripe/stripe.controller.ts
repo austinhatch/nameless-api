@@ -31,13 +31,19 @@ export class stripeController {
         const { id, promoCode, eventData } = <IApplyPromoCodeDTO>JSON.parse(ctx.request.body);
         try{
             const updatedPrice = applyPromoCode(eventData, promoCode)
-            const metadata = {"promo_code": promoCode}
-            const paymentIntent = await stripe.paymentIntents.update(
-                id,
-                {metadata: metadata, amount: updatedPrice}
-            )
-            ctx.status = 201
-            ctx.body = { id: paymentIntent.id, amount: paymentIntent.amount, clientSecret: paymentIntent.client_secret}
+            if(updatedPrice){
+                const metadata = {"promo_code": promoCode}
+                const paymentIntent = await stripe.paymentIntents.update(
+                    id,
+                    {metadata: metadata, amount: updatedPrice*100}
+                )
+                ctx.status = 201
+                ctx.body = { id: paymentIntent.id, amount: paymentIntent.amount, clientSecret: paymentIntent.client_secret}
+            }
+            else{
+                ctx.status = 400
+                ctx.body = {message: "Invalid promo code"}
+            }
         }
         catch (e:any){
             console.log(e)
