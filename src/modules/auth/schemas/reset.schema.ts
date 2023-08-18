@@ -1,8 +1,6 @@
 import { object, string, ref } from 'yup';
 
-export const signUpSchema = object({
-  email: string().email().required(),
-  username: string().required(),
+export const resetSchema = object({
   password: string().required(),
   confirmPassword: string()
     .required()
