@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nameless-api
+  name: nameless-api
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: nameless-api
+  strategy:
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 100%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nameless-api
+    spec:
+      containers:
+      - name: nameless-api
+        image: us-east4-docker.pkg.dev/ageless-domain-360522/nameless/nameless-api
+        env: 
+        - name: DB_URL
+          valueFrom: 
+            secretKeyRef: 
+              name: dev-secret-map 
+              key: dburl 
+        - name: PK 
+          valueFrom: 
+            secretKeyRef: 
+              name: dev-secret-map 
+              key: pk 
+        - name: THIRDWEB_SECRET_KEY 
+          valueFrom: 
+            secretKeyRef: 
+              name: dev-secret-map 
+              key: thirdwebSecret
+        - name: MAILCHIMP_API 
+          valueFrom: 
+            secretKeyRef: 
+              name: dev-secret-map 
+              key: mailchimpToken
+        - name: JWT_SECRET 
+          valueFrom: 
+            secretKeyRef: 
+              name: dev-secret-map 
+              key: jwtSecret 
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 500m
+            ephemeral-storage: 1Gi
+            memory: 2Gi
+          requests:
+            cpu: 500m
+            ephemeral-storage: 1Gi
+            memory: 2Gi
+        securityContext:
+          capabilities:
+            drop:
+            - NET_RAW
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - effect: NoSchedule
+        key: kubernetes.io/arch
+        operator: Equal
+        value: amd64

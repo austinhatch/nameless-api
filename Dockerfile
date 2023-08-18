@@ -33,4 +33,6 @@ RUN npx prisma generate
 
 RUN npm run build
 
-CMD [ "yarn", "start:prod" ]
+EXPOSE 8000
+
+CMD [ "npm", "run", "start:prod" ]

@@ -3,9 +3,9 @@ import moment from 'moment'
 import { environment } from '@/config/environment';
 
 export const sdk = ThirdwebSDK.fromPrivateKey(
-  process.env.PK!,
+  environment.pk,
   "Mumbai",
-  {secretKey: process.env.THIRDWEB_SECRET_KEY}
+  {secretKey: environment.thirdweb.secret}
 );
 
 export const calcExpiryDate = (event: any) => {

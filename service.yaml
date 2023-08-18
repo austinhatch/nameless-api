@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nameless-api
+  name: nameless-api-service
+  namespace: default
+spec:
+  ports:
+    - nodePort: 30823
+      port: 80 
+      targetPort: 3000
+  selector:
+    app: nameless-api
+  type: NodePort

@@ -16,7 +16,7 @@ export class EmailController {
 
     const message = {
       from_email: 'nameless@nameless.nyc',
-      subject: 'RSVP Confirmation for Organic Garmentz Pop-Up Shop',
+      subject: 'RSVP Confirmed',
       text: '',
       to: [
         {
