@@ -1,14 +1,25 @@
 import { environment } from '@/config/environment';
-const promoCodes = require('./promos.ts')
+import promoCodes from './promos'
 
 export const stripe = require("stripe")(
   process.env.STRIPE_SK!,
 );
 
+interface Promo {
+  percent: boolean;
+  amount: number;
+}
+
+interface Promos {
+  [eventName: string]: {
+    [promoCode: string]: Promo;
+  };
+}
+
 export function applyPromoCode(eventData:any, promoCode:string){
   try{
     console.log("Applying "+promoCode + " to " + eventData.name)
-    const promos = promoCodes.promos
+    const promos: Promos = promoCodes
     console.log(promos)
     if(eventData.name in promos){
       if(promoCode in promos[eventData.name]){

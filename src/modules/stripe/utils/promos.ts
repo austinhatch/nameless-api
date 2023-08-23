@@ -1,4 +1,4 @@
-export const promos = {
+const promoCodes = {
     'Organic Garmentz Pop Up':{
         'INLYFE':{'percent':false, 'amount':10},
         'INLYFE20':{'percent':true,'amount':25}
@@ -9,3 +9,5 @@ export const promos = {
         'NAMELESS15':{'percent':true, 'amount':15}
     }
 }
+
+export default promoCodes
