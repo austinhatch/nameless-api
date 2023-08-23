@@ -28,7 +28,7 @@ export class EmailController {
 
     async function run() {
       const response = await mailchimp.messages.sendTemplate({
-        template_name: 'NAMELESS RSVP CONFIRMATION',
+        template_name: 'RSVP CONFIRMATION - Content Crossover',
         template_content: [{}],
         message: message,
       });
