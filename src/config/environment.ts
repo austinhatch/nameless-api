@@ -17,6 +17,7 @@ export const environment = {
   },
   pk: process.env.PK!,
   thirdweb: {
-    secret: process.env.THIRDWEB_SECRET_KEY!
-  }
+    secret: process.env.THIRDWEB_SECRET_KEY!,
+    client: process.env.THIRDWEB_CLIENT!,
+  },
 };
