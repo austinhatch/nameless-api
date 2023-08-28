@@ -4,7 +4,7 @@ import { shopName } from './utils/shopify_config';
 
 export class shopifyController {
   static async getAllProducts(ctx: RouterContext) {
-    const apiUrl = `https://${shopName}.myshopify.com/admin/api/2023-07/products.json`;
+    const apiUrl = `https://${shopName}.myshopify.com/admin/api/2023-07/products.json?status=active`;
 
     try {
       const response = await fetch(apiUrl, {
