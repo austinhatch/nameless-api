@@ -69,6 +69,7 @@
     "@thirdweb-dev/sdk": "^3.10.22",
     "bcrypt": "^5.0.1",
     "bson": "^4.6.4",
+    "crypto": "^1.0.1",
     "debug": "^4.3.4",
     "dotenv": "^16.0.0",
     "ethers": "^5.7.2",

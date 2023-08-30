@@ -26,6 +26,7 @@ model User {
   rewardIDs     String[] @db.ObjectId
   rewards       Reward[] @relation(fields: [rewardIDs], references: [id])
 
+  affiliates    Affiliate[] @relation(fields: [])
 
 }
 
@@ -52,4 +53,20 @@ model Reward {
 
   userIDs       String[] @db.ObjectId
   users         User[] @relation(fields: [userIDs], references: [id])
+}
+
+type AffiliateLink {
+  id            String
+  link          String
+  impressions   Int
+  conversions   Int
+  eventID       String
+}
+
+model Affiliate {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  user          User @relation(fields: [userID], references: [id])
+  userID        String @db.ObjectId
+
+  links         AffiliateLink[]
 }
