@@ -6,10 +6,12 @@ import { ISignInDTO } from './dtos/sign-in.dto';
 import { ISignUpDTO } from './dtos/sign-up.dto';
 import { IForgotDTO } from './dtos/forgot.dto';
 import { IResetDTO } from './dtos/reset.dto';
+import { IUserExistsDTO } from './dtos/user-exists.dto';
 import { signUpSchema } from './schemas/sign-up.schema';
 import { signInSchema } from './schemas/sign-in.schema';
 import { forgotSchema } from './schemas/forgot.schema';
 import { resetSchema } from './schemas/reset.schema';
+import { userExistsSchema } from './schemas/user-exists.schema';
 
 export const authRouter = new Router({ prefix: '/auth' });
 
@@ -36,3 +38,10 @@ authRouter.post(
   validateRequestBodyMiddleware<IResetDTO>(resetSchema.strict()),
   AuthController.reset,
 );
+
+authRouter.post(
+  '/check-user',
+  validateRequestBodyMiddleware<IUserExistsDTO>(userExistsSchema.strict()),
+  AuthController.userExists,
+
+)

@@ -20,6 +20,7 @@ router.get('/', (ctx: RouterContext) => {
 });
 
 router.use(authRouter.routes());
+router.use(shopifyRouter.routes())
 
 router.use(jwt({ secret: environment.jwt.secret, key: 'authData' }));
 
@@ -29,4 +30,3 @@ router.use(rewardsRouter.routes());
 router.use(web3Router.routes());
 router.use(emailRouter.routes());
 router.use(stripeRouter.routes());
-router.use(shopifyRouter.routes())
