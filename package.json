@@ -66,7 +66,10 @@
     "@koa/router": "^10.1.1",
     "@mailchimp/mailchimp_transactional": "^1.0.50",
     "@prisma/client": "^3.14.0",
-    "@thirdweb-dev/sdk": "^3.10.22",
+    "@stripe/react-stripe-js": "^2.1.1",
+    "@stripe/stripe-js": "^1.54.2",
+    "@thirdweb-dev/sdk": "^3.10.49",
+    "@thirdweb-dev/wallets": "^1.1.13",
     "bcrypt": "^5.0.1",
     "bson": "^4.6.4",
     "crypto": "^1.0.1",
@@ -81,6 +84,7 @@
     "koa-jwt": "^4.0.3",
     "koa-logger": "^3.2.1",
     "moment": "^2.29.4",
+    "stripe": "^12.17.0",
     "yup": "^0.32.11"
   }
 }
