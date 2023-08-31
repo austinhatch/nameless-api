@@ -16,32 +16,42 @@ interface Promos {
   };
 }
 
+function parsePromo(promo:string, promoSuffixes:any){
+  for(const suffix of promoSuffixes){
+    if(promo.includes(suffix)){
+      return promoSuffixes[suffix]
+    }
+  }
+  return null
+}
+
 export function applyPromoCode(eventData:any, promoCode:string){
   try{
     console.log("Applying "+promoCode + " to " + eventData.name)
     const promos: Promos = promoCodes
     console.log(promos)
     if(eventData.name in promos){
-      if(promoCode in promos[eventData.name]){
-        const promo =  promos[eventData.name][promoCode]
-        /** Reminder that Prices for stripe are x 100 so we dont need to handle %'s weirdly */
-        if(promo.percent){
-          const newPrice = eventData.priceUSD * (100-promo.amount)/100
-          if(newPrice > 0){
-            return newPrice
+        /** check if any of the promo suffixes are contained in the provided promo code */
+        const promo =  parsePromo(promoCode, promos[eventData.name])
+        if(promo){
+          /** Reminder that Prices for stripe are x 100 so we dont need to handle %'s weirdly */
+          if(promo.percent){
+            const newPrice = eventData.priceUSD * (100-promo.amount)/100
+            if(newPrice > 0){
+              return newPrice
+            }
+          }
+          else{
+            const newPrice =eventData.priceUSD - promo.amount
+            if(newPrice > 0){
+              return newPrice
+            }        
           }
         }
         else{
-          const newPrice =eventData.priceUSD - promo.amount
-          if(newPrice > 0){
-            return newPrice
-          }        
+          return null
         }
       }
-      else{
-        return null
-      }
-    }
     return null
   }
   catch (e) {
