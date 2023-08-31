@@ -9,6 +9,7 @@ import { rewardsRouter } from './modules/rewards/rewards.router';
 import { web3Router } from './modules/web3/web3router';
 import { stripeRouter } from './modules/stripe/stripe.router';
 import { stripe } from './modules/stripe/utils/stripe_config';
+import { shopifyRouter } from './modules/shopify/shopify.router';
 
 export const router = new Router({ prefix: '/api' });
 
@@ -19,6 +20,7 @@ router.get('/', (ctx: RouterContext) => {
 });
 
 router.use(authRouter.routes());
+router.use(shopifyRouter.routes())
 
 router.use(jwt({ secret: environment.jwt.secret, key: 'authData' }));
 
