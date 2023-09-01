@@ -46,6 +46,11 @@ spec:
             secretKeyRef: 
               name: dev-secret-map 
               key: mailchimpToken
+        - name: SHOPIFY_PK 
+          valueFrom: 
+            secretKeyRef: 
+              name: dev-secret-map 
+              key: shopify
         - name: JWT_SECRET 
           valueFrom: 
             secretKeyRef: 
