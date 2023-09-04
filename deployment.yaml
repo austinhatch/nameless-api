@@ -51,6 +51,11 @@ spec:
             secretKeyRef: 
               name: dev-secret-map 
               key: shopify
+        - name: STRIPE_SK
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret-map
+              key: stripeSK
         - name: JWT_SECRET 
           valueFrom: 
             secretKeyRef: 
