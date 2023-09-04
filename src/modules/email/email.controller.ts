@@ -3,9 +3,9 @@ import { IEmailDTO } from './dtos/email.dto';
 
 export class EmailController {
   static async create(ctx: RouterContext) {
-    const body = <string>JSON.parse(ctx.request.body).email;
-    const toEmail = body;
-    console.log('++++++++', toEmail);
+    const toEmail = <string>JSON.parse(ctx.request.body).email;
+    const template_name = <string>JSON.parse(ctx.request.body).email_template
+    console.log('++++++++', toEmail, template_name);
 
     ctx.status = 201;
     ctx.body = { toEmail };
@@ -28,12 +28,18 @@ export class EmailController {
 
     async function run() {
       const response = await mailchimp.messages.sendTemplate({
-        template_name: 'RSVP CONFIRMATION - Content Crossover',
+        template_name: template_name,
         template_content: [{}],
         message: message,
       });
       console.log(response);
     }
-    run();
+
+    try{
+      run();
+    }
+    catch(e:any){
+      console.log(e)
+    }
   }
 }

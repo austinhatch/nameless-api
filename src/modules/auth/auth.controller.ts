@@ -1,6 +1,7 @@
 import { RouterContext } from '@koa/router';
 import { ISignInDTO } from './dtos/sign-in.dto';
 import { ISignUpDTO } from './dtos/sign-up.dto';
+import { IUserExistsDTO } from './dtos/user-exists.dto';
 import {
   generateResetToken,
   generateToken,
@@ -44,6 +45,20 @@ export class AuthController {
       ctx.body = { user, token };
     }
   }
+
+  static async userExists(ctx: RouterContext) {
+    const { email } = <IUserExistsDTO>JSON.parse(ctx.request.body);
+    const user = await UsersRepository.findByEmail(email);
+    if (!user) {
+      ctx.throw(404, { errors: [`user with email ${email} does not exist`] });
+    } 
+    else {
+        ctx.status = 201;
+        ctx.body = {
+          user,
+        };
+      }
+    }
 
   static async signIn(ctx: RouterContext) {
     const { email, password } = <ISignInDTO>JSON.parse(ctx.request.body);
