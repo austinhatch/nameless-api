@@ -101,9 +101,9 @@ export class AuthController {
       if (process.env.ENV == "local") {
         url = 'http://localhost:5173/auth?resetToken=' + token;
       } else if (process.env.ENV == "dev") {
-        url = 'https://nameless-beta.com/auth?resetToken' + token;
+        url = 'https://nameless-beta.com/auth?resetToken=' + token;
       } else {
-        url = 'https://nameless.nyc/auth?resetToken' + token;
+        url = 'https://nameless.nyc/auth?resetToken=' + token;
       }
 
       const message = {
