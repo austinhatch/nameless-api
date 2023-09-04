@@ -4,7 +4,7 @@ import { IEmailDTO } from './dtos/email.dto';
 export class EmailController {
   static async create(ctx: RouterContext) {
     const toEmail = <string>JSON.parse(ctx.request.body).email;
-    const template_name = <string>JSON.parse(ctx.request.body).email_template
+    const template_name = <string>JSON.parse(ctx.request.body).emai
     console.log('++++++++', toEmail, template_name);
 
     ctx.status = 201;
@@ -34,6 +34,12 @@ export class EmailController {
       });
       console.log(response);
     }
-    run();
+
+    try{
+      run();
+    }
+    catch(e:any){
+      console.log(e)
+    }
   }
 }

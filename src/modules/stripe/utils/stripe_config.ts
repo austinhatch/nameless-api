@@ -16,6 +16,13 @@ interface Promos {
   };
 }
 
+export function addFees(priceUSD:number){
+  //fee per ticket (default $0.99)
+  const fee = 99
+  const fee_rate = .1
+  return priceUSD*(1+fee_rate) + fee
+}
+
 function parsePromo(promo:string, promoSuffixes:any){
   for(const suffix of promoSuffixes){
     if(promo.includes(suffix)){
