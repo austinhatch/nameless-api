@@ -168,7 +168,7 @@ export class AuthController {
         ctx.status = 201;
       } catch (error) {
         console.log(error);
-        ctx.throw(401, 'Token expired/email invalid');
+        ctx.throw(401, `Token expired/email invalid ${error} `);
       }
     }
   }
