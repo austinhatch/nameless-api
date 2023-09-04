@@ -98,8 +98,10 @@ export class AuthController {
         process.env.MAILCHIMP_API,
       );
       let url;
-      if (process.env.DEV_ENV) {
+      if (process.env.ENV == "local") {
         url = 'http://localhost:5173/auth?resetToken=' + token;
+      } else if (process.env.ENV == "dev") {
+        url = 'https://nameless-beta.com/auth?resetToken' + token;
       } else {
         url = 'https://nameless.nyc/auth?resetToken' + token;
       }

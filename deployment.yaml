@@ -61,6 +61,11 @@ spec:
             secretKeyRef: 
               name: dev-secret-map 
               key: jwtSecret 
+        - name: ENV 
+          valueFrom: 
+            secretKeyRef: 
+              name: dev-secret-map 
+              key: env 
         imagePullPolicy: IfNotPresent
         resources:
           limits:
