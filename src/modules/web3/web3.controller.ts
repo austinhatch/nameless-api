@@ -21,14 +21,17 @@ export class Web3Controller {
 
       const subscribed = await contract.call('getHasValidKey', [walletAddress]);
       console.log("Minting ", num )
-
-      for (let i: number = 0; i < num; i++) {
+      const addresses= new Array(num).fill(walletAddress)
+      console.log(addresses)
+      const dates = new Array(num).fill(calcExpiryDate(event))
+      console.log(dates)
+      // for (let i: number = 0; i < num; i++) {
         await contract.call('grantKeys', [
-          [walletAddress],
-          [calcExpiryDate(event)],
-          [walletAddress],
+          addresses,
+          dates,
+          addresses,
         ]);
-      }
+      //}
       ctx.status = 201;
       ctx.body = {
         message: `Succesfully granted key for contract with address ${event.lockAddress}`,
