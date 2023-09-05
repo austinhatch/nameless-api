@@ -12,7 +12,7 @@ import { publicLock } from './utils/PublicLock';
 
 export class Web3Controller {
   static async grantContractKey(ctx: RouterContext) {
-    const { event, walletAddress } = <IGetContractDTO>(
+    const { event, walletAddress, num } = <IGetContractDTO>(
       JSON.parse(ctx.request.body)
     );
 
@@ -20,8 +20,9 @@ export class Web3Controller {
       const contract = await sdk.getContract(event.lockAddress, publicLock);
 
       const subscribed = await contract.call('getHasValidKey', [walletAddress]);
+      console.log("Minting ", num )
 
-      if (!subscribed) {
+      for (let i: number = 0; i < num; i++) {
         await contract.call('grantKeys', [
           [walletAddress],
           [calcExpiryDate(event)],
