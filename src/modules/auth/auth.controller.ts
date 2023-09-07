@@ -50,12 +50,16 @@ export class AuthController {
     const { email } = <IUserExistsDTO>JSON.parse(ctx.request.body);
     const user = await UsersRepository.findByEmail(email);
     if (!user) {
-      ctx.throw(404, { errors: [`user with email ${email} does not exist`] });
+      ctx.status = 201;
+        ctx.body = {
+          existing: false
+        };
     } 
     else {
         ctx.status = 201;
         ctx.body = {
           user,
+          existing: true
         };
       }
     }
