@@ -15,7 +15,13 @@ stripeRouter.post(
 stripeRouter.post(
   '/apply-promo-code',
   stripeController.applyPromoCode,
+);
+
+stripeRouter.post(
+  '/update-promise',
+  stripeController.updatePromise,
 )
+
 
 
 // authRouter.post(

@@ -32,7 +32,7 @@ function parsePromo(promo:string, promoSuffixes:any){
   return null
 }
 
-export function applyPromoCode(eventData:any, promoCode:string){
+export function applyPromoCode(eventData:any, promoCode:string, numTickets:number){
   try{
     console.log("Applying "+promoCode + " to " + eventData.name)
     const promos: Promos = promoCodes
@@ -43,13 +43,13 @@ export function applyPromoCode(eventData:any, promoCode:string){
         if(promo){
           /** Reminder that Prices for stripe are x 100 so we dont need to handle %'s weirdly */
           if(promo.percent){
-            const newPrice = eventData.priceUSD * (100-promo.amount)/100
+            const newPrice = (eventData.priceUSD * (100-promo.amount)/100) * numTickets
             if(newPrice > 0){
               return newPrice
             }
           }
           else{
-            const newPrice =eventData.priceUSD - promo.amount
+            const newPrice =(eventData.priceUSD - promo.amount) * numTickets
             if(newPrice > 0){
               return newPrice
             }        

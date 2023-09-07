@@ -1,6 +1,5 @@
-export interface IApplyPromoCodeDTO {
+export interface IUpdatePromiseDTO {
     id: string;
-    promoCode: string;
     eventData: any;
     numTickets: number;
 }
