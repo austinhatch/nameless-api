@@ -21,11 +21,11 @@ router.get('/', (ctx: RouterContext) => {
 
 router.use(authRouter.routes());
 router.use(shopifyRouter.routes())
+router.use(eventsRouter.routes());
 
 router.use(jwt({ secret: environment.jwt.secret, key: 'authData' }));
 
 router.use(usersRouter.routes());
-router.use(eventsRouter.routes());
 router.use(rewardsRouter.routes());
 router.use(web3Router.routes());
 router.use(emailRouter.routes());

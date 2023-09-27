@@ -26,6 +26,16 @@ export class EventsRepository {
     })
   }
 
+  static findAllByVendorId(id: string){
+    return prisma.event.findMany({
+      where: {
+        vendorIDs : {
+          has: id
+        }
+      }
+    })
+  }
+
   static findAll() {
     return prisma.event.findMany();
   }

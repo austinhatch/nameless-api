@@ -47,15 +47,27 @@ export class EventsController {
     const  body = <IEventDTO>JSON.parse(ctx.request.body);
     const event = await EventsRepository.create(
       {
+        url_endpoint: body.url_endpoint,
         name: body.name,
         date: body.date,
         startTime: body.startTime,
         endTime: body.endTime ? body.endTime : '',
         tz: body.tz,
+        type: body.type ? body.type : '',
         location: body.location,
+        location_url: body.location_url,
+        venue: body.venue,
+        venue_url: body.venue_url,
         imgUrl: body.imgUrl,
         description: body.description,
-        userIDs: []
+        lockAddress: body.lockAddress ? body.lockAddress : '',
+        priceUSD: body.priceUSD,
+        email_template: body.email_template,
+        cardColor: body.cardColor,
+
+        userIDs: [],
+        vendorIDs: [],
+        promoCodeIDs: [],
       }
     )
     ctx.status = 201;
