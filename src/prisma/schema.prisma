@@ -50,12 +50,10 @@ model Event {
   cardColor      String
   
   ticketTiers    Ticket[]
+  vendors        Vendor[]
 
   userIDs String[] @db.ObjectId
   users   User[]   @relation(fields: [userIDs], references: [id])
-
-  vendorIDs String[] @db.ObjectId
-  vendors   Vendor[] @relation(fields: [vendorIDs], references: [id])
 
   promoCodeIDs String[]     @db.ObjectId
   promoCodes   PromoCodes[] @relation(fields: [promoCodeIDs], references: [id])
@@ -68,15 +66,10 @@ type Ticket {
   lockAddress String
 }
 
-model Vendor {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
+type Vendor {
   name      String
   instagram String
-  website   String
-
-  eventIDs String[] @db.ObjectId
-  events   Event[]  @relation(fields: [eventIDs], references: [id])
-
+  website   String?
 }
 
 model PromoCodes { 

@@ -64,9 +64,12 @@ export class EventsController {
         priceUSD: body.priceUSD,
         email_template: body.email_template,
         cardColor: body.cardColor,
+        
+        vendors: [],
+        ticketTiers: [],
+
 
         userIDs: [],
-        vendorIDs: [],
         promoCodeIDs: [],
       }
     )
