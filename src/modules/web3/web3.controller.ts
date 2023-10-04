@@ -9,6 +9,7 @@ import { IGetContractDTO } from './dtos/get-contract-dto';
 import { IMintNFTDTO } from './dtos/mint-nft-dto';
 import { sdk, calcExpiryDate } from './utils/thirdweb-config';
 import { publicLock } from './utils/PublicLock';
+import BigNumber from 'bignumber.js';
 
 export class Web3Controller {
   static async grantContractKey(ctx: RouterContext) {
@@ -26,17 +27,29 @@ export class Web3Controller {
       const dates = new Array(num).fill(calcExpiryDate(event))
       console.log(dates)
       // for (let i: number = 0; i < num; i++) {
-        await contract.call('grantKeys', [
+      const tx = await contract.call('grantKeys', [
           addresses,
           dates,
           addresses,
         ]);
+        const transfers = tx.receipt.events.filter( (item: { event: string; }) => item.event === 'Transfer')
+        const keys = []
+        for(const t of transfers){
+          console.log(t.args)
+          const id_hex = t.args[2]._hex
+          console.log("IDHEX",id_hex)
+          const bn = new BigNumber(id_hex)
+          const id_int = bn.toNumber()
+          keys.push(id_int)
+        }
       //}
       ctx.status = 201;
       ctx.body = {
         message: `Succesfully granted key for contract with address ${event.lockAddress}`,
+        keys: keys
       };
     } catch (e: any) {
+      console.log(e)
       ctx.status = 500;
       ctx.body = { message: e.message };
     }

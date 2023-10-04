@@ -42,23 +42,24 @@ export class EventsController {
       message: 'Deleted',
     };
   }
-
-  static async create(ctx: RouterContext) {
-    const  body = <IEventDTO>JSON.parse(ctx.request.body);
-    const event = await EventsRepository.create(
-      {
-        name: body.name,
-        date: body.date,
-        startTime: body.startTime,
-        endTime: body.endTime ? body.endTime : '',
-        tz: body.tz,
-        location: body.location,
-        imgUrl: body.imgUrl,
-        description: body.description,
-        userIDs: []
-      }
-    )
-    ctx.status = 201;
-    ctx.body = event;
-  }
 }
+
+//   static async create(ctx: RouterContext) {
+//     const  body = <IEventDTO>JSON.parse(ctx.request.body);
+//     const event = await EventsRepository.create(
+//       {
+//         name: body.name,
+//         date: body.date,
+//         startTime: body.startTime,
+//         endTime: body.endTime ? body.endTime : '',
+//         tz: body.tz,
+//         location: body.location,
+//         imgUrl: body.imgUrl,
+//         description: body.description,
+//         userIDs: []
+//       }
+//     )
+//     ctx.status = 201;
+//     ctx.body = event;
+//   }
+// }
