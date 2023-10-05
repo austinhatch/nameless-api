@@ -24,6 +24,14 @@ export class UsersRepository {
     });
   }
 
+  static findByPhone(phone: string) {
+    return prisma.user.findFirst({
+      where: {
+        phone,
+      },
+    }); 
+  }
+
   static findAll() {
     return prisma.user.findMany();
   }

@@ -13,6 +13,7 @@ datasource db {
 model User {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   email         String @unique
+  phone         String?
   username      String @unique
   name          String?
   lastName      String?
@@ -31,38 +32,17 @@ model User {
 
 model Event {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
-  url_endpoint  String
   name          String
   date          String
   startTime     String
   endTime       String
   tz            String
-  type          String
   location      String
-  location_url  String
-  venue         String
-  venue_url     String
   imgUrl        String
   description   String
-  lockAddress   String
-  priceUSD      Float
-  email_template String
-  cardColor     String
-  vendors       Vendor[] @relation("EventToVendors", references: [name]) @map("vendor_names")
-}
 
-model Vendor {
-  id            String @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  instagram     String
-  website       String
-}
-
-model PromoCodes {
-  id            String @id @default(auto()) @map("_id") @db.ObjectId
-  code          String
-  
-
+  userIDs       String[] @db.ObjectId
+  users         User[] @relation(fields: [userIDs], references: [id])
 }
 
 model Reward {

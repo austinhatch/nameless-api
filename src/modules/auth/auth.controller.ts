@@ -1,7 +1,7 @@
 import { RouterContext } from '@koa/router';
-import { ISignInDTO } from './dtos/sign-in.dto';
+import { ISignInDTO, ISignInPhoneDTO } from './dtos/sign-in.dto';
 import { ISignUpDTO } from './dtos/sign-up.dto';
-import { IUserExistsDTO } from './dtos/user-exists.dto';
+import { IUserExistsDTO, IUserPhoneExistsDTO} from './dtos/user-exists.dto';
 import {
   generateResetToken,
   generateToken,
@@ -18,21 +18,30 @@ import { prisma } from '@/prisma/client.prisma';
 
 export class AuthController {
   static async signUp(ctx: RouterContext) {
-    const { email, password, username } = <ISignUpDTO>(
+    const { email, password, phone, username } = <ISignUpDTO>(
       JSON.parse(ctx.request.body)
     );
     const existingUser = await UsersRepository.findByEmail(email);
+    const existingUserPhone = await UsersRepository.findByPhone(phone)
     if (existingUser) {
       ctx.throw(409, {
         errors: [`user with email ${email} already exists`],
       });
-    } else {
+    } 
+    else if(existingUserPhone){
+      ctx.throw(409, {
+        errors: [`user with phone ${phone} already exists`],
+      }); 
+    }
+    
+    else {
       const hashedPassword = await hashPassword(password);
       const { walletAddress, privateKey } = await createPrivateKey(
         hashedPassword,
       );
       const user = await UsersRepository.create({
         email,
+        phone,
         username,
         walletAddress,
         privateKey,
@@ -64,6 +73,26 @@ export class AuthController {
       }
     }
 
+    static async userExistsPhone(ctx: RouterContext) {
+      const { phone } = <IUserPhoneExistsDTO>JSON.parse(ctx.request.body);
+      const user = await UsersRepository.findByPhone(phone);
+      console.log(phone, user)
+      if (!user) {
+        ctx.status = 201;
+          ctx.body = {
+            existing: false
+          };
+      } 
+      else {
+          ctx.status = 201;
+          ctx.body = {
+            user,
+            existing: true
+          };
+        }
+      }
+    
+
   static async signIn(ctx: RouterContext) {
     const { email, password } = <ISignInDTO>JSON.parse(ctx.request.body);
     const user = await UsersRepository.findByEmail(email);
@@ -84,6 +113,29 @@ export class AuthController {
       }
     }
   }
+
+  static async signInPhone(ctx: RouterContext) {
+    const { phone, password } = <ISignInPhoneDTO>JSON.parse(ctx.request.body);
+    const user = await UsersRepository.findByPhone(phone);
+    if (!user) {
+      ctx.throw(404, { errors: [`user with email ${phone} does not exist`] });
+    } else {
+      const doPasswordsMatch = await comparePassword(password, user.password);
+      if (doPasswordsMatch) {
+        const token = await generateToken(user);
+        ctx.status = 201;
+        ctx.body = {
+          user,
+          token,
+          type: 'Bearer',
+        };
+      } else {
+        ctx.throw(401, { errors: ['incorrect password'] });
+      }
+    }
+  }
+
+
 
   static async forgot(ctx: RouterContext) {
     const { email } = <IForgotDTO>JSON.parse(ctx.request.body);
