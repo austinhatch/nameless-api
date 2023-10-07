@@ -5,6 +5,7 @@ export class EmailController {
   static async create(ctx: RouterContext) {
     const toEmail = <string>JSON.parse(ctx.request.body).email;
     const template_name = <string>JSON.parse(ctx.request.body).email_template
+    const eventData = JSON.parse(ctx.request.body).eventData
     const qr_code_urls = JSON.parse(ctx.request.body).qr_code_urls
     console.log(qr_code_urls)
     console.log('++++++++', toEmail, template_name);
