@@ -6,6 +6,6 @@ export const signInSchema = object({
 });
 
 export const signInPhoneSchema = object({
-  phone: string().email().required(),
+  phone: string().required(),
   password: string().required(),
 });

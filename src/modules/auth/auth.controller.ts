@@ -116,6 +116,7 @@ export class AuthController {
 
   static async signInPhone(ctx: RouterContext) {
     const { phone, password } = <ISignInPhoneDTO>JSON.parse(ctx.request.body);
+    console.log(phone)
     const user = await UsersRepository.findByPhone(phone);
     if (!user) {
       ctx.throw(404, { errors: [`user with email ${phone} does not exist`] });
