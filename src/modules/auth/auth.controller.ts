@@ -1,5 +1,5 @@
 import { RouterContext } from '@koa/router';
-import { ISignInDTO, ISignInPhoneDTO } from './dtos/sign-in.dto';
+import { ISignInDTO } from './dtos/sign-in.dto';
 import { ISignUpDTO } from './dtos/sign-up.dto';
 import { IUserExistsDTO, IUserPhoneExistsDTO} from './dtos/user-exists.dto';
 import {
@@ -94,8 +94,16 @@ export class AuthController {
     
 
   static async signIn(ctx: RouterContext) {
-    const { email, password } = <ISignInDTO>JSON.parse(ctx.request.body);
-    const user = await UsersRepository.findByEmail(email);
+    const { email, phone, password } = <ISignInDTO>JSON.parse(ctx.request.body);
+    let user;
+    if (email) {
+      // user used email
+      user = await UsersRepository.findByEmail(email);
+    }
+    if (phone) {
+      // user used phone
+      user = await UsersRepository.findByPhone(phone);
+    }
     if (!user) {
       ctx.throw(404, { errors: [`user with email ${email} does not exist`] });
     } else {
@@ -114,26 +122,26 @@ export class AuthController {
     }
   }
 
-  static async signInPhone(ctx: RouterContext) {
-    const { phone, password } = <ISignInPhoneDTO>JSON.parse(ctx.request.body);
-    const user = await UsersRepository.findByPhone(phone);
-    if (!user) {
-      ctx.throw(404, { errors: [`user with email ${phone} does not exist`] });
-    } else {
-      const doPasswordsMatch = await comparePassword(password, user.password);
-      if (doPasswordsMatch) {
-        const token = await generateToken(user);
-        ctx.status = 201;
-        ctx.body = {
-          user,
-          token,
-          type: 'Bearer',
-        };
-      } else {
-        ctx.throw(401, { errors: ['incorrect password'] });
-      }
-    }
-  }
+  // static async signInPhone(ctx: RouterContext) {
+  //   const { phone, password } = <ISignInPhoneDTO>JSON.parse(ctx.request.body);
+  //   const user = await UsersRepository.findByPhone(phone);
+  //   if (!user) {
+  //     ctx.throw(404, { errors: [`user with email ${phone} does not exist`] });
+  //   } else {
+  //     const doPasswordsMatch = await comparePassword(password, user.password);
+  //     if (doPasswordsMatch) {
+  //       const token = await generateToken(user);
+  //       ctx.status = 201;
+  //       ctx.body = {
+  //         user,
+  //         token,
+  //         type: 'Bearer',
+  //       };
+  //     } else {
+  //       ctx.throw(401, { errors: ['incorrect password'] });
+  //     }
+  //   }
+  // }
 
 
 
