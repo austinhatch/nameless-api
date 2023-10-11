@@ -8,20 +8,38 @@ import { stripe, applyPromoCode, addFees } from './utils/stripe_config';
 export class stripeController {
 
     static async createPaymentIntent(ctx: RouterContext) {
-        const { eventData, numTickets } = <ICreatePaymentIntentDTO>JSON.parse(ctx.request.body)
+        const { eventData, numTickets, ticketTier } = <ICreatePaymentIntentDTO>JSON.parse(ctx.request.body)
         try {
-            const metadata = {"num_tickets": numTickets}
-            const paymentIntent = await stripe.paymentIntents.create({
-                amount: addFees(eventData.priceUSD*100*numTickets),
-                metadata: metadata,
-                currency: "usd",
-                automatic_payment_methods: {
-                  enabled: true,
-                },
-              });
-            
-             ctx.status = 201
-             ctx.body = { id: paymentIntent.id, amount: paymentIntent.amount, clientSecret: paymentIntent.client_secret}
+            console.log("Ticket Tier", ticketTier)
+            if(ticketTier){
+                const metadata = {"num_tickets": numTickets, "ticket_tier": ticketTier}
+                const paymentIntent = await stripe.paymentIntents.create({
+                    amount: Math.ceil(addFees(eventData.ticketTiers[ticketTier].priceUSD*100*numTickets)),
+                    metadata: metadata,
+                    currency: "usd",
+                    automatic_payment_methods: {
+                    enabled: true,
+                    },
+                });
+                
+                ctx.status = 201
+                ctx.body = { id: paymentIntent.id, amount: paymentIntent.amount, clientSecret: paymentIntent.client_secret}
+
+            }
+            else{
+                const metadata = {"num_tickets": numTickets}
+                const paymentIntent = await stripe.paymentIntents.create({
+                    amount: Math.ceil(addFees(eventData.priceUSD*100*numTickets)),
+                    metadata: metadata,
+                    currency: "usd",
+                    automatic_payment_methods: {
+                    enabled: true,
+                    },
+                });
+                
+                ctx.status = 201
+                ctx.body = { id: paymentIntent.id, amount: paymentIntent.amount, clientSecret: paymentIntent.client_secret}
+            }
         }
         catch (e: any) {
             console.log(e)
@@ -56,17 +74,30 @@ export class stripeController {
     }
 
     static async updatePromise(ctx:RouterContext){
-        const { id, eventData, numTickets } = <IUpdatePromiseDTO>JSON.parse(ctx.request.body);
+        const { id, eventData, numTickets, ticketTier } = <IUpdatePromiseDTO>JSON.parse(ctx.request.body);
         try{
-            const updatedPrice =  addFees(eventData.priceUSD*100*numTickets)
-            const metadata = { "num_tickets": numTickets}
-            console.log(numTickets)
-            const paymentIntent = await stripe.paymentIntents.update(
-                id,
-                {metadata: metadata, amount: updatedPrice}
-            )
-            ctx.status = 201
-            ctx.body = { id: paymentIntent.id, amount: paymentIntent.amount, clientSecret: paymentIntent.client_secret}
+            if(ticketTier){
+                const updatedPrice = Math.ceil(addFees(eventData.ticketTiers[ticketTier].priceUSD*100*numTickets))
+                const metadata = { "num_tickets": numTickets, "ticket_tier": ticketTier}
+                console.log(numTickets)
+                const paymentIntent = await stripe.paymentIntents.update(
+                    id,
+                    {metadata: metadata, amount: updatedPrice}
+                )
+                ctx.status = 201
+                ctx.body = { id: paymentIntent.id, amount: paymentIntent.amount, clientSecret: paymentIntent.client_secret}
+            }
+            else{
+                const updatedPrice =  Math.ceil(addFees(eventData.priceUSD*100*numTickets))
+                const metadata = { "num_tickets": numTickets}
+                console.log(numTickets)
+                const paymentIntent = await stripe.paymentIntents.update(
+                    id,
+                    {metadata: metadata, amount: updatedPrice}
+                )
+                ctx.status = 201
+                ctx.body = { id: paymentIntent.id, amount: paymentIntent.amount, clientSecret: paymentIntent.client_secret}
+            }
         }
         catch (e:any){
             console.log(e)
