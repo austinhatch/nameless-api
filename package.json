@@ -66,6 +66,7 @@
     "@koa/cors": "^3.2.0",
     "@koa/router": "^10.1.1",
     "@mailchimp/mailchimp_transactional": "^1.0.50",
+    "@pdf-lib/fontkit": "^1.1.1",
     "@prisma/client": "^3.14.0",
     "@stripe/react-stripe-js": "^2.1.1",
     "@stripe/stripe-js": "^1.54.2",
