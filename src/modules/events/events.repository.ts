@@ -26,6 +26,26 @@ export class EventsRepository {
     })
   }
 
+  static findAllByPromoId(id: string) {
+    return prisma.event.findMany({
+      where: {
+        promoCodeIDs: {
+          has: id
+        }
+      }
+    })
+  }
+
+  // static findAllByVendorId(id: string){
+  //   return prisma.event.findMany({
+  //     where: {
+  //       vendorIDs : {
+  //         has: id
+  //       }
+  //     }
+  //   })
+  // }
+
   static findAll() {
     return prisma.event.findMany();
   }
