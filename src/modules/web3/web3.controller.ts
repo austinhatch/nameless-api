@@ -18,7 +18,7 @@ export class Web3Controller {
     );
 
     try {
-      const contract = ticketTier ? await sdk.getContract(event.ticketTiers.ticketTier.lockAddress, publicLock) : await sdk.getContract(event.lockAddress, publicLock)
+      const contract = ticketTier ? await sdk.getContract(event.ticketTiers[ticketTier].lockAddress, publicLock) : await sdk.getContract(event.lockAddress, publicLock)
       console.log("Minting ", num )
       const addresses= new Array(num).fill(walletAddress)
       console.log(addresses)
