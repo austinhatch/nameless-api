@@ -65,11 +65,11 @@ eventsRouter.del(
   EventsController.delete,
 );
 
-eventsRouter.post(
-  '/create',
-  validateRequestBodyMiddleware<IEventDTO>(
-    eventSchema.strict().noUnknown(),
-  ),
-  // isCurrentUserMiddleware,
-  EventsController.create
-)
+// eventsRouter.post(
+//   '/create',
+//   validateRequestBodyMiddleware<IEventDTO>(
+//     eventSchema.strict().noUnknown(),
+//   ),
+//   // isCurrentUserMiddleware,
+//   EventsController.create
+// )
