@@ -49,7 +49,7 @@ model Event {
   email_template String
   cardColor      String
   
-  ticketTiers    Ticket[]
+  ticketTiers    Json?
   vendors        Vendor[]
 
   userIDs String[] @db.ObjectId
