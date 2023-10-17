@@ -17,40 +17,78 @@ model User {
   username      String @unique
   name          String?
   lastName      String?
-  walletAddress String @unique
-  privateKey    String @unique
+  walletAddress String  @unique
+  privateKey    String  @unique
   password      String
 
-  eventIDs      String[] @db.ObjectId
-  events        Event[] @relation(fields: [eventIDs], references: [id])
+  eventIDs String[] @db.ObjectId
+  events   Event[]  @relation(fields: [eventIDs], references: [id])
 
-  rewardIDs     String[] @db.ObjectId
-  rewards       Reward[] @relation(fields: [rewardIDs], references: [id])
+  rewardIDs String[] @db.ObjectId
+  rewards   Reward[] @relation(fields: [rewardIDs], references: [id])
 
 
 }
 
 model Event {
-  id            String @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  date          String
-  startTime     String
-  endTime       String
-  tz            String
-  location      String
-  imgUrl        String
-  description   String
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  url_endpoint   String?
+  name           String
+  date           String
+  startTime      String
+  endTime        String?
+  tz             String
+  type           String?
+  location       String
+  location_url   String?
+  venue          String?
+  venue_url      String?
+  imgUrl         String?
+  description    String
+  lockAddress    String?
+  priceUSD       Float
+  email_template String
+  cardColor      String
+  
+  ticketTiers    Json?
+  vendors        Vendor[]
 
-  userIDs       String[] @db.ObjectId
-  users         User[] @relation(fields: [userIDs], references: [id])
+  userIDs String[] @db.ObjectId
+  users   User[]   @relation(fields: [userIDs], references: [id])
+
+  promoCodeIDs String[]     @db.ObjectId
+  promoCodes   PromoCodes[] @relation(fields: [promoCodeIDs], references: [id])
+}
+
+type Ticket {
+  name String
+  available Float
+  priceUSD Float
+  lockAddress String
+}
+
+type Vendor {
+  name      String
+  instagram String
+  website   String?
+}
+
+model PromoCodes { 
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  code    String
+  percent Boolean
+  amount  Float
+
+  eventIDs String[] @db.ObjectId
+  events   Event[]  @relation(fields: [eventIDs], references: [id])
 }
 
 model Reward {
-  id            String @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  description   String
-  imgUrl        String
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  imgUrl      String
 
-  userIDs       String[] @db.ObjectId
-  users         User[] @relation(fields: [userIDs], references: [id])
+  userIDs String[] @db.ObjectId
+  users   User[]   @relation(fields: [userIDs], references: [id])
 }

@@ -13,14 +13,12 @@ import BigNumber from 'bignumber.js';
 
 export class Web3Controller {
   static async grantContractKey(ctx: RouterContext) {
-    const { event, walletAddress, num } = <IGetContractDTO>(
+    const { event, walletAddress, num, ticketTier } = <IGetContractDTO>(
       JSON.parse(ctx.request.body)
     );
 
     try {
-      const contract = await sdk.getContract(event.lockAddress, publicLock);
-
-      const subscribed = await contract.call('getHasValidKey', [walletAddress]);
+      const contract = ticketTier ? await sdk.getContract(event.ticketTiers[ticketTier].lockAddress, publicLock) : await sdk.getContract(event.lockAddress, publicLock)
       console.log("Minting ", num )
       const addresses= new Array(num).fill(walletAddress)
       console.log(addresses)

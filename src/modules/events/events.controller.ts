@@ -5,6 +5,7 @@ import { IUserIdUpdateDTO } from './dtos/user-id-update.dto'
 import { IUpdateEventDTO } from './dtos/update-event.dto';
 import { EventsRepository } from './events.repository';
 import { UsersRepository } from '../users/users.repository';
+import { PromoCodesRepository } from '../promos/promo.repository';
 import { IEventDTO } from './dtos/event.dto';
 
 export class EventsController {
@@ -24,6 +25,18 @@ export class EventsController {
     ctx.body = event;
   }
 
+  static async updatePromoCodeIDs(ctx: RouterContext) {
+    const promoID = <string>JSON.parse(ctx.request.body).id
+    const res = await EventsRepository.updateUserIDs(ctx.params.id, promoID)
+    const promoRes = await PromoCodesRepository.updateEventIDs(ctx.params.id, promoID)
+    ctx.body = {res, promoRes};
+  }
+
+  static async getAllByPromoCode(ctx: RouterContext) {
+    const res = await EventsRepository.findAllByPromoId(ctx.params.id)
+    ctx.body = res
+  }
+
   static async updateUserIDs(ctx: RouterContext) {
     const userID = <string>JSON.parse(ctx.request.body).id
     const res = await EventsRepository.updateUserIDs(ctx.params.id, userID)
@@ -41,6 +54,40 @@ export class EventsController {
     ctx.body = {
       message: 'Deleted',
     };
+  }
+
+  static async create(ctx: RouterContext) {
+    const  body = <IEventDTO>JSON.parse(ctx.request.body);
+    const event = await EventsRepository.create(
+      {
+        url_endpoint: body.url_endpoint,
+        name: body.name,
+        date: body.date,
+        startTime: body.startTime,
+        endTime: body.endTime ? body.endTime : '',
+        tz: body.tz,
+        type: body.type ? body.type : '',
+        location: body.location,
+        location_url: body.location_url,
+        venue: body.venue,
+        venue_url: body.venue_url,
+        imgUrl: body.imgUrl,
+        description: body.description,
+        lockAddress: body.lockAddress ? body.lockAddress : '',
+        priceUSD: body.priceUSD,
+        email_template: body.email_template,
+        cardColor: body.cardColor,
+        
+        vendors: [],
+        ticketTiers: [],
+
+
+        userIDs: [],
+        promoCodeIDs: [],
+      }
+    )
+    ctx.status = 201;
+    ctx.body = event;
   }
 }
 
