@@ -82,4 +82,20 @@ export class EventsRepository {
       },
     });
   }
+
+  static updatePromoCodeIDs(promoCodeID: string, eventID: string) {
+    return prisma.event.update({
+      where: {
+        id: eventID,
+      },
+      data: {
+        promoCodeIDs: {
+          push: promoCodeID,
+        },
+      },
+      include: {
+        promoCodes: true,
+      },
+    });
+  }
 }
