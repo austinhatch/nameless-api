@@ -20,6 +20,7 @@ model User {
   walletAddress String  @unique
   privateKey    String  @unique
   password      String
+  accounts      Json?
 
   eventIDs String[] @db.ObjectId
   events   Event[]  @relation(fields: [eventIDs], references: [id])
@@ -50,8 +51,12 @@ model Event {
   email_template String
   cardColor      String
   
+  ticketProvider Json?
+
   ticketTiers    Json?
   vendors        Vendor[]
+
+  rewards        Json?
 
   userIDs String[] @db.ObjectId
   users   User[]   @relation(fields: [userIDs], references: [id])
@@ -78,6 +83,7 @@ model PromoCodes {
   code    String
   percent Boolean
   amount  Float
+  expiryDate String?
 
   eventIDs String[] @db.ObjectId
   events   Event[]  @relation(fields: [eventIDs], references: [id])

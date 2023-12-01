@@ -1,5 +1,7 @@
 import { environment } from '@/config/environment';
 import promoCodes from './promos'
+import { PromoCodesRepository } from '@/modules/promos/promo.repository';
+
 
 export const stripe = require("stripe")(
   process.env.STRIPE_SK!,

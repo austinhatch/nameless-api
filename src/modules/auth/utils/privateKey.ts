@@ -3,8 +3,11 @@ import { User } from '@prisma/client';
 import { environment } from '@/config/environment';
 import { LocalWallet } from '@thirdweb-dev/wallets';
 import { Mumbai } from '@thirdweb-dev/chains';
+import { AptosAccount } from 'aptos'
+import { encryptStringToJson, decryptJsonToString } from './encrypt';
 
-export async function createPrivateKey(password: string) {
+
+export async function createEVMPrivateKey(password: string) {
   const wallet = new LocalWallet({
     chain: Mumbai,
   });
@@ -23,7 +26,18 @@ export async function createPrivateKey(password: string) {
   return { walletAddress, privateKey };
 }
 
-export async function reEncryptPrivateKey(password: string, user: User) {
+export async function createAptosPrivateKey(password: string) {
+  const aptosAccount = new AptosAccount()
+  const aptosAccountObj = aptosAccount.toPrivateKeyObject()
+  console.log(aptosAccountObj)
+  const aptosAddress = aptosAccountObj.address
+  const aptosPublicKey = aptosAccountObj.publicKeyHex
+  const aptosPrivateKey = encryptStringToJson(aptosAccountObj.privateKeyHex, password)
+  return { aptosAddress, aptosPublicKey, aptosPrivateKey};
+
+}
+
+export async function reEncryptEVMPrivateKey(password: string, user: User) {
   const config = {
     strategy: 'encryptedJson',
     password: user.password,
@@ -40,4 +54,15 @@ export async function reEncryptPrivateKey(password: string, user: User) {
   });
 
   return privateKey;
+}
+
+export async function reEncryptAptosPrivateKey(password: string, user: User) {
+  const accounts:any = user.accounts
+  if( accounts !== null){
+    const aptosAccount:any = accounts['APTOS']
+    const privateKeyJSON:string = aptosAccount.privateKey
+    const decryptedPrivateKey = decryptJsonToString(privateKeyJSON, user.password)
+    const encryptedPrivateKey = encryptStringToJson(decryptedPrivateKey, password)
+    return encryptedPrivateKey
+  }
 }

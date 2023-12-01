@@ -2,7 +2,7 @@ import { ThirdwebSDK } from '@thirdweb-dev/sdk';
 import moment from 'moment';
 import { environment } from '@/config/environment';
 
-export const sdk = ThirdwebSDK.fromPrivateKey(environment.pk, 'Mumbai', {
+export const sdk = ThirdwebSDK.fromPrivateKey(environment.evm_private_key, 'Mumbai', {
   secretKey: environment.thirdweb.secret,
   clientId: environment.thirdweb.client,
 });

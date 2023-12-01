@@ -7,7 +7,7 @@ import {
   generateToken,
   getEmailFromToken,
 } from './utils/generate-token';
-import { createPrivateKey, reEncryptPrivateKey } from './utils/privateKey';
+import { createEVMPrivateKey, reEncryptEVMPrivateKey, createAptosPrivateKey, reEncryptAptosPrivateKey } from './utils/privateKey';
 import { hashPassword } from './utils/hash-password';
 import { comparePassword } from './utils/compare-password';
 import { UsersRepository } from '../users/users.repository';
@@ -15,6 +15,7 @@ import { IForgotDTO } from './dtos/forgot.dto';
 import { IResetDTO } from './dtos/reset.dto';
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/prisma/client.prisma';
+import { AptosAccount } from 'aptos';
 
 export class AuthController {
   static async signUp(ctx: RouterContext) {
@@ -36,9 +37,23 @@ export class AuthController {
     
     else {
       const hashedPassword = await hashPassword(password);
-      const { walletAddress, privateKey } = await createPrivateKey(
+      const { walletAddress, privateKey } = await createEVMPrivateKey(
         hashedPassword,
       );
+      const evmAccount = {
+        walletAddress: walletAddress,
+        privateKey: privateKey,
+      }
+
+      const { aptosAddress, aptosPublicKey, aptosPrivateKey } = await createAptosPrivateKey(
+        hashedPassword,
+      )
+      const aptosAccount = {
+        walletAddress: aptosAddress,
+        publicKey: aptosPublicKey,
+        privateKey: aptosPrivateKey
+      }
+
       const user = await UsersRepository.create({
         email,
         phone,
@@ -48,6 +63,10 @@ export class AuthController {
         password: hashedPassword,
         eventIDs: [],
         rewardIDs: [],
+        accounts: {
+          "APTOS" : aptosAccount,
+          "EVM" : evmAccount
+        }
       });
       const token = await generateToken(user);
       ctx.status = 201;
@@ -212,7 +231,7 @@ export class AuthController {
         const user = await UsersRepository.findByEmail(email);
         if (user) {
           // update private key
-          const newPrivKey = await reEncryptPrivateKey(hashedPassword, user);
+          const newPrivKey = await reEncryptEVMPrivateKey(hashedPassword, user);
 
           const updatedUserData: Prisma.UserUpdateInput = {
             password: hashedPassword,
