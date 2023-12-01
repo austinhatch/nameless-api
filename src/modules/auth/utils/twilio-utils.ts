@@ -10,7 +10,7 @@ export const startVerififcation = async (num: string) => {
     .verifications
     .create({to: num, channel: 'sms'})
 
-    return verification
+    return verification.status
 }
 
 export const checkVerificationCode = async (num: string, code: string) => {
