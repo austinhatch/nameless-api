@@ -12,6 +12,8 @@ import { signInSchema } from './schemas/sign-in.schema';
 import { forgotSchema } from './schemas/forgot.schema';
 import { resetSchema } from './schemas/reset.schema';
 import { userExistsSchema, userExistsPhoneSchema } from './schemas/user-exists.schema';
+import { IVerifyTwilioDTO } from './dtos/verify-code.dto';
+import { verifyCodeSchema } from './schemas/verify-code.schema';
 
 export const authRouter = new Router({ prefix: '/auth' });
 
@@ -56,4 +58,10 @@ authRouter.post(
   '/check-user-phone',
   validateRequestBodyMiddleware<IUserPhoneExistsDTO>(userExistsPhoneSchema.strict()),
   AuthController.userExistsPhone,
+)
+
+authRouter.post(
+  '/sms-verify',
+  validateRequestBodyMiddleware<IVerifyTwilioDTO>(verifyCodeSchema.strict()),
+  AuthController.checkTwilioCode,
 )
