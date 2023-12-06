@@ -14,8 +14,7 @@ import { UsersRepository } from '../users/users.repository';
 import { IForgotDTO } from './dtos/forgot.dto';
 import { IResetDTO } from './dtos/reset.dto';
 import { Prisma } from '@prisma/client';
-import { prisma } from '@/prisma/client.prisma';
-import { AptosAccount } from 'aptos';
+import { getKYDAccountsForUser, updateKYDAccountsForUser } from './utils/kyd-accounts';
 
 export class AuthController {
   static async signUp(ctx: RouterContext) {
@@ -54,6 +53,8 @@ export class AuthController {
         privateKey: aptosPrivateKey
       }
 
+      const kydAccounts = await getKYDAccountsForUser(email, phone)
+
       const user = await UsersRepository.create({
         email,
         phone,
@@ -66,6 +67,9 @@ export class AuthController {
         accounts: {
           "APTOS" : aptosAccount,
           "EVM" : evmAccount
+        },
+        external_accounts:{
+          "KYD" : kydAccounts
         }
       });
       const token = await generateToken(user);
@@ -128,6 +132,9 @@ export class AuthController {
     } else {
       const doPasswordsMatch = await comparePassword(password, user.password);
       if (doPasswordsMatch) {
+        //Update KYD Accounts for user in DB
+        await updateKYDAccountsForUser(user)
+
         const token = await generateToken(user);
         ctx.status = 201;
         ctx.body = {

@@ -64,6 +64,7 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
+    "@aptos-labs/ts-sdk": "^1.0.0",
     "@koa/cors": "^3.2.0",
     "@koa/router": "^10.1.1",
     "@mailchimp/mailchimp_transactional": "^1.0.50",
@@ -78,6 +79,7 @@
     "bignumber.js": "^9.1.2",
     "bson": "^4.6.4",
     "crypto-js": "^4.2.0",
+    "csv-parser": "^3.0.0",
     "data-uri-to-buffer": "^6.0.1",
     "debug": "^4.3.4",
     "dotenv": "^16.0.0",
@@ -91,9 +93,11 @@
     "koa-jwt": "^4.0.3",
     "koa-logger": "^3.2.1",
     "moment": "^2.29.4",
+    "mongodb": "^6.3.0",
     "node-fetch": "^3.3.2",
     "npm": "^10.2.4",
     "pdf-lib": "^1.17.1",
+    "pnpm": "^8.11.0",
     "qrcode": "^1.5.3",
     "stripe": "^12.17.0",
     "yup": "^0.32.11"

@@ -12,8 +12,8 @@ datasource db {
 
 model User {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
-  email         String @unique
-  phone         String?
+  email         String? @unique @default("temp@nameless.nyc")
+  phone         String? @unique
   username      String @unique
   name          String?
   lastName      String?
@@ -21,6 +21,7 @@ model User {
   privateKey    String  @unique
   password      String
   accounts      Json?
+  external_accounts   Json?
 
   eventIDs String[] @db.ObjectId
   events   Event[]  @relation(fields: [eventIDs], references: [id])
@@ -87,6 +88,13 @@ model PromoCodes {
 
   eventIDs String[] @db.ObjectId
   events   Event[]  @relation(fields: [eventIDs], references: [id])
+}
+
+model KYD_User {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  phone   String
+  wallet_address String
 }
 
 model Reward {
