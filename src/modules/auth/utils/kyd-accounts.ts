@@ -5,9 +5,12 @@ import { User } from '@prisma/client';
 
 export async function getKYDAccountsForUser(email?:string | null, phone?:string | null) {
     const kyd_accounts_email = email ? await KYD_UsersRepository.findByEmail(email) : []
+    console.log(kyd_accounts_email)
     const kyd_accounts_phone = phone ? await KYD_UsersRepository.findByPhone(phone) : []
-    kyd_accounts_phone.concat(kyd_accounts_email)
-    const kydAccountsSet = new Set(kyd_accounts_phone.map(user=> user.wallet_address))
+    const all_accounts = kyd_accounts_phone.concat(kyd_accounts_email)
+    console.log(all_accounts)
+    const kydAccountsSet = new Set(all_accounts.map(user=> user.wallet_address))
+    console.log("Found KYD Accounts:",kydAccountsSet)
     return Array.from(kydAccountsSet)
 }
 

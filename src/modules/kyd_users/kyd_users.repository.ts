@@ -19,6 +19,7 @@ export class KYD_UsersRepository {
 
   static findByEmail(email_input: string) {
     const emailHash = sha256Hash(email_input)
+    console.log("Checking for email hash", emailHash)
     return prisma.kYD_User.findMany({
       where: {
         email: emailHash,
@@ -27,7 +28,8 @@ export class KYD_UsersRepository {
   }
 
   static findByPhone(phone_input: string) {
-    const [phoneHash] = sha256Hash(phone_input)
+    const phoneHash = sha256Hash(phone_input)
+    console.log("Checking for phone hash", phoneHash)
     return prisma.kYD_User.findMany({
       where: {
         phone: phoneHash,
