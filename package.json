@@ -74,7 +74,6 @@
     "@stripe/stripe-js": "^1.54.2",
     "@thirdweb-dev/sdk": "^3.10.49",
     "@thirdweb-dev/wallets": "^1.1.13",
-    "aptos": "^1.20.0",
     "bcrypt": "^5.0.1",
     "bignumber.js": "^9.1.2",
     "bson": "^4.6.4",

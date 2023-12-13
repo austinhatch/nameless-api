@@ -21,3 +21,8 @@ aptosRouter.post(
   AptosController.mintNFT,
 )
 
+aptosRouter.post(
+  '/get-owned-tokens',
+  AptosController.getOwnedTokensByCollection,
+)
+
