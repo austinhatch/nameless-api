@@ -2,6 +2,7 @@ import { RouterContext } from '@koa/router';
 import { ISignInDTO } from './dtos/sign-in.dto';
 import { ISignUpDTO } from './dtos/sign-up.dto';
 import { IUserExistsDTO, IUserPhoneExistsDTO} from './dtos/user-exists.dto';
+import { IVerifyTwilioDTO } from './dtos/verify-code.dto';
 import {
   generateResetToken,
   generateToken,
@@ -15,6 +16,8 @@ import { IForgotDTO } from './dtos/forgot.dto';
 import { IResetDTO } from './dtos/reset.dto';
 import { Prisma } from '@prisma/client';
 import { getKYDAccountsForUser, updateKYDAccountsForUser } from './utils/kyd-accounts';
+import { startVerififcation, checkVerificationCode } from './utils/twilio-utils';
+
 
 export class AuthController {
   static async signUp(ctx: RouterContext) {
@@ -73,9 +76,23 @@ export class AuthController {
         }
       });
       const token = await generateToken(user);
+      let verify = 'email'
+      if (phone) {
+        // user signed up with phone, send a verification
+        verify = await startVerififcation(phone)
+      }
       ctx.status = 201;
-      ctx.body = { user, token };
+      ctx.body = { user, token, verify };
     }
+  }
+
+  static async checkTwilioCode(ctx: RouterContext) {
+    const {phone, code} = <IVerifyTwilioDTO>(
+      JSON.parse(ctx.request.body)
+    );
+    const res = await checkVerificationCode(phone, code)
+    ctx.status = 201;
+    ctx.body = { res };
   }
 
   static async userExists(ctx: RouterContext) {
@@ -157,7 +174,7 @@ export class AuthController {
   //     const doPasswordsMatch = await comparePassword(password, user.password);
   //     if (doPasswordsMatch) {
   //       const token = await generateToken(user);
-  //       ctx.status = 201;
+  //       ctx.status = 201; d
   //       ctx.body = {
   //         user,
   //         token,
