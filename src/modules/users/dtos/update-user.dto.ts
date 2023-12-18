@@ -2,3 +2,12 @@ export interface IUpdateUserDTO {
   name?: string;
   lastName?: string;
 }
+
+export interface IChangeUsernameDTO {
+  id: string;
+  username: string;
+}
+
+export interface ICheckUsernameDTO {
+  username: string
+}

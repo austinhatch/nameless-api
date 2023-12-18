@@ -6,8 +6,9 @@ import { isCurrentUserMiddleware } from '@/shared/middlewares/authorization/is-c
 import { objectId } from '@/shared/yup/custom-schemas/object-id.schema';
 import { UsersController } from './users.controller';
 import { findUserByIdMiddleware } from './middlewares/find-user-by-id.middleware';
-import { IUpdateUserDTO } from './dtos/update-user.dto';
+import { IChangeUsernameDTO, IUpdateUserDTO } from './dtos/update-user.dto';
 import { udpateUserSchema } from './schemas/update-user.schema';
+import { changeUsernameSchema } from './schemas/update-user.schema';
 
 export const usersRouter = new Router({ prefix: '/users' });
 
@@ -19,6 +20,12 @@ usersRouter.get(
   findUserByIdMiddleware,
   UsersController.detail,
 );
+
+usersRouter.post(
+  '/change-username',
+  validateRequestBodyMiddleware<IChangeUsernameDTO>(changeUsernameSchema.strict()),
+  UsersController.changeUsername
+)
 
 usersRouter.patch(
   '/:id',

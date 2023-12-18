@@ -21,9 +21,12 @@ import { startVerififcation, checkVerificationCode } from './utils/twilio-utils'
 
 export class AuthController {
   static async signUp(ctx: RouterContext) {
-    const { email, password, phone, username } = <ISignUpDTO>(
+    console.log(JSON.parse(ctx.request.body))
+
+    const { email, password, phone } = <ISignUpDTO>(
       JSON.parse(ctx.request.body)
     );
+
     const existingUser = await UsersRepository.findByEmail(email);
     const existingUserPhone = await UsersRepository.findByPhone(phone)
     if (existingUser) {
@@ -61,7 +64,7 @@ export class AuthController {
       const user = await UsersRepository.create({
         email,
         phone,
-        username,
+        username:email,
         walletAddress,
         privateKey,
         password: hashedPassword,
@@ -160,7 +163,7 @@ export class AuthController {
           type: 'Bearer',
         };
       } else {
-        ctx.throw(401, { errors: ['incorrect password'] });
+        ctx.throw(404, { errors: ['incorrect password'] });
       }
     }
   }

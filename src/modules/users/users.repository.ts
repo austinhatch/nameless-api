@@ -32,6 +32,14 @@ export class UsersRepository {
     }); 
   }
 
+  static findByUsername(username: string) {
+    return prisma.user.findFirst({
+      where: {
+        username,
+      },
+    }); 
+  }
+
   static findAll() {
     return prisma.user.findMany();
   }

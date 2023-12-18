@@ -1,5 +1,5 @@
 import { RouterContext } from '@koa/router';
-import { IUpdateUserDTO } from './dtos/update-user.dto';
+import { IChangeUsernameDTO, ICheckUsernameDTO, IUpdateUserDTO } from './dtos/update-user.dto';
 import { UsersRepository } from './users.repository';
 
 export class UsersController {
@@ -24,5 +24,27 @@ export class UsersController {
     ctx.body = {
       message: 'Deleted',
     };
+  }
+
+  static async changeUsername(ctx: RouterContext) {
+    console.log("Change Username")
+    const { id, username } = <IChangeUsernameDTO>(
+      JSON.parse(ctx.request.body)
+    );
+    const existingUser = await UsersRepository.findByUsername(username)
+
+    if(existingUser){
+      ctx.throw(401, 'Username already exists. Please try a different username.');
+    }
+
+    else{
+      await UsersRepository.update(id, {username:username})
+      ctx.status = 201;
+      const user = await UsersRepository.findById(id)
+      console.log(user)
+      ctx.body = {
+        user,
+      }
+    }
   }
 }
