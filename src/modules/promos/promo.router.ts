@@ -51,11 +51,11 @@ promosRouter.patch(
 //   RewardsController.delete,
 // );
 
-promosRouter.post(
-  '/create',
-  validateRequestBodyMiddleware<IPromoDTO>(
-    promoSchema.strict().noUnknown(),
-  ),
-  // isCurrentUserMiddleware,
-  PromoCodesController.create
-)
+// promosRouter.post(
+//   '/create',
+//   validateRequestBodyMiddleware<IPromoDTO>(
+//     promoSchema.strict().noUnknown(),
+//   ),
+//   // isCurrentUserMiddleware,
+//   PromoCodesController.create
+// )
