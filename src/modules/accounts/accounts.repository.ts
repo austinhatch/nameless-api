@@ -25,6 +25,7 @@ export class AccountsRepository {
   }
 
   static findByAccountId(accountId: string) {
+    console.log(accountId)
     return prisma.accounts.findUnique({
       where: {
         account_id: accountId,

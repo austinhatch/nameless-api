@@ -10,7 +10,7 @@ import { web3Router } from './modules/web3/web3router';
 import { stripeRouter } from './modules/stripe/stripe.router';
 import { shopifyRouter } from './modules/shopify/shopify.router';
 import { aptosRouter } from './modules/aptos/aptosrouter';
-
+import { accountsRouter } from './modules/accounts/accounts.router';
 export const router = new Router({ prefix: '/api' });
 
 router.get('/', (ctx: RouterContext) => {
@@ -23,6 +23,7 @@ router.use(authRouter.routes());
 router.use(shopifyRouter.routes())
 router.use(eventsRouter.routes());
 router.use(aptosRouter.routes());
+router.use(accountsRouter.routes())
 
 router.use(jwt({ secret: environment.jwt.secret, key: 'authData' }));
 
