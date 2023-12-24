@@ -31,11 +31,26 @@ spec:
             secretKeyRef: 
               name: dev-secret-map 
               key: dburl 
-        - name: PK 
+        - name: EVM_PRIVATE_KEY 
           valueFrom: 
             secretKeyRef: 
               name: dev-secret-map 
-              key: pk 
+              key: EVM_PRIVATE_KEY
+        - name: EVM_PUBLIC_KEY 
+          valueFrom: 
+            secretKeyRef: 
+              name: dev-secret-map 
+              key: EVM_PUBLIC_KEY
+        - name: APTOS_PUBLIC_KEY 
+          valueFrom: 
+            secretKeyRef: 
+              name: dev-secret-map 
+              key: thirdwebSecret
+        - name: APTOS_PRIVATE_KEY 
+          valueFrom: 
+            secretKeyRef: 
+              name: dev-secret-map 
+              key: APTOS_PRIVATE_KEY
         - name: THIRDWEB_SECRET_KEY 
           valueFrom: 
             secretKeyRef: 
@@ -56,6 +71,11 @@ spec:
             secretKeyRef:
               name: dev-secret-map
               key: stripeSK
+        - name: TWILIO_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: dev-secret-map
+              key: twilioAuthKey  
         - name: JWT_SECRET 
           valueFrom: 
             secretKeyRef: 
