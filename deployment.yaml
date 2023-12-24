@@ -56,6 +56,11 @@ spec:
             secretKeyRef: 
               name: dev-secret-map 
               key: thirdwebSecret
+        - name: THIRDWEB_CLIENT
+          valueFrom: 
+            secretKeyRef: 
+              name: dev-secret-map 
+              key: thirdwebClient       
         - name: MAILCHIMP_API 
           valueFrom: 
             secretKeyRef: 
