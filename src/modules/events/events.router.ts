@@ -6,6 +6,7 @@ import { isCurrentUserMiddleware } from '@/shared/middlewares/authorization/is-c
 import { objectId } from '@/shared/yup/custom-schemas/object-id.schema';
 import { EventsController } from './events.controller';
 import { findEventByIdMiddleware } from './middlewares/find-event-by-id.middleware';
+import { findEventByUrlEndpointMiddleware } from './middlewares/find-event-by-url-endpoint.middleware';
 import { IUpdateEventDTO } from './dtos/update-event.dto';
 import { updateEventSchema } from './schemas/update-event.schema';
 import { IEventDTO } from './dtos/event.dto';
@@ -25,6 +26,11 @@ eventsRouter.get(
   EventsController.detail,
 );
 
+eventsRouter.get(
+  '/url/:url_endpoint',
+  findEventByUrlEndpointMiddleware,
+  EventsController.detail,
+);
 
 eventsRouter.get(
   '/user/:id',

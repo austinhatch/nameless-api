@@ -48,7 +48,9 @@ export class RewardsController {
       {
         name: parsed.name,
         description: parsed.description,
-        imgUrl: parsed.imgUrl
+        imgUrl: parsed.imgUrl,
+        address: parsed.address,
+        chain: parsed.chain
       }
     )
     ctx.status = 201;

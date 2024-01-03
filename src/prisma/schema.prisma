@@ -34,7 +34,7 @@ model User {
 
 model Event {
   id             String @id @default(auto()) @map("_id") @db.ObjectId
-  url_endpoint   String?
+  url_endpoint   String @unique
   name           String
   date           String
   startTime      String
@@ -99,9 +99,14 @@ model KYD_User {
 
 model Reward {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  description String
-  imgUrl      String
+  name        String?
+  description String?
+  imgUrl      String?
+  metadataUrl String?
+
+  chain       String
+  address     String
+  collection  String?
 
   userIDs String[] @db.ObjectId
   users   User[]   @relation(fields: [userIDs], references: [id])

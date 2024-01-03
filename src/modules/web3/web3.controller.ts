@@ -7,9 +7,11 @@ import { RouterContext } from '@koa/router';
 // import { UsersRepository } from '../users/users.repository';
 import { IGetContractDTO } from './dtos/get-contract-dto';
 import { IMintNFTDTO } from './dtos/mint-nft-dto';
+import { IMintRewardDTO } from './dtos/mint-reward-dto';
 import { sdk, calcExpiryDate } from './utils/thirdweb-config';
 import { publicLock } from './utils/PublicLock';
 import BigNumber from 'bignumber.js';
+import { RewardsRepository } from '../rewards/rewards.repository';
 
 export class Web3Controller {
   static async grantContractKey(ctx: RouterContext) {
@@ -69,6 +71,27 @@ export class Web3Controller {
       ctx.status = 201;
       ctx.body = {
         message: `Succesfully minted an NFT for contract with address ${nftAddress}`,
+      };
+    } catch (e: any) {
+      ctx.status = 500;
+      console.log('*******', e.message);
+      ctx.body = { message: e.message };
+    }
+  }
+
+  static async mintReward(ctx: RouterContext) {
+    const { walletAddress, rewardId } = <IMintRewardDTO>(
+      JSON.parse(ctx.request.body)
+    );
+    try {
+      const reward = await RewardsRepository.findById(rewardId)
+      console.log(reward)
+
+      // TODO: Finish minting logic!
+
+      ctx.status = 201;
+      ctx.body = {
+        message: `Succesfully minted reward ${reward?.name} to ${walletAddress}`,
       };
     } catch (e: any) {
       ctx.status = 500;

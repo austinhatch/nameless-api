@@ -16,6 +16,14 @@ export class EventsRepository {
     });
   }
 
+  static findByUrlEndpoint(url_endpoint: string) {
+    return prisma.event.findUnique({
+      where: {
+        url_endpoint,
+      },
+    })
+  }
+
   static findAllByUserId(id: string) {
     return prisma.event.findMany({
       where: {
