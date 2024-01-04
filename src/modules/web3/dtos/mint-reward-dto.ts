@@ -1,4 +1,4 @@
 export interface IMintRewardDTO {
-  walletAddress: string;
+  userId: string;
   rewardId: string;
 }

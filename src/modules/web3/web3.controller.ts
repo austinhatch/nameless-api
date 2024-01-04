@@ -12,6 +12,7 @@ import { sdk, calcExpiryDate } from './utils/thirdweb-config';
 import { publicLock } from './utils/PublicLock';
 import BigNumber from 'bignumber.js';
 import { RewardsRepository } from '../rewards/rewards.repository';
+import { UsersRepository } from '../users/users.repository';
 
 export class Web3Controller {
   static async grantContractKey(ctx: RouterContext) {
@@ -80,10 +81,11 @@ export class Web3Controller {
   }
 
   static async mintReward(ctx: RouterContext) {
-    const { walletAddress, rewardId } = <IMintRewardDTO>(
+    const { userId, rewardId } = <IMintRewardDTO>(
       JSON.parse(ctx.request.body)
     );
     try {
+      const user = await UsersRepository.findById(userId)
       const reward = await RewardsRepository.findById(rewardId)
       console.log(reward)
 
@@ -91,7 +93,7 @@ export class Web3Controller {
 
       ctx.status = 201;
       ctx.body = {
-        message: `Succesfully minted reward ${reward?.name} to ${walletAddress}`,
+        message: `Succesfully minted reward ${reward?.name} to ${user?.walletAddress}`,
       };
     } catch (e: any) {
       ctx.status = 500;
