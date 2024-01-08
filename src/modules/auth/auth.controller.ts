@@ -3,6 +3,7 @@ import { ISignInDTO } from './dtos/sign-in.dto';
 import { ISignUpDTO } from './dtos/sign-up.dto';
 import { IUserExistsDTO, IUserPhoneExistsDTO} from './dtos/user-exists.dto';
 import { IVerifyTwilioDTO } from './dtos/verify-code.dto';
+import { ISendCodeDTO } from './dtos/send-code.dto';
 import {
   generateResetToken,
   generateToken,
@@ -71,8 +72,8 @@ export class AuthController {
         eventIDs: [],
         rewardIDs: [],
         accounts: {
-          "APTOS" : aptosAccount,
-          "EVM" : evmAccount
+          "APTOS" : {...aptosAccount},
+          "EVM" : {...evmAccount}
         },
         external_accounts:{
           "KYD" : kydAccounts
@@ -80,13 +81,19 @@ export class AuthController {
       });
       const token = await generateToken(user);
       let verify = 'email'
-      if (phone) {
-        // user signed up with phone, send a verification
-        verify = await startVerififcation(phone)
-      }
+      // if (phone) {
+      //   // user signed up with phone, send a verification
+      //   verify = await startVerififcation(phone)
+      // }
       ctx.status = 201;
       ctx.body = { user, token, verify };
     }
+  }
+
+  static async getTwilioCode(ctx: RouterContext) {
+    const {phone} = <ISendCodeDTO>(JSON.parse(ctx.request.body))
+    const verify = await startVerififcation(phone)
+    return ctx.body = {verify}
   }
 
   static async checkTwilioCode(ctx: RouterContext) {
