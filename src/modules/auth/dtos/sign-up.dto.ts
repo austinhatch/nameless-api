@@ -1,5 +1,5 @@
 export interface ISignUpDTO {
-  email: string;
+  email?: string;
   password: string;
   phone: string;
   confirmPassword: string;

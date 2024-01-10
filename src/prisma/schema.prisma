@@ -14,7 +14,7 @@ model User {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   email         String? @unique @default("temp@nameless.nyc")
   phone         String? @unique
-  username      String @unique
+  username      String? @unique
   name          String?
   lastName      String?
   walletAddress String  @unique

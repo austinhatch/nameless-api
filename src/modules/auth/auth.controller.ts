@@ -28,14 +28,14 @@ export class AuthController {
       JSON.parse(ctx.request.body)
     );
 
-    const existingUser = await UsersRepository.findByEmail(email);
+    // const existingUser = await UsersRepository.findByEmail(email);
     const existingUserPhone = await UsersRepository.findByPhone(phone)
-    if (existingUser) {
-      ctx.throw(409, {
-        errors: [`user with email ${email} already exists`],
-      });
-    } 
-    else if(existingUserPhone){
+    // if (existingUserPhone) {
+    //   ctx.throw(409, {
+    //     errors: [`user with email ${email} already exists`],
+    //   });
+    // } 
+    if(existingUserPhone){
       ctx.throw(409, {
         errors: [`user with phone ${phone} already exists`],
       }); 
@@ -65,7 +65,7 @@ export class AuthController {
       const user = await UsersRepository.create({
         email,
         phone,
-        username:email,
+        username: null, // Username not captured on first signup - 1/9/2024
         walletAddress,
         privateKey,
         password: hashedPassword,
