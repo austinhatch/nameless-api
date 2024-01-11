@@ -58,6 +58,7 @@ model Event {
   vendors        Vendor[]
 
   rewards        Json?
+  iframe_url     String?
 
   userIDs String[] @db.ObjectId
   users   User[]   @relation(fields: [userIDs], references: [id])
