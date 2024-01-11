@@ -1,5 +1,5 @@
 import { RouterContext } from '@koa/router';
-import { IChangeUsernameDTO, ICheckUsernameDTO, IUpdateUserDTO } from './dtos/update-user.dto';
+import { IChangeUsernameDTO, ICheckUsernameDTO, IUpdateEmailDTO, IUpdateUserDTO } from './dtos/update-user.dto';
 import { UsersRepository } from './users.repository';
 
 export class UsersController {
@@ -47,4 +47,28 @@ export class UsersController {
       }
     }
   }
+
+  static async updateUserEmail(ctx: RouterContext) {
+    const { email, id } = <IUpdateEmailDTO>(
+      JSON.parse(ctx.request.body)
+    );
+
+    const existingEmail = await UsersRepository.findByEmail(email)
+
+    if(existingEmail) {
+      ctx.throw(409, 'Email already exists')
+    }
+
+    else {
+      await UsersRepository.update(id, {email})
+      ctx.status = 201;
+      const user = await UsersRepository.findById(id)
+      console.log(user)
+      ctx.body = {
+        newEmail: email
+      }
+    }
+
+  }
+
 }

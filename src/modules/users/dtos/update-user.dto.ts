@@ -11,3 +11,8 @@ export interface IChangeUsernameDTO {
 export interface ICheckUsernameDTO {
   username: string
 }
+
+export interface IUpdateEmailDTO {
+  id: string
+  email: string
+}
