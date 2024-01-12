@@ -81,7 +81,8 @@ export class AuthController {
           },
           external_accounts:{
             "KYD" : kydAccounts
-          }
+          },
+          created: new Date()
         });
         const token = await generateToken(user);
         ctx.status = 201;

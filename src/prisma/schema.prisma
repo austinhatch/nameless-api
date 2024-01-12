@@ -22,6 +22,7 @@ model User {
   password      String
   accounts      Json?
   external_accounts   Json?
+  created       DateTime @default(now())
 
   eventIDs String[] @db.ObjectId
   events   Event[]  @relation(fields: [eventIDs], references: [id])
