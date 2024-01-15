@@ -1,5 +1,4 @@
 export interface ISignInDTO {
-  email?: string;
-  phone?: string;
+  phone: string;
   password: string;
 }

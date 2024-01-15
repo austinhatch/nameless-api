@@ -11,3 +11,14 @@ export interface IChangeUsernameDTO {
 export interface ICheckUsernameDTO {
   username: string
 }
+
+export interface IUpdateEmailDTO {
+  id: string
+  email: string
+}
+
+export interface IUpdatePFPDTO {
+  id:string
+  pfpAddress:string
+  chain:string
+}

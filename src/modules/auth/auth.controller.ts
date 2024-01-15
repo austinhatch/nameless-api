@@ -3,6 +3,7 @@ import { ISignInDTO } from './dtos/sign-in.dto';
 import { ISignUpDTO } from './dtos/sign-up.dto';
 import { IUserExistsDTO, IUserPhoneExistsDTO} from './dtos/user-exists.dto';
 import { IVerifyTwilioDTO } from './dtos/verify-code.dto';
+import { ISendCodeDTO } from './dtos/send-code.dto';
 import {
   generateResetToken,
   generateToken,
@@ -27,66 +28,77 @@ export class AuthController {
       JSON.parse(ctx.request.body)
     );
 
-    const existingUser = await UsersRepository.findByEmail(email);
-    const existingUserPhone = await UsersRepository.findByPhone(phone)
-    if (existingUser) {
-      ctx.throw(409, {
-        errors: [`user with email ${email} already exists`],
-      });
-    } 
-    else if(existingUserPhone){
-      ctx.throw(409, {
-        errors: [`user with phone ${phone} already exists`],
-      }); 
-    }
+
+    /* Hess 1/11/24 - Commenting for now, most likely can remove. A user's phone and email will be checked for existing before ever hitting the signup */
+
+    // const existingUser = await UsersRepository.findByEmail(email);
+    // const existingUserPhone = await UsersRepository.findByPhone(phone)
+    // if (existingUserPhone) {
+    //   ctx.throw(409, {
+    //     errors: [`user with email ${email} already exists`],
+    //   });
+    // } 
+    // if(existingUserPhone){
+    //   ctx.throw(409, {
+    //     errors: [`user with phone ${phone} already exists`],
+    //   }); 
+    // }
     
-    else {
-      const hashedPassword = await hashPassword(password);
-      const { walletAddress, privateKey } = await createEVMPrivateKey(
-        hashedPassword,
-      );
-      const evmAccount = {
-        walletAddress: walletAddress,
-        privateKey: privateKey,
-      }
-
-      const { aptosAddress, aptosPublicKey, aptosPrivateKey } = await createAptosPrivateKey(
-        hashedPassword,
-      )
-      const aptosAccount = {
-        walletAddress: aptosAddress,
-        publicKey: aptosPublicKey,
-        privateKey: aptosPrivateKey
-      }
-
-      const kydAccounts = await getKYDAccountsForUser(email, phone)
-
-      const user = await UsersRepository.create({
-        email,
-        phone,
-        username:email,
-        walletAddress,
-        privateKey,
-        password: hashedPassword,
-        eventIDs: [],
-        rewardIDs: [],
-        accounts: {
-          "APTOS" : aptosAccount,
-          "EVM" : evmAccount
-        },
-        external_accounts:{
-          "KYD" : kydAccounts
+    // else {
+      try {
+        const hashedPassword = await hashPassword(password);
+        const { walletAddress, privateKey } = await createEVMPrivateKey(
+          hashedPassword,
+        );
+        const evmAccount = {
+          walletAddress: walletAddress,
+          privateKey: privateKey,
         }
-      });
-      const token = await generateToken(user);
-      let verify = 'email'
-      if (phone) {
-        // user signed up with phone, send a verification
-        verify = await startVerififcation(phone)
+
+        const { aptosAddress, aptosPublicKey, aptosPrivateKey } = await createAptosPrivateKey(
+          hashedPassword,
+        )
+        const aptosAccount = {
+          walletAddress: aptosAddress,
+          publicKey: aptosPublicKey,
+          privateKey: aptosPrivateKey
+        }
+
+        const kydAccounts = await getKYDAccountsForUser(email, phone)
+
+        const user = await UsersRepository.create({
+          email,
+          phone,
+          username: '', // Username not captured on first signup - 1/9/2024
+          walletAddress,
+          privateKey,
+          password: hashedPassword,
+          eventIDs: [],
+          rewardIDs: [],
+          accounts: {
+            "APTOS" : {...aptosAccount},
+            "EVM" : {...evmAccount}
+          },
+          external_accounts:{
+            "KYD" : kydAccounts
+          },
+          created: new Date()
+        });
+        const token = await generateToken(user);
+        ctx.status = 201;
+        ctx.body = { user, token };
       }
-      ctx.status = 201;
-      ctx.body = { user, token, verify };
-    }
+      catch (e) {
+
+      }
+      
+    // }
+  }
+
+  static async getTwilioCode(ctx: RouterContext) {
+    const {phone} = <ISendCodeDTO>(JSON.parse(ctx.request.body))
+    const verify = await startVerififcation(phone)
+    return ctx.body = {verify}
   }
 
   static async checkTwilioCode(ctx: RouterContext) {
@@ -129,29 +141,21 @@ export class AuthController {
       else {
           ctx.status = 201;
           ctx.body = {
-            user,
+            user, // Probably shouldnt return user object here. Anyone with someone's phone could pull their user data TODO:IMPORTANT
             existing: true
           };
         }
       }
     
-
+  /* Hess - 1/11/2024. Changing sign-in logic to conform to sms OTP flow. UI will pass value of OTP and phone number to be validated on the server */
   static async signIn(ctx: RouterContext) {
-    const { email, phone, password } = <ISignInDTO>JSON.parse(ctx.request.body);
-    let user;
-    if (email) {
-      // user used email
-      user = await UsersRepository.findByEmail(email);
-    }
-    if (phone) {
-      // user used phone
-      user = await UsersRepository.findByPhone(phone);
-    }
+    const { phone, password } = <ISignInDTO>JSON.parse(ctx.request.body);
+    let user = await UsersRepository.findByPhone(phone);
     if (!user) {
-      ctx.throw(404, { errors: [`user with email ${email} does not exist`] });
+      ctx.throw(404, { errors: [`user with phone ${phone} does not exist`] });
     } else {
-      const doPasswordsMatch = await comparePassword(password, user.password);
-      if (doPasswordsMatch) {
+      const codeVerified = await checkVerificationCode(phone, password);
+      if (codeVerified === 'approved') {
         //Update KYD Accounts for user in DB
         await updateKYDAccountsForUser(user)
 
@@ -163,7 +167,7 @@ export class AuthController {
           type: 'Bearer',
         };
       } else {
-        ctx.throw(404, { errors: ['incorrect password'] });
+        ctx.throw(400, { errors: ['incorrect code'] });
       }
     }
   }
@@ -282,4 +286,7 @@ export class AuthController {
       }
     }
   }
+
 }
+
+

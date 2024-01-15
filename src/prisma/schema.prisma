@@ -14,7 +14,7 @@ model User {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   email         String? @unique @default("temp@nameless.nyc")
   phone         String? @unique
-  username      String @unique
+  username      String? @unique
   name          String?
   lastName      String?
   walletAddress String  @unique
@@ -22,6 +22,8 @@ model User {
   password      String
   accounts      Json?
   external_accounts   Json?
+  created       DateTime @default(now())
+  pfpAddress    Json?
 
   eventIDs String[] @db.ObjectId
   events   Event[]  @relation(fields: [eventIDs], references: [id])
@@ -53,6 +55,8 @@ model Event {
   cardColor      String
   
   ticketProvider Json?
+  iframe_url    String?
+
 
   ticketTiers    Json?
   vendors        Vendor[]

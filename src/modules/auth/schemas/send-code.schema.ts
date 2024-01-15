@@ -1,6 +1,5 @@
 import { object, string } from 'yup';
 
-export const signInSchema = object({
+export const sendCodeSchema = object({
   phone: string().required(),
-  password: string().required(),
 });
