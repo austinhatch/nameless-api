@@ -69,7 +69,7 @@ export class AuthController {
         const user = await UsersRepository.create({
           email,
           phone,
-          username: null, // Username not captured on first signup - 1/9/2024
+          username: '', // Username not captured on first signup - 1/9/2024
           walletAddress,
           privateKey,
           password: hashedPassword,
