@@ -1,6 +1,9 @@
 import { RouterContext } from '@koa/router';
-import { IChangeUsernameDTO, ICheckUsernameDTO, IUpdateEmailDTO, IUpdateUserDTO } from './dtos/update-user.dto';
+import { IChangeUsernameDTO, ICheckUsernameDTO, IUpdateEmailDTO, IUpdateUserDTO, IUpdatePFPDTO } from './dtos/update-user.dto';
+import { IGetPFPDTO } from './dtos/get-user.dto';
 import { UsersRepository } from './users.repository';
+import { sdk } from '../web3/utils/thirdweb-config';
+import { useOwnedNFTs } from '@thirdweb-dev/react';
 
 export class UsersController {
   static async list(ctx: RouterContext) {
@@ -68,7 +71,20 @@ export class UsersController {
         newEmail: email
       }
     }
-
   }
 
+  static async changePFP(ctx: RouterContext) {
+    console.log("Change PFP")
+    const { id, pfpAddress, chain } = <IUpdatePFPDTO>(
+      JSON.parse(ctx.request.body)
+    );
+
+    await UsersRepository.update(id, {pfpAddress:{address: pfpAddress, chain: chain}})
+    ctx.status = 201;
+    const user = await UsersRepository.findById(id)
+    console.log(user)
+    ctx.body = {
+      user,
+    }
+  }
 }

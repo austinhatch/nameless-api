@@ -6,8 +6,8 @@ import { isCurrentUserMiddleware } from '@/shared/middlewares/authorization/is-c
 import { objectId } from '@/shared/yup/custom-schemas/object-id.schema';
 import { UsersController } from './users.controller';
 import { findUserByIdMiddleware } from './middlewares/find-user-by-id.middleware';
-import { IChangeUsernameDTO, IUpdateEmailDTO, IUpdateUserDTO } from './dtos/update-user.dto';
-import { changeEmailSchema, udpateUserSchema } from './schemas/update-user.schema';
+import { IChangeUsernameDTO, IUpdateEmailDTO, IUpdateUserDTO, IUpdatePFPDTO} from './dtos/update-user.dto';
+import { changeEmailSchema, changePFPSchema, udpateUserSchema } from './schemas/update-user.schema';
 import { changeUsernameSchema } from './schemas/update-user.schema';
 
 export const usersRouter = new Router({ prefix: '/users' });
@@ -51,3 +51,10 @@ usersRouter.post(
   validateRequestBodyMiddleware<IUpdateEmailDTO>(changeEmailSchema.strict()),
   UsersController.changeUsername
 )
+
+usersRouter.post(
+  '/change-pfp',
+  validateRequestBodyMiddleware<IUpdatePFPDTO>(changePFPSchema.strict()),
+  UsersController.changePFP
+)
+
