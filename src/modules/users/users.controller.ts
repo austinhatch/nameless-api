@@ -27,7 +27,6 @@ export class UsersController {
   }
 
   static async changeUsername(ctx: RouterContext) {
-    console.log("Change Username")
     const { id, username } = <IChangeUsernameDTO>(
       JSON.parse(ctx.request.body)
     );
@@ -49,6 +48,7 @@ export class UsersController {
   }
 
   static async updateUserEmail(ctx: RouterContext) {
+    console.log('SANUITY CHECK')
     const { email, id } = <IUpdateEmailDTO>(
       JSON.parse(ctx.request.body)
     );
@@ -58,14 +58,14 @@ export class UsersController {
     if(existingEmail) {
       ctx.throw(409, 'Email already exists')
     }
-
     else {
       await UsersRepository.update(id, {email})
       ctx.status = 201;
+      console.log('before findById')
       const user = await UsersRepository.findById(id)
       console.log(user)
       ctx.body = {
-        newEmail: email
+        user,
       }
     }
 

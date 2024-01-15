@@ -49,5 +49,5 @@ usersRouter.del(
 usersRouter.post(
   '/change-email',
   validateRequestBodyMiddleware<IUpdateEmailDTO>(changeEmailSchema.strict()),
-  UsersController.changeUsername
+  UsersController.updateUserEmail
 )
