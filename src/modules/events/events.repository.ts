@@ -36,6 +36,18 @@ export class EventsRepository {
     })
   }
 
+
+  static findAllByKYDEvent(collectionName: string) {
+    return prisma.event.findMany({
+      where: {
+        KYDCollection: {
+          equals: collectionName
+        }
+      }
+    });
+  }
+  
+
   // static findAllByVendorId(id: string){
   //   return prisma.event.findMany({
   //     where: {

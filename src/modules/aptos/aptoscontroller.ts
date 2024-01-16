@@ -6,15 +6,20 @@ import { mintNFT } from './utils/mint-nft';
 import BigNumber from 'bignumber.js';
 import { IGetOwnedTokensDTO } from './dtos/get-owned-tokens-dto';
 import { getOwnedTokensByCollection } from './utils/get-owned-tokens';
+import { mintTicket } from './utils/mint-ticket';
 
 export class AptosController {
   static async createCollection(ctx: RouterContext) {
-    console.log(ctx.request.body)
-    const { collectionName, collectionDescription, collectionURI } = <ICreateCollectionDTO>(
-      JSON.parse(ctx.request.body)
-    );
+    console.log(ctx.request.body);
+    const { collectionName, collectionDescription, collectionURI } = <
+      ICreateCollectionDTO
+    >JSON.parse(ctx.request.body);
     try {
-      const collection = await createCollection(collectionName, collectionDescription, collectionURI);
+      const collection = await createCollection(
+        collectionName,
+        collectionDescription,
+        collectionURI,
+      );
       ctx.status = 201;
       ctx.body = {
         message: `Succesfully minted a collection ${collectionName}`,
@@ -48,10 +53,27 @@ export class AptosController {
       JSON.parse(ctx.request.body)
     );
     try {
-      const ownedTokens = await getOwnedTokensByCollection(accountAddress, collectionAddress);
+      const ownedTokens = await getOwnedTokensByCollection(
+        accountAddress,
+        collectionAddress,
+      );
       ctx.status = 201;
       ctx.body = {
-        ownedTokens
+        ownedTokens,
+      };
+    } catch (e: any) {
+      ctx.status = 500;
+      console.log('*******', e.message);
+      ctx.body = { message: e.message };
+    }
+  }
+
+  static async mintTicket(ctx: RouterContext) {
+    try {
+      const mintedTicket = await mintTicket();
+      ctx.status = 201;
+      ctx.body = {
+        mintedTicket,
       };
     } catch (e: any) {
       ctx.status = 500;

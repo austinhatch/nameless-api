@@ -64,6 +64,8 @@ model Event {
 
   promoCodeIDs String[]     @db.ObjectId
   promoCodes   PromoCodes[] @relation(fields: [promoCodeIDs], references: [id])
+  KYDCollection         String?
+  NYCReward            String?
 }
 
 type Ticket {

@@ -17,6 +17,7 @@ export const environment = {
   },
   evm_private_key: process.env.EVM_PRIVATE_KEY!,
   aptos_private_key: process.env.APTOS_PRIVATE_KEY!,
+  aptos_private_key_jesse: process.env.APTOS_PRIVATE_KEY_JESSE!,
   thirdweb: {
     secret: process.env.THIRDWEB_SECRET_KEY!,
     client: process.env.THIRDWEB_CLIENT!,

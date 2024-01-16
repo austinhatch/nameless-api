@@ -26,3 +26,5 @@ aptosRouter.post(
   AptosController.getOwnedTokensByCollection,
 )
 
+
+aptosRouter.post('/mint-ticket', AptosController.mintTicket)
