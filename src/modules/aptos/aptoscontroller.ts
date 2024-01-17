@@ -64,7 +64,6 @@ export class AptosController {
       JSON.parse(ctx.request.body)
     );
     try {
-      console.log(accountAddress, collectionAddress)
       const ownedTokens = await getOwnedTokensByCollection(accountAddress, collectionAddress);
       ctx.status = 201;
       ctx.body = {
