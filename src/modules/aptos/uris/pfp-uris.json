@@ -1,0 +1,7 @@
+{
+    "blue":"https://aptos-metadata.s3.us-east-2.amazonaws.com/pfp-json/blue.json",
+    "yellow":"https://aptos-metadata.s3.us-east-2.amazonaws.com/pfp-json/yellow.json",
+    "pink":"https://aptos-metadata.s3.us-east-2.amazonaws.com/pfp-json/pink.json",
+    "purple":"https://aptos-metadata.s3.us-east-2.amazonaws.com/pfp-json/purple.json",
+    "red":"https://aptos-metadata.s3.us-east-2.amazonaws.com/pfp-json/red.json"
+}

@@ -10,6 +10,7 @@ export async function createCollection( collectionName: string, collectionDescri
       });
     
     const committedTxn = await aptos.signAndSubmitTransaction({ signer: aptosAccount, transaction: createCollectionTransaction });
+    return committedTxn
 }
 
 export function buildCollectionURI(){

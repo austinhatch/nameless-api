@@ -1,13 +1,23 @@
 import { RouterContext } from '@koa/router';
-import { IMintNFTDTO } from './dtos/mint-nft-dto';
+import { IMintPFPDTO } from './dtos/mint-pfp-dto';
 import { ICreateCollectionDTO } from './dtos/create-collection-dto';
 import { createCollection } from './utils/create-collection';
-import { mintNFT } from './utils/mint-nft';
+import { createToken } from './utils/create-token';
 import BigNumber from 'bignumber.js';
 import { IGetOwnedTokensDTO } from './dtos/get-owned-tokens-dto';
 import { getOwnedTokensByCollection } from './utils/get-owned-tokens';
+import { pfpConfig } from './utils/pfp_config';
+import pfpURIs from './uris/pfp-uris.json';
+import { string } from 'yup';
+
+interface URIConfig {
+  [key: string]: string;
+}
+
+const uris: URIConfig = pfpURIs as URIConfig
 
 export class AptosController {
+  
   static async createCollection(ctx: RouterContext) {
     console.log(ctx.request.body)
     const { collectionName, collectionDescription, collectionURI } = <ICreateCollectionDTO>(
@@ -26,15 +36,17 @@ export class AptosController {
     }
   }
 
-  static async mintNFT(ctx: RouterContext) {
-    const { collection, description, name, uri } = <IMintNFTDTO>(
+  static async mintPFP(ctx: RouterContext) {
+    const { address, uri_id  } = <IMintPFPDTO>(
       JSON.parse(ctx.request.body)
     );
     try {
-      const nft = await mintNFT(collection, description, name, uri);
+      const config = pfpConfig
+      const uri = uris[uri_id] 
+      const nft = await createToken(address, config.collection, config.description, config.name, uri);
       ctx.status = 201;
       ctx.body = {
-        message: `Succesfully minted an NFT for contract to collection ${collection}`,
+        message: `Succesfully minted an NFT for contract to collection ${config.collection}`,
       };
     } catch (e: any) {
       ctx.status = 500;

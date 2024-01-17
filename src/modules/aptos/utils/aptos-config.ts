@@ -1,7 +1,7 @@
 import { environment } from '@/config/environment';
-import { Aptos, AptosConfig, Network, Ed25519PrivateKey  } from "@aptos-labs/ts-sdk";
+import { Aptos, AptosConfig, Network, Ed25519PrivateKey, Account  } from "@aptos-labs/ts-sdk";
 
-const aptosConfig = new AptosConfig({ network: Network.TESTNET }); // default to devnet
+const aptosConfig = new AptosConfig({ network: Network.DEVNET }); // default to devnet
 export const aptos= new Aptos(aptosConfig);
 
 export function getAptosAccount(){

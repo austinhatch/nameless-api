@@ -22,7 +22,6 @@ router.get('/', (ctx: RouterContext) => {
 router.use(authRouter.routes());
 router.use(shopifyRouter.routes())
 router.use(eventsRouter.routes());
-router.use(aptosRouter.routes());
 router.use(accountsRouter.routes())
 router.use(rewardsRouter.routes());
 
@@ -32,3 +31,5 @@ router.use(usersRouter.routes());
 router.use(web3Router.routes());
 router.use(emailRouter.routes());
 router.use(stripeRouter.routes());
+router.use(aptosRouter.routes());
+

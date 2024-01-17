@@ -5,6 +5,7 @@ import { LocalWallet } from '@thirdweb-dev/wallets';
 import { Mumbai } from '@thirdweb-dev/chains';
 import { AptosAccount } from 'aptos'
 import { encryptStringToJson, decryptJsonToString } from './encrypt';
+import { createAccount } from '@/modules/aptos/utils/create-account';
 
 
 export async function createEVMPrivateKey(password: string) {
@@ -33,6 +34,12 @@ export async function createAptosPrivateKey(password: string) {
   const aptosAddress = aptosAccountObj.address
   const aptosPublicKey = aptosAccountObj.publicKeyHex
   const aptosPrivateKey = encryptStringToJson(aptosAccountObj.privateKeyHex, password)
+  try{
+    await createAccount(aptosAddress)
+  }
+  catch(e){
+    console.error("Could not creatAccount on aptos", e)
+  }
   return { aptosAddress, aptosPublicKey, aptosPrivateKey};
 
 }

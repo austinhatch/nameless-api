@@ -16,9 +16,9 @@ aptosRouter.post(
 );
 
 aptosRouter.post(
-  '/mint-nft',
+  '/mint-pfp',
   //   validateRequestBodyMiddleware<ISignUpDTO>(signUpSchema.strict()),
-  AptosController.mintNFT,
+  AptosController.mintPFP,
 )
 
 aptosRouter.post(
