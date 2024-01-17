@@ -24,6 +24,7 @@ router.use(shopifyRouter.routes())
 router.use(eventsRouter.routes());
 router.use(accountsRouter.routes())
 router.use(rewardsRouter.routes());
+router.use(aptosRouter.routes());
 
 router.use(jwt({ secret: environment.jwt.secret, key: 'authData' }));
 
@@ -31,5 +32,4 @@ router.use(usersRouter.routes());
 router.use(web3Router.routes());
 router.use(emailRouter.routes());
 router.use(stripeRouter.routes());
-router.use(aptosRouter.routes());
 

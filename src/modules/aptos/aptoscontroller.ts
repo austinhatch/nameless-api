@@ -47,6 +47,7 @@ export class AptosController {
       ctx.status = 201;
       ctx.body = {
         message: `Succesfully minted an NFT for contract to collection ${config.collection}`,
+        collectionAddress: config.collectionAddress
       };
     } catch (e: any) {
       ctx.status = 500;
@@ -60,6 +61,7 @@ export class AptosController {
       JSON.parse(ctx.request.body)
     );
     try {
+      console.log(accountAddress, collectionAddress)
       const ownedTokens = await getOwnedTokensByCollection(accountAddress, collectionAddress);
       ctx.status = 201;
       ctx.body = {
