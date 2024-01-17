@@ -82,7 +82,6 @@ export class UsersController {
     await UsersRepository.update(id, {pfpAddress:{address: pfpAddress, chain: chain}})
     ctx.status = 201;
     const user = await UsersRepository.findById(id)
-    console.log(user)
     ctx.body = {
       user,
     }

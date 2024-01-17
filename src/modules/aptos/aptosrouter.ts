@@ -22,7 +22,7 @@ aptosRouter.post(
 )
 
 aptosRouter.post(
-  '/get-owned-tokens',
+  '/get-owned-tokens-by-collection',
   AptosController.getOwnedTokensByCollection,
 )
 

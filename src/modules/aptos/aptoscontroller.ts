@@ -38,6 +38,7 @@ export class AptosController {
   }
 
   static async mintPFP(ctx: RouterContext) {
+    console.log("minting pfp!!!!!!")
     const { address, uri_id  } = <IMintPFPDTO>(
       JSON.parse(ctx.request.body)
     );
@@ -45,6 +46,7 @@ export class AptosController {
       const config = pfpConfig
       const uri = uris[uri_id] 
       const nft = await createToken(address, config.collection, config.description, config.name, uri);
+      console.log(nft)
       ctx.status = 201;
       ctx.body = {
         message: `Succesfully minted an NFT for contract to collection ${config.collection}`,
@@ -52,7 +54,7 @@ export class AptosController {
       };
     } catch (e: any) {
       ctx.status = 500;
-      console.log('*******', e.message);
+      console.log('+++++++++++++++++', e.message);
       ctx.body = { message: e.message };
     }
   }
