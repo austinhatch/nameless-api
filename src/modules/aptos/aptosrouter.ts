@@ -26,3 +26,7 @@ aptosRouter.post(
   AptosController.getOwnedTokensByCollection,
 )
 
+aptosRouter.post(
+  '/create-account',
+  AptosController.createAccount,
+)
