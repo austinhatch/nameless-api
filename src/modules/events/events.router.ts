@@ -14,6 +14,7 @@ import { eventSchema } from './schemas/event.schema';
 import { IUserIdUpdateDTO } from './dtos/user-id-update.dto';
 import { userIdUpdateSchema } from './schemas/user-id-update.schema';
 import { validateUniqueAssociation } from '@/shared/middlewares/validation/validate-unique-association.middleware';
+import { findEventByKydIdMiddleware } from './middlewares/find-event-by-kyd-id.middleware';
 
 export const eventsRouter = new Router({ prefix: '/events' });
 
@@ -31,6 +32,12 @@ eventsRouter.get(
   findEventByUrlEndpointMiddleware,
   EventsController.detail,
 );
+
+eventsRouter.get(
+  '/kyd_id/:kyd_id',
+  findEventByKydIdMiddleware,
+  EventsController.detail
+)
 
 eventsRouter.get(
   '/user/:id',

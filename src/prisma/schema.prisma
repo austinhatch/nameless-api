@@ -36,6 +36,7 @@ model User {
 
 model Event {
   id             String @id @default(auto()) @map("_id") @db.ObjectId
+  kyd_id         String? @unique
   url_endpoint   String @unique
   name           String
   date           String
