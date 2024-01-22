@@ -20,3 +20,8 @@ export const changePFPSchema = object({
   pfpAddress: string().required(),
   chain: string().required()
 });
+
+export const addEventIdSchema = object({
+  id:string().required(),
+  eventId:string().required()
+})

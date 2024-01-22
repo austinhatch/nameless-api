@@ -31,9 +31,6 @@ export class RewardsRepository {
           push: userID
         }
       },
-      include: {
-        users: true
-      }
     })
   }
 
