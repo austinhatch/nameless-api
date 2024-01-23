@@ -63,9 +63,6 @@ export class UsersRepository {
           push: eventID,
         },
       },
-      include: {
-        events: true,
-      },
     });
   }
 
@@ -78,9 +75,6 @@ export class UsersRepository {
         rewardIDs: {
           push: rewardID,
         },
-      },
-      include: {
-        rewards: true,
       },
     });
   }

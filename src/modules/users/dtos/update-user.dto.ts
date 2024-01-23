@@ -22,3 +22,13 @@ export interface IUpdatePFPDTO {
   pfpAddress:string
   chain:string
 }
+
+export interface IAddEventDTO {
+  id: string
+  eventId: string
+}
+
+export interface IAddRewardDTO {
+  id: string
+  rewardId: string
+}

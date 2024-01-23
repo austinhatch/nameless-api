@@ -25,11 +25,9 @@ model User {
   created       DateTime @default(now())
   pfpAddress    Json?
 
-  eventIDs String[] @db.ObjectId
-  events   Event[]  @relation(fields: [eventIDs], references: [id])
+  eventIDs String[]
 
-  rewardIDs String[] @db.ObjectId
-  rewards   Reward[] @relation(fields: [rewardIDs], references: [id])
+  rewardIDs String[]
 
 
 }
@@ -64,11 +62,9 @@ model Event {
 
   rewards        Json?
 
-  userIDs String[] @db.ObjectId
-  users   User[]   @relation(fields: [userIDs], references: [id])
+  userIDs String[]
 
-  promoCodeIDs String[]     @db.ObjectId
-  promoCodes   PromoCodes[] @relation(fields: [promoCodeIDs], references: [id])
+  promoCodeIDs String[]
 }
 
 type Ticket {
@@ -91,8 +87,7 @@ model PromoCodes {
   amount  Float
   expiryDate String?
 
-  eventIDs String[] @db.ObjectId
-  events   Event[]  @relation(fields: [eventIDs], references: [id])
+  eventIDs String[]
 }
 
 model KYD_User {
@@ -113,8 +108,7 @@ model Reward {
   address     String
   collection  String?
 
-  userIDs String[] @db.ObjectId
-  users   User[]   @relation(fields: [userIDs], references: [id])
+  userIDs String[]
 }
 
 model Accounts {

@@ -31,9 +31,6 @@ export class PromoCodesRepository {
           push: eventID
         }
       },
-      include: {
-        events: true
-      }
     })
   }
 
