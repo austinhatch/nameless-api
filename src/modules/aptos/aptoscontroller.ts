@@ -68,6 +68,8 @@ export class AptosController {
     const { accountAddress, collectionAddress } = <IGetOwnedTokensDTO>(
       JSON.parse(ctx.request.body)
     );
+    console.log(accountAddress, collectionAddress)
+    
     try {
       const ownedTokens = await getOwnedTokensByCollection(
         accountAddress,
