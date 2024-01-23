@@ -15,17 +15,20 @@ interface URIConfig {
   [key: string]: string;
 }
 
-const uris: URIConfig = pfpURIs as URIConfig
+const uris: URIConfig = pfpURIs as URIConfig;
 
 export class AptosController {
-  
   static async createCollection(ctx: RouterContext) {
-    console.log(ctx.request.body)
-    const { collectionName, collectionDescription, collectionURI } = <ICreateCollectionDTO>(
-      JSON.parse(ctx.request.body)
-    );
+    console.log(ctx.request.body);
+    const { collectionName, collectionDescription, collectionURI } = <
+      ICreateCollectionDTO
+    >JSON.parse(ctx.request.body);
     try {
-      const collection = await createCollection(collectionName, collectionDescription, collectionURI);
+      const collection = await createCollection(
+        collectionName,
+        collectionDescription,
+        collectionURI,
+      );
       ctx.status = 201;
       ctx.body = {
         message: `Succesfully minted a collection ${collectionName}`,
@@ -38,19 +41,21 @@ export class AptosController {
   }
 
   static async mintPFP(ctx: RouterContext) {
-    console.log("minting pfp!!!!!!")
+    console.log('minting pfp!!!!!!');
     const { address, uri_id  } = <IMintPFPDTO>(
       JSON.parse(ctx.request.body)
     );
     try {
-      const config = pfpConfig
-      const uri = uris[uri_id] 
+      const config = pfpConfig;
+      const uri = uris[uri_id];
+      console.log('calling create token');
+      // const nft = await createToken(address, config.collection, config.description, config.name, uri);
       const nft = await createToken(address, config.collection, config.description, config.name, uri);
-      console.log(nft)
+      console.log(nft);
       ctx.status = 201;
       ctx.body = {
         message: `Succesfully minted an NFT for contract to collection ${config.collection}`,
-        collectionAddress: config.collectionAddress
+        collectionAddress: config.collectionAddress,
       };
     } catch (e: any) {
       ctx.status = 500;
@@ -64,10 +69,13 @@ export class AptosController {
       JSON.parse(ctx.request.body)
     );
     try {
-      const ownedTokens = await getOwnedTokensByCollection(accountAddress, collectionAddress);
+      const ownedTokens = await getOwnedTokensByCollection(
+        accountAddress,
+        collectionAddress,
+      );
       ctx.status = 201;
       ctx.body = {
-        ownedTokens
+        ownedTokens,
       };
     } catch (e: any) {
       ctx.status = 500;
@@ -77,15 +85,15 @@ export class AptosController {
   }
 
   static async createAccount(ctx: RouterContext) {
-    console.log("********")
-    console.log(ctx.request.body)
+    // console.log("********")
+    // console.log(ctx.request.body)
     const accountAddress = ctx.request.body.accountAddress;
-  
+
     try {
       const accountCreation = await createAccount(accountAddress);
       ctx.status = 201;
       ctx.body = {
-        accountCreation
+        accountCreation,
       };
     } catch (e: any) {
       ctx.status = 500;
