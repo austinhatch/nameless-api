@@ -1,8 +1,9 @@
-import { aptos, getAptosAccount } from "./aptos-config";
+import { aptos, getAptosAccount, getSequenceNumber } from "./aptos-config";
 import { AccountAddress } from "@aptos-labs/ts-sdk";
 
 export async function createAccount( address: string | undefined){
   const aptosAccount = await getAptosAccount()
+  const sequenceNumber = await getSequenceNumber()
   const transaction = await aptos.transaction.build.simple({
     sender: aptosAccount.accountAddress,
     data: {
@@ -13,6 +14,9 @@ export async function createAccount( address: string | undefined){
         address,
       ],
     },
+    options: {
+      accountSequenceNumber: sequenceNumber,
+    }
   });
 
   const committedTransaction = await aptos.signAndSubmitTransaction({
