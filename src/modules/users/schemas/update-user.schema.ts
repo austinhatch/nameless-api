@@ -25,3 +25,8 @@ export const addEventIdSchema = object({
   id:string().required(),
   eventId:string().required()
 })
+
+export const addRewardIdSchema = object({
+  id:string().required(),
+  rewardId:string().required(),
+})
