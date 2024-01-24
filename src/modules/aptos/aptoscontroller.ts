@@ -60,9 +60,8 @@ export class AptosController {
     try {
       const config = pfpConfig;
       const uri = uris[uri_id];
-      console.log('calling create token');
-      // const nft = await createToken(address, config.collection, config.description, config.name, uri);
-      const ownedTokens = await getOwnedTokensByCollection(address, config.collection)
+      const ownedTokens = await getOwnedTokensByCollection(address, config.collectionAddress)
+      console.log(address, config.collection, config.description, config.name, uri)
       if(!ownedTokens || ownedTokens.length == 0){
         const nft = await createToken(address, config.collection, config.description, config.name, uri);
         console.log(nft);
