@@ -18,5 +18,6 @@ export interface IEventDTO {
   email_template :string;
   cardColor     :string;
 
+
   }
   

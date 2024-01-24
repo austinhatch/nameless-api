@@ -8,3 +8,11 @@ export async function getOwnedTokensByCollection( accountAddress: string, collec
     const ownedTokens = await aptos.getAccountOwnedTokensFromCollectionAddress(args)
     return ownedTokens
 }
+
+export async function getOwnedTokens( accountAddress: string){
+    const args = {
+        accountAddress: accountAddress,
+    }
+    const ownedTokens = await aptos.getAccountOwnedTokens(args)
+    return ownedTokens
+}

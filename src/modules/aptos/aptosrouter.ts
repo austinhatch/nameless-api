@@ -17,8 +17,17 @@ aptosRouter.post(
 
 aptosRouter.post(
   '/mint-pfp',
-  //   validateRequestBodyMiddleware<ISignUpDTO>(signUpSchema.strict()),
   AptosController.mintPFP,
+)
+
+aptosRouter.post(
+  '/mint-reward',
+  AptosController.mintReward,
+)
+
+aptosRouter.post(
+  '/get-owned-tokens',
+  AptosController.getOwnedTokens,
 )
 
 aptosRouter.post(
