@@ -104,12 +104,12 @@ export class AptosController {
     try {
       const event: Event | null = await EventsRepository.findById(eventId)
       if (event && event.rewardCollectionAddress) {
-        console.log('calling create token');
+        console.log('calling create reward token');
           const ownedTokens = await getOwnedTokens(accountAddress)
           const hasCollectionId = ownedTokens.some(obj => 
             obj.current_token_data?.current_collection?.collection_id === event.rewardCollectionAddress
           ); 
-          if(!ownedTokens || ownedTokens.length == 0){
+          if(!hasCollectionId){
             const nft = await createReward(accountAddress, event.rewardCollectionAddress);
 
           console.log(nft);
