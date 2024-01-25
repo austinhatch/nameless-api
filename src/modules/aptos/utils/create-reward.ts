@@ -1,5 +1,7 @@
 import { aptos, getAptosAccount, getSequenceNumber } from './aptos-config';
 import { Account, AccountAddress } from '@aptos-labs/ts-sdk';
+import { environment } from '@/config/environment';
+
 
 export async function createReward(
   recipient: string,
@@ -21,13 +23,13 @@ export async function createReward(
     sender: aptosAccount.accountAddress,
     data: {
       function:
-        '0x4085614bac67f35aaa8843566633d3b05e182e53af02bad646e42cf734e68afd::my_management::create_ticket',
+        `${environment.aptos_private_key}::my_management::create_ticket`,
       typeArguments: [],
       functionArguments: [
         recipient,
         collectionAddress,
+        ticketType,
         ticketId,
-        ticketType, 
         ticketPriceApt,
         ticketPrice,
         date,

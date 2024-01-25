@@ -13,6 +13,24 @@ import pfpURIs from './uris/pfp-uris.json';
 import { string } from 'yup';
 import { EventsRepository } from '../events/events.repository';
 import { Event } from '@prisma/client';
+import { createReward } from './utils/create-reward';
+
+//Interfaces for getOwnedTokens
+
+interface Collection {
+  collection_id: string;
+}
+
+interface TokenData {
+  current_collection: Collection;
+}
+
+interface MyObject {
+  current_token_data: TokenData;
+}
+
+const myList: MyObject[] = [
+];
 
 interface URIConfig {
   [key: string]: string;
@@ -85,26 +103,25 @@ export class AptosController {
     );
     try {
       const event: Event | null = await EventsRepository.findById(eventId)
-      if (event && event.rewards && typeof event.rewards === 'object' && !Array.isArray(event.rewards)) {
-        const rewards: JsonObject = event.rewards;
-        const rewardInfo: RewardInfo | undefined = rewards[collectionAddress];
-
+      if (event && event.rewardCollectionAddress) {
         console.log('calling create token');
-        if(rewardInfo){
-          const ownedTokens = await getOwnedTokensByCollection(accountAddress, collectionAddress)
+          const ownedTokens = await getOwnedTokens(accountAddress)
+          const hasCollectionId = ownedTokens.some(obj => 
+            obj.current_token_data?.current_collection?.collection_id === event.rewardCollectionAddress
+          ); 
           if(!ownedTokens || ownedTokens.length == 0){
-            const nft = await createReward(accountAddress, collectionAddress, rewardInfo.description, rewardInfo.name, rewardInfo.uri);
+            const nft = await createReward(accountAddress, event.rewardCollectionAddress);
 
           console.log(nft);
           ctx.status = 201;
           ctx.body = {
-            message: `Succesfully minted an NFT for contract to collection ${collectionAddress}`,
-            collectionAddress: collectionAddress,
+            message: `Succesfully minted an NFT for contract to collection ${event.rewardCollectionAddress}`,
+            collectionAddress: event.rewardCollectionAddress,
           };
         }
       }
     }
-    } catch (e: any) {
+    catch (e: any) {
       ctx.status = 500;
       console.log('+++++++++++++++++', e.message);
       ctx.body = { message: e.message };
