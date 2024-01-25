@@ -23,7 +23,7 @@ export async function createReward(
     sender: aptosAccount.accountAddress,
     data: {
       function:
-        `${environment.aptos_public_key}::my_management::create_ticket`,
+        `0x4085614bac67f35aaa8843566633d3b05e182e53af02bad646e42cf734e68afd::my_management::create_ticket`,
       typeArguments: [],
       functionArguments: [
         recipient,
@@ -44,8 +44,6 @@ export async function createReward(
     signer: aptosAccount,
     transaction: transaction,
   });
-
-  console.log(committedTransaction);
 
   return committedTransaction; // Fix: Return rawTxn
 }

@@ -6,8 +6,14 @@ import { createCollection } from './utils/create-collection';
 import { createAccount } from './utils/create-account';
 import { createToken } from './utils/create-token';
 import BigNumber from 'bignumber.js';
-import { IGetOwnedTokensByCollectionDTO, IGetOwnedTokensDTO } from './dtos/get-owned-tokens-dto';
-import { getOwnedTokensByCollection, getOwnedTokens } from './utils/get-owned-tokens';
+import {
+  IGetOwnedTokensByCollectionDTO,
+  IGetOwnedTokensDTO,
+} from './dtos/get-owned-tokens-dto';
+import {
+  getOwnedTokensByCollection,
+  getOwnedTokens,
+} from './utils/get-owned-tokens';
 import { pfpConfig } from './utils/pfp_config';
 import pfpURIs from './uris/pfp-uris.json';
 import { string } from 'yup';
@@ -29,8 +35,7 @@ interface MyObject {
   current_token_data: TokenData;
 }
 
-const myList: MyObject[] = [
-];
+const myList: MyObject[] = [];
 
 interface URIConfig {
   [key: string]: string;
@@ -72,16 +77,29 @@ export class AptosController {
 
   static async mintPFP(ctx: RouterContext) {
     console.log('minting pfp!!!!!!');
-    const { address, uri_id  } = <IMintPFPDTO>(
-      JSON.parse(ctx.request.body)
-    );
+    const { address, uri_id } = <IMintPFPDTO>JSON.parse(ctx.request.body);
     try {
       const config = pfpConfig;
       const uri = uris[uri_id];
-      const ownedTokens = await getOwnedTokensByCollection(address, config.collectionAddress)
-      console.log(address, config.collection, config.description, config.name, uri)
-      if(!ownedTokens || ownedTokens.length == 0){
-        const nft = await createToken(address, config.collection, config.description, config.name, uri);
+      const ownedTokens = await getOwnedTokensByCollection(
+        address,
+        config.collectionAddress,
+      );
+      console.log(
+        address,
+        config.collection,
+        config.description,
+        config.name,
+        uri,
+      );
+      if (!ownedTokens || ownedTokens.length == 0) {
+        const nft = await createToken(
+          address,
+          config.collection,
+          config.description,
+          config.name,
+          uri,
+        );
         console.log(nft);
         ctx.status = 201;
         ctx.body = {
@@ -102,38 +120,48 @@ export class AptosController {
       JSON.parse(ctx.request.body)
     );
     try {
-      const event: Event | null = await EventsRepository.findById(eventId)
+      const event: Event | null = await EventsRepository.findById(eventId);
       if (event && event.rewardCollectionAddress) {
-        console.log('calling create reward token');
-          const ownedTokens = await getOwnedTokens(accountAddress)
-          const hasCollectionId = ownedTokens.some(obj => 
-            obj.current_token_data?.current_collection?.collection_id === event.rewardCollectionAddress
-          ); 
-          if(!hasCollectionId){
-            const nft = await createReward(accountAddress, event.rewardCollectionAddress);
-
-          console.log(nft);
+        const ownedTokens = await getOwnedTokens(accountAddress);
+        const ownedRewards = ownedTokens.rewards;
+        const hasCollectionId = ownedRewards.some(
+          (entry: any) => {
+            console.log('entry: ', entry?.reward.current_token_data.collection_id);
+            return entry?.reward.current_token_data.collection_id === event.rewardCollectionAddress;
+          }
+        );
+        if (!hasCollectionId) {
+          const nft = await createReward(
+            accountAddress,
+            event.rewardCollectionAddress,
+          );
           ctx.status = 201;
           ctx.body = {
             message: `Succesfully minted an NFT for contract to collection ${event.rewardCollectionAddress}`,
             collectionAddress: event.rewardCollectionAddress,
           };
         }
+        else {
+          console.log('user already has reward token')
+          ctx.status = 202;
+          ctx.body = {
+            message: `User already has token with collection ID =  ${event.rewardCollectionAddress}`,
+          };
+        }
       }
-    }
-    catch (e: any) {
+    } catch (e: any) {
       ctx.status = 500;
       console.log('+++++++++++++++++', e.message);
       ctx.body = { message: e.message };
     }
   }
-
+  
   static async getOwnedTokensByCollection(ctx: RouterContext) {
-    const { accountAddress, collectionAddress } = <IGetOwnedTokensByCollectionDTO>(
-      JSON.parse(ctx.request.body)
-    );
-    console.log(accountAddress, collectionAddress)
-    
+    const { accountAddress, collectionAddress } = <
+      IGetOwnedTokensByCollectionDTO
+    >JSON.parse(ctx.request.body);
+    console.log(accountAddress, collectionAddress);
+
     try {
       const ownedTokens = await getOwnedTokensByCollection(
         accountAddress,
@@ -151,15 +179,11 @@ export class AptosController {
   }
 
   static async getOwnedTokens(ctx: RouterContext) {
-    const { accountAddress } = <IGetOwnedTokensDTO>(
-      JSON.parse(ctx.request.body)
-    );
-    console.log(accountAddress)
-    
+    const { accountAddress } = <IGetOwnedTokensDTO>JSON.parse(ctx.request.body);
+    console.log(accountAddress);
+
     try {
-      const ownedTokens = await getOwnedTokens(
-        accountAddress,
-      );
+      const ownedTokens = await getOwnedTokens(accountAddress);
       ctx.status = 201;
       ctx.body = {
         ownedTokens,
