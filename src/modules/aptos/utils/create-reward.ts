@@ -9,7 +9,7 @@ export async function createReward(
 
 ) {
     // DEFAULTS ______________________
-  const  ticketType= 0       // default to 0 
+  const  ticketType= "0"       // default to 0 
   const  ticketPriceApt= 0   // default to 0
   const ticketPrice= 0        // default to 0
   const  date= 0               // default to 0
