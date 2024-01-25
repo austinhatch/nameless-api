@@ -23,7 +23,7 @@ export async function createReward(
     sender: aptosAccount.accountAddress,
     data: {
       function:
-        `${environment.aptos_private_key}::my_management::create_ticket`,
+        `${environment.aptos_public_key}::my_management::create_ticket`,
       typeArguments: [],
       functionArguments: [
         recipient,
