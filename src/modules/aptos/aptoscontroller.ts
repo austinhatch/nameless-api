@@ -80,7 +80,7 @@ export class AptosController {
 
   static async mintReward(ctx: RouterContext) {
     console.log('minting reward!!!!!!');
-    const { accountAddress, eventId, collectionAddress } = <IMintRewardDTO>(
+    const { accountAddress, eventId } = <IMintRewardDTO>(
       JSON.parse(ctx.request.body)
     );
     try {
@@ -93,7 +93,7 @@ export class AptosController {
         if(rewardInfo){
           const ownedTokens = await getOwnedTokensByCollection(accountAddress, collectionAddress)
           if(!ownedTokens || ownedTokens.length == 0){
-            const nft = await createToken(accountAddress, collectionAddress, rewardInfo.description, rewardInfo.name, rewardInfo.uri);
+            const nft = await createReward(accountAddress, collectionAddress, rewardInfo.description, rewardInfo.name, rewardInfo.uri);
 
           console.log(nft);
           ctx.status = 201;
