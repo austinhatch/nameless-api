@@ -66,6 +66,8 @@ model Event {
   userIDs String[]
 
   promoCodeIDs String[]
+
+  featured Boolean?
 }
 
 type Ticket {
