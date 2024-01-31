@@ -45,12 +45,17 @@ spec:
           valueFrom: 
             secretKeyRef: 
               name: dev-secret-map 
-              key: thirdwebSecret
+              key: APTOS_PUBLIC_KEY
         - name: APTOS_PRIVATE_KEY 
           valueFrom: 
             secretKeyRef: 
               name: dev-secret-map 
               key: APTOS_PRIVATE_KEY
+        - name: APTOS_CHAIN 
+          valueFrom: 
+            secretKeyRef: 
+              name: dev-secret-map 
+              key: APTOS_CHAIN
         - name: THIRDWEB_SECRET_KEY 
           valueFrom: 
             secretKeyRef: 
