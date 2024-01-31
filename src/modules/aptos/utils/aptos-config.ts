@@ -5,11 +5,12 @@ let aptosConfig: AptosConfig;
 
 if (environment.aptos_chain === 'TEST') {
   aptosConfig = new AptosConfig({ network: Network.TESTNET });
-} else if (environment.aptos_chain === 'MAIN') {
-  aptosConfig = new AptosConfig({ network: Network.MAINNET });
 } else {
-  throw new Error('Invalid environment');
+  aptosConfig = new AptosConfig({ network: Network.MAINNET });
 }
+// } else {
+//   throw new Error('Invalid environment');
+// }
 
 export const aptos = new Aptos(aptosConfig);
 const privateKey = new Ed25519PrivateKey(environment.aptos_private_key);
