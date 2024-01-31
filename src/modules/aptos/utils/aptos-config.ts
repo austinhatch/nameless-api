@@ -3,10 +3,10 @@ import { Aptos, AptosConfig, Network, Ed25519PrivateKey, Account, AccountSequenc
 
 let aptosConfig: AptosConfig;
 
-if (environment.aptos_chain === 'TEST') {
-  aptosConfig = new AptosConfig({ network: Network.TESTNET });
-} else {
+if (environment.aptos_chain === 'MAIN') {
   aptosConfig = new AptosConfig({ network: Network.MAINNET });
+} else {
+  aptosConfig = new AptosConfig({ network: Network.TESTNET });
 }
 // } else {
 //   throw new Error('Invalid environment');
