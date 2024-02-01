@@ -20,6 +20,8 @@ export const eventsRouter = new Router({ prefix: '/events' });
 
 eventsRouter.get('/', EventsController.list);
 
+eventsRouter.get('/live', EventsController.liveList);
+
 eventsRouter.get(
   '/:id',
   validateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),

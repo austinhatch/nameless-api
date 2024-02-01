@@ -69,6 +69,7 @@ model Event {
   promoCodeIDs String[]
 
   featured Boolean?
+  live     Boolean @default(true)
 }
 
 type Ticket {

@@ -14,6 +14,11 @@ export class EventsController {
     ctx.body = Events;
   }
 
+  static async liveList(ctx: RouterContext) {
+    const Events = await EventsRepository.findAllLive();
+    ctx.body = Events;
+  }
+
   static async detail(ctx: RouterContext) {
     const { event } = ctx.state;
     ctx.body = event;
@@ -29,7 +34,7 @@ export class EventsController {
     const promoID = <string>JSON.parse(ctx.request.body).id
     const res = await EventsRepository.updateUserIDs(ctx.params.id, promoID)
     const promoRes = await PromoCodesRepository.updateEventIDs(ctx.params.id, promoID)
-    ctx.body = {res, promoRes};
+    ctx.body = { res, promoRes };
   }
 
   static async getAllByPromoCode(ctx: RouterContext) {
@@ -41,7 +46,7 @@ export class EventsController {
     const userID = <string>JSON.parse(ctx.request.body).id
     const res = await EventsRepository.updateUserIDs(ctx.params.id, userID)
     const userRes = await UsersRepository.updateEventIDs(ctx.params.id, userID)
-    ctx.body = {res, userRes};
+    ctx.body = { res, userRes };
   }
 
   static async getAllByUserId(ctx: RouterContext) {
@@ -57,7 +62,7 @@ export class EventsController {
   }
 
   static async create(ctx: RouterContext) {
-    const  body = <IEventDTO>JSON.parse(ctx.request.body);
+    const body = <IEventDTO>JSON.parse(ctx.request.body);
     const event = await EventsRepository.create(
       {
         url_endpoint: body.url_endpoint,
@@ -77,7 +82,7 @@ export class EventsController {
         priceUSD: body.priceUSD,
         email_template: body.email_template,
         cardColor: body.cardColor,
-        
+
         vendors: [],
         ticketTiers: [],
 

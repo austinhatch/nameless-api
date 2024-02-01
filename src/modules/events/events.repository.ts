@@ -24,12 +24,12 @@ export class EventsRepository {
     })
   }
 
-  static findByKydId(kyd_id:string){
+  static findByKydId(kyd_id: string) {
     return prisma.event.findUnique({
       where: {
         kyd_id,
       },
-    }) 
+    })
   }
 
   static findAllByUserId(id: string) {
@@ -52,19 +52,17 @@ export class EventsRepository {
     })
   }
 
-  // static findAllByVendorId(id: string){
-  //   return prisma.event.findMany({
-  //     where: {
-  //       vendorIDs : {
-  //         has: id
-  //       }
-  //     }
-  //   })
-  // }
-
   static findAll() {
     return prisma.event.findMany();
   }
+  static findAllLive() {
+    return prisma.event.findMany({
+      where: {
+        live: true
+      }
+    });
+  }
+
 
   static update(id: string, data: Prisma.EventUpdateInput) {
     return prisma.event.update({
