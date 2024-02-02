@@ -1,10 +1,12 @@
 import { RouterContext } from '@koa/router';
 import { IMintPFPDTO } from './dtos/mint-pfp-dto';
+import { IRedeemRewardDTO } from './dtos/redeem-reward-dto';
 import { IMintRewardDTO } from './dtos/mint-reward-dto';
 import { ICreateCollectionDTO } from './dtos/create-collection-dto';
 import { createCollection } from './utils/create-collection';
 import { createAccount } from './utils/create-account';
 import { createToken } from './utils/create-token';
+import {redeemReward} from './utils/redeem-reward';
 import BigNumber from 'bignumber.js';
 import {
   IGetOwnedTokensByCollectionDTO,
@@ -124,12 +126,16 @@ export class AptosController {
       if (event && event.rewardCollectionAddress) {
         const ownedTokens = await getOwnedTokens(accountAddress);
         const ownedRewards = ownedTokens.rewards;
-        const hasCollectionId = ownedRewards.some(
-          (entry: any) => {
-            console.log('entry: ', entry?.reward.current_token_data.collection_id);
-            return entry?.reward.current_token_data.collection_id === event.rewardCollectionAddress;
-          }
-        );
+        const hasCollectionId = ownedRewards.some((entry: any) => {
+          console.log(
+            'entry: ',
+            entry?.reward.current_token_data.collection_id,
+          );
+          return (
+            entry?.reward.current_token_data.collection_id ===
+            event.rewardCollectionAddress
+          );
+        });
         if (!hasCollectionId) {
           const nft = await createReward(
             accountAddress,
@@ -140,9 +146,8 @@ export class AptosController {
             message: `Succesfully minted an NFT for contract to collection ${event.rewardCollectionAddress}`,
             collectionAddress: event.rewardCollectionAddress,
           };
-        }
-        else {
-          console.log('user already has reward token')
+        } else {
+          console.log('user already has reward token');
           ctx.status = 202;
           ctx.body = {
             message: `User already has token with collection ID =  ${event.rewardCollectionAddress}`,
@@ -155,7 +160,7 @@ export class AptosController {
       ctx.body = { message: e.message };
     }
   }
-  
+
   static async getOwnedTokensByCollection(ctx: RouterContext) {
     const { accountAddress, collectionAddress } = <
       IGetOwnedTokensByCollectionDTO
@@ -205,6 +210,21 @@ export class AptosController {
       ctx.status = 201;
       ctx.body = {
         accountCreation,
+      };
+    } catch (e: any) {
+      ctx.status = 500;
+      console.log('*******', e.message);
+      ctx.body = { message: e.message };
+    }
+  }
+
+  static async redeem(ctx: RouterContext) {
+    const { rewardAddress } = <IRedeemRewardDTO>JSON.parse(ctx.request.body);
+    try {
+      const redeemedTicket = await redeemReward(rewardAddress);
+      ctx.status = 201;
+      ctx.body = {
+        redeemedTicket,
       };
     } catch (e: any) {
       ctx.status = 500;
