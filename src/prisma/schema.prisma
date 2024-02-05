@@ -60,6 +60,8 @@ model Event {
   ticketTiers    Json?
   vendors        Vendor[]
 
+  rsvpDescription String?
+  
   rewards        Json?
   rewardCollectionAddress String?
   rewardImgUrl    String?
