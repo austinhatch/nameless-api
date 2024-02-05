@@ -39,3 +39,8 @@ aptosRouter.post(
   '/create-account',
   AptosController.createAccount,
 )
+
+aptosRouter.post(
+  '/redeem',
+  AptosController.redeem,
+)
