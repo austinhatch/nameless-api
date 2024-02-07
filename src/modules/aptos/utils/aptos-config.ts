@@ -22,6 +22,7 @@ export function getAptosAccount() {
 }
 
 export async function getSequenceNumber() {
+  const accountSequenceNumber = new AccountSequenceNumber(aptosConfig, aptosAccount, 1000, 1000, 1000);
   const nextSequenceNumber = await accountSequenceNumber.nextSequenceNumber();
   const nextSequenceNumberNumber = Number(nextSequenceNumber);
   console.log(Number(nextSequenceNumber));
