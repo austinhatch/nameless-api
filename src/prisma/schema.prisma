@@ -46,7 +46,11 @@ model Event {
   location_url   String?
   venue          String?
   venue_url      String?
+
   imgUrl         String?
+  imgUrl2        String?  
+  imgUrl3        String?
+
   description    String
   lockAddress    String?
   priceUSD       Float
