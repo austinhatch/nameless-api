@@ -1,5 +1,5 @@
 import { RouterContext } from '@koa/router';
-import { IChangeUsernameDTO, ICheckUsernameDTO, IUpdateEmailDTO, IUpdateUserDTO, IUpdatePFPDTO, IAddEventDTO, IAddRewardDTO } from './dtos/update-user.dto';
+import { IChangeUsernameDTO, ICheckUsernameDTO, IUpdateEmailDTO, IUpdateUserDTO, IUpdatePFPDTO, IAddEventDTO, IAddRewardDTO, IUpdateNameDTO } from './dtos/update-user.dto';
 import { IGetPFPDTO } from './dtos/get-user.dto';
 import { UsersRepository } from './users.repository';
 import { sdk } from '../web3/utils/thirdweb-config';
@@ -80,6 +80,20 @@ export class UsersController {
     );
 
     await UsersRepository.update(id, {pfpAddress:{address: pfpAddress, chain: chain}})
+    ctx.status = 201;
+    const user = await UsersRepository.findById(id)
+    ctx.body = {
+      user,
+    }
+  }
+
+  static async updateName(ctx: RouterContext) {
+    console.log("Update Name")
+    const { id, name, lastName } = <IUpdateNameDTO>(
+      JSON.parse(ctx.request.body)
+    );
+
+    await UsersRepository.update(id, {name: name, lastName: lastName})
     ctx.status = 201;
     const user = await UsersRepository.findById(id)
     ctx.body = {

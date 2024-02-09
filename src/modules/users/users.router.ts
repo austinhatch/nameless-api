@@ -6,8 +6,8 @@ import { isCurrentUserMiddleware } from '@/shared/middlewares/authorization/is-c
 import { objectId } from '@/shared/yup/custom-schemas/object-id.schema';
 import { UsersController } from './users.controller';
 import { findUserByIdMiddleware } from './middlewares/find-user-by-id.middleware';
-import { IChangeUsernameDTO, IUpdateEmailDTO, IUpdateUserDTO, IUpdatePFPDTO, IAddEventDTO, IAddRewardDTO} from './dtos/update-user.dto';
-import { addEventIdSchema, addRewardIdSchema, changeEmailSchema, changePFPSchema, udpateUserSchema } from './schemas/update-user.schema';
+import { IChangeUsernameDTO, IUpdateEmailDTO, IUpdateUserDTO, IUpdatePFPDTO, IAddEventDTO, IAddRewardDTO, IUpdateNameDTO} from './dtos/update-user.dto';
+import { addEventIdSchema, addRewardIdSchema, changeEmailSchema, changePFPSchema, udpateUserSchema, updateNameSchema } from './schemas/update-user.schema';
 import { changeUsernameSchema } from './schemas/update-user.schema';
 import { UsersRepository } from './users.repository';
 
@@ -71,3 +71,8 @@ usersRouter.post(
   UsersController.addRewardId
 )
 
+usersRouter.post(
+  '/update-name',
+  validateRequestBodyMiddleware<IUpdateNameDTO>(updateNameSchema.strict()),
+  UsersController.updateName
+)

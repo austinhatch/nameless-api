@@ -30,3 +30,9 @@ export const addRewardIdSchema = object({
   id:string().required(),
   rewardId:string().required(),
 })
+
+export const updateNameSchema = object({
+  id: string().required(),
+  name: string(),
+  lastName: string(),
+});

@@ -32,3 +32,9 @@ export interface IAddRewardDTO {
   id: string
   rewardId: string
 }
+
+export interface IUpdateNameDTO {
+  id: string;
+  name?: string;
+  lastName?: string;
+}
