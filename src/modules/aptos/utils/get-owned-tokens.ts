@@ -26,21 +26,20 @@ export async function getOwnedTokens(accountAddress: string) {
   return structuredResponse;
 }
 
-function structureTokens(tokens: any[]) {
-  const result = tokens.reduce(
-    async (acc, token) => {
-      if (
-        token.current_token_data.collection_id === pfpConfig.collectionAddress
-      ) {
-        acc.pfp = { pfpToken: token };
-      } else {
-        const rewardWithAttend = await getRewardStatus(token);
-        acc.rewards.push({ reward: rewardWithAttend });
-      }
-      return acc;
-    },
-    { pfp: null, rewards: [] },
-  );
+async function structureTokens(tokens: any[]) {
+  const result = await tokens.reduce(async (accPromise, token) => {
+    const acc = await accPromise;
+
+    if (token.current_token_data.collection_id === pfpConfig.collectionAddress) {
+      acc.pfp = { pfpToken: token };
+    } else {
+      const rewardWithAttend = await getRewardStatus(token);
+      acc.rewards.push({ reward: rewardWithAttend });
+    }
+
+    return acc;
+  }, Promise.resolve({ pfp: null, rewards: [] }));
+
   return result;
 }
 
