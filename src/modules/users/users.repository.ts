@@ -25,11 +25,11 @@ export class UsersRepository {
   }
 
   static findByPhone(phone: string) {
-    return prisma.user.findFirst({
+    return prisma.user.findUnique({
       where: {
         phone,
       },
-    }); 
+    });
   }
 
   static findByUsername(username: string) {
@@ -37,7 +37,7 @@ export class UsersRepository {
       where: {
         username,
       },
-    }); 
+    });
   }
 
   static findAll() {

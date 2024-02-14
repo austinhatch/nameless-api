@@ -5,7 +5,6 @@ import { usersRouter } from './modules/users/users.router';
 import { authRouter } from './modules/auth/auth.router';
 import { eventsRouter } from './modules/events/events.router';
 import { emailRouter } from './modules/email/email.router';
-import { rewardsRouter } from './modules/rewards/rewards.router';
 import { web3Router } from './modules/web3/web3router';
 import { stripeRouter } from './modules/stripe/stripe.router';
 import { shopifyRouter } from './modules/shopify/shopify.router';
@@ -23,7 +22,6 @@ router.use(authRouter.routes());
 router.use(shopifyRouter.routes())
 router.use(eventsRouter.routes());
 router.use(accountsRouter.routes())
-router.use(rewardsRouter.routes());
 router.use(aptosRouter.routes());
 
 router.use(jwt({ secret: environment.jwt.secret, key: 'authData' }));
