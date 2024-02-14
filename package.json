@@ -94,6 +94,7 @@
     "koa-logger": "^3.2.1",
     "moment": "^2.29.4",
     "mongodb": "^6.3.0",
+    "mongoose": "^8.1.2",
     "node-fetch": "^3.3.2",
     "npm": "^10.2.4",
     "pdf-lib": "^1.17.1",
