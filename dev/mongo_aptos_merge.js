@@ -6,19 +6,19 @@ async function getAllTransactions(address) {
     var limit = 100
     var transactions = []
     const params = {
-        'start':0,
+        'start': 0,
         'limit': limit
     };
 
     try {
-        while(true){
+        while (true) {
             const response = await axios.get(`https://fullnode.mainnet.aptoslabs.com/v1/accounts/${address}/transactions`, { params: params });
             transactions = transactions.concat(response.data);
-            if(response.data.length < limit){
+            if (response.data.length < limit) {
                 break
             }
-            else{
-                params.start = params.start+limit
+            else {
+                params.start = params.start + limit
             }
         }
         const successful_txs = transactions.filter(obj => obj.success === true)
@@ -29,14 +29,14 @@ async function getAllTransactions(address) {
     }
 }
 
-function filterTransactionsByType(txs, type){
+function filterTransactionsByType(txs, type) {
     const filteredTxs = txs.filter(obj => obj.payload && obj.payload.function === type)
     console.log("Found", filteredTxs.length, type)
     return filteredTxs
 }
 
 //Use on create_ticket tx's to get a json of rewardCollectionAddress: num_tx's
-function getCreatedTicketsByEvent(txs){
+function getCreatedTicketsByEvent(txs) {
     let countMap = {};
 
     txs.forEach(obj => {
@@ -44,7 +44,7 @@ function getCreatedTicketsByEvent(txs){
             const innerValue = obj.payload.arguments[1].inner
             if (countMap[innerValue]) {
                 countMap[innerValue]++;
-            } 
+            }
             else {
                 countMap[innerValue] = 1;
             }
@@ -54,17 +54,17 @@ function getCreatedTicketsByEvent(txs){
 }
 
 //Use on redeem_ticket tx's to get a json of rewardCollectionAddress: num_tx's
-function getRedeemedTicketsByEvent(txs){
+function getRedeemedTicketsByEvent(txs) {
     let countMap = {};
 
     txs.forEach(obj => {
         if (obj.changes) {
-            obj.changes.forEach(change =>{
-                if(change.data && change.data.data && change.data.data.event){
+            obj.changes.forEach(change => {
+                if (change.data && change.data.data && change.data.data.event) {
                     const innerValue = change.data.data.event.inner
                     if (countMap[innerValue]) {
                         countMap[innerValue]++;
-                    } 
+                    }
                     else {
                         countMap[innerValue] = 1;
                     }
@@ -75,22 +75,39 @@ function getRedeemedTicketsByEvent(txs){
     return countMap
 }
 
-async function getMongoEvents(){
+async function getMongoEvents() {
     const uri = "mongodb+srv://admin_dashboard:1ww6wAjeLlBs8Kgt@nameless-prod.gnad7.mongodb.net/?retryWrites=true&w=majority"
     const client = new mongodb.MongoClient(uri)
-    try{
+    try {
         const database = client.db("proddb");
         const events = database.collection("Event");
         const cursor = events.find({});
-
+        const results = {};
+        await cursor.forEach(doc => {
+            results[doc._id] = doc;
+        });
+        return results
     }
-    catch(e){
-        console.log("Could not geMongoEvents", e)
+    catch (e) {
+        console.log("Could not getMongoEvents", e)
     }
     finally {
         await client.close();
     }
+}
 
+function mergeEventsAndTransactions(events, txs) {
+    const result = {}
+    Object.values(events).forEach((event) => {
+        if (event.rewardCollectionAddress) {
+            Object.entries(txs).forEach(([key, value]) => {
+                if (event.rewardCollectionAddress === key) {
+                    result[event.name] = value
+                }
+            })
+        }
+    })
+    return result
 }
 
 async function main() {
@@ -101,16 +118,17 @@ async function main() {
         const createTicketType = `${address}::my_management::create_ticket`
         const createTicketTxs = filterTransactionsByType(txs, createTicketType)
         const createTxsByEvent = getCreatedTicketsByEvent(createTicketTxs)
-        console.log(createTxsByEvent)
-        
+
         const redeemTicketType = `${address}::my_management::redeem_ticket`
         const redeemTicketTxs = filterTransactionsByType(txs, redeemTicketType)
         const redeemTxsByEvent = getRedeemedTicketsByEvent(redeemTicketTxs)
-        console.log(redeemTxsByEvent)
-    }
 
-    const events = await getMongoEvents()
-    console.log(events)
+        const events = await getMongoEvents()
+        const mergedCreates = mergeEventsAndTransactions(events, createTxsByEvent)
+        const mergedRedeems = mergeEventsAndTransactions(events, redeemTxsByEvent)
+        console.log(mergedCreates)
+        console.log(mergedRedeems)
+    }
 }
 
 main();

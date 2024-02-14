@@ -11,7 +11,6 @@ class MongoClient {
         const database = this.client.db("proddb")
         const events = database.collection("Event")
         const cursor = events.find({})
-        return cursor
     }
 }
 
