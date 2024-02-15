@@ -6,7 +6,7 @@ import { ICreateCollectionDTO } from './dtos/create-collection-dto';
 import { createCollection } from './utils/create-collection';
 import { createAccount } from './utils/create-account';
 import { createToken } from './utils/create-token';
-import {redeemReward} from './utils/redeem-reward';
+import { redeemReward } from './utils/redeem-reward';
 import BigNumber from 'bignumber.js';
 import {
   IGetOwnedTokensByCollectionDTO,
@@ -59,7 +59,7 @@ export class AptosController {
     console.log(ctx.request.body);
     const { collectionName, collectionDescription, collectionURI } = <
       ICreateCollectionDTO
-    >JSON.parse(ctx.request.body);
+      >JSON.parse(ctx.request.body);
     try {
       const collection = await createCollection(
         collectionName,
@@ -118,7 +118,7 @@ export class AptosController {
 
   static async mintReward(ctx: RouterContext) {
     console.log('minting reward!!!!!!');
-    const { accountAddress, eventId } = <IMintRewardDTO>(
+    const { accountAddress, eventId, rewardType } = <IMintRewardDTO>(
       JSON.parse(ctx.request.body)
     );
     try {
@@ -140,6 +140,7 @@ export class AptosController {
           const nft = await createReward(
             accountAddress,
             event.rewardCollectionAddress,
+            rewardType
           );
           ctx.status = 201;
           ctx.body = {
@@ -164,7 +165,7 @@ export class AptosController {
   static async getOwnedTokensByCollection(ctx: RouterContext) {
     const { accountAddress, collectionAddress } = <
       IGetOwnedTokensByCollectionDTO
-    >JSON.parse(ctx.request.body);
+      >JSON.parse(ctx.request.body);
     console.log(accountAddress, collectionAddress);
 
     try {

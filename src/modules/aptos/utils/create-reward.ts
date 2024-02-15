@@ -5,9 +5,10 @@ import { environment } from '@/config/environment';
 export async function createReward(
   recipient: string,
   collectionAddress: string,
+  rewardType: string
 ) {
   // DEFAULTS ______________________
-  const ticketType = '0'; // default to 0
+  const ticketType = rewardType ? rewardType : '0'; // default to 0
   const ticketPriceApt = 0; // default to 0
   const ticketPrice = 0; // default to 0
   const date = 0; // default to 0
@@ -17,13 +18,13 @@ export async function createReward(
 
   const aptosAccount = await getAptosAccount();
   const sequenceNumber = await getSequenceNumber();
-  let func: `${string}::${string}::${string}`; 
+  let func: `${string}::${string}::${string}`;
   if (environment.aptos_chain === 'MAIN') {
     func = `0x446bf99aae1f79ccb52df29e083c971d96e49c9bb088834b939a1f0ef341cf13::my_management::create_ticket`;
   } else {
     func = `0x4085614bac67f35aaa8843566633d3b05e182e53af02bad646e42cf734e68afd::my_management::create_ticket`;
   }
-  
+
   const transaction = await aptos.transaction.build.simple({
     sender: aptosAccount.accountAddress,
     data: {
