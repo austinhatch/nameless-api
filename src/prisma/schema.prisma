@@ -38,7 +38,7 @@ model Event {
   endTime        String?
   tz             String?
   type           String?
-  location       String
+  location       String?
   location_url   String?
   venue          String?
   venue_url      String?
@@ -52,15 +52,15 @@ model Event {
   rsvpDescription String?
   claimDescription String?
 
-  priceUSD       Float
-  email_template String
-  cardColor      String
+  priceUSD       Float?
+  email_template String?
+  cardColor      String?
   
   ticketProvider Json?
   iframe_url    String?
 
   rewardCollectionAddress String?
-  rewardImgUrl    String?
+  rewardImgUrls Json?
   
   featured Boolean?
   live     Boolean @default(true)
