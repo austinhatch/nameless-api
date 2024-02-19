@@ -242,7 +242,8 @@ export class AuthController {
         const user = await UsersRepository.findByEmail(email);
         if (user) {
           // update private key
-          const newPrivKey = await reEncryptEVMPrivateKey(hashedPassword, user);
+          const new_EVM_privKey = await reEncryptEVMPrivateKey(hashedPassword, user);
+          const new_APTOS_privKey = await reEncryptAptosPrivateKey(hashedPassword, user)
 
           const updatedUserData: Prisma.UserUpdateInput = {
             password: hashedPassword,
