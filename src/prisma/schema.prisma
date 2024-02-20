@@ -69,6 +69,7 @@ model Event {
   rewards        Json?
   rewardCollectionAddress String?
   rewardImgUrls    Json?
+  rewardRedeemable Boolean @default(true)
 
   claimDescription String?
 
