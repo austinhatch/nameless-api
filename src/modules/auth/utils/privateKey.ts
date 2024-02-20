@@ -34,21 +34,21 @@ export async function createAptosPrivateKey(password: string) {
   const aptosAddress = aptosAccountObj.address
   const aptosPublicKey = aptosAccountObj.publicKeyHex
   const aptosPrivateKey = encryptStringToJson(aptosAccountObj.privateKeyHex, password)
-  try{
+  try {
     await createAccount(aptosAddress)
   }
-  catch(e){
+  catch (e) {
     console.error("Could not creatAccount on aptos", e)
   }
-  return { aptosAddress, aptosPublicKey, aptosPrivateKey};
+  return { aptosAddress, aptosPublicKey, aptosPrivateKey };
 
 }
 
 export async function reEncryptEVMPrivateKey(password: string, user: User) {
-  const accounts:any = user.accounts
-  if( accounts !== null){
-    const evmAccount:any = accounts['EVM']
-    const privateKeyJSON:string = evmAccount.privateKey
+  const accounts: any = user.accounts
+  if (accounts !== null) {
+    const evmAccount: any = accounts['EVM']
+    const privateKeyJSON: string = evmAccount.privateKey
     const config = {
       strategy: 'encryptedJson',
       password: user.password,
@@ -65,13 +65,14 @@ export async function reEncryptEVMPrivateKey(password: string, user: User) {
     });
 
     return privateKey;
+  }
 }
 
 export async function reEncryptAptosPrivateKey(password: string, user: User) {
-  const accounts:any = user.accounts
-  if( accounts !== null){
-    const aptosAccount:any = accounts['APTOS']
-    const privateKeyJSON:string = aptosAccount.privateKey
+  const accounts: any = user.accounts
+  if (accounts !== null) {
+    const aptosAccount: any = accounts['APTOS']
+    const privateKeyJSON: string = aptosAccount.privateKey
     const decryptedPrivateKey = decryptJsonToString(privateKeyJSON, user.password)
     const encryptedPrivateKey = encryptStringToJson(decryptedPrivateKey, password)
     return encryptedPrivateKey

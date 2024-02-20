@@ -5,7 +5,6 @@ import { IUserIdUpdateDTO } from './dtos/user-id-update.dto'
 import { IUpdateEventDTO } from './dtos/update-event.dto';
 import { EventsRepository } from './events.repository';
 import { UsersRepository } from '../users/users.repository';
-import { PromoCodesRepository } from '../promos/promo.repository';
 import { IEventDTO } from './dtos/event.dto';
 
 export class EventsController {
@@ -28,30 +27,6 @@ export class EventsController {
     const data = <IUpdateEventDTO>ctx.request.body;
     const event = await EventsRepository.update(ctx.params.id, data);
     ctx.body = event;
-  }
-
-  static async updatePromoCodeIDs(ctx: RouterContext) {
-    const promoID = <string>JSON.parse(ctx.request.body).id
-    const res = await EventsRepository.updateUserIDs(ctx.params.id, promoID)
-    const promoRes = await PromoCodesRepository.updateEventIDs(ctx.params.id, promoID)
-    ctx.body = { res, promoRes };
-  }
-
-  static async getAllByPromoCode(ctx: RouterContext) {
-    const res = await EventsRepository.findAllByPromoId(ctx.params.id)
-    ctx.body = res
-  }
-
-  static async updateUserIDs(ctx: RouterContext) {
-    const userID = <string>JSON.parse(ctx.request.body).id
-    const res = await EventsRepository.updateUserIDs(ctx.params.id, userID)
-    const userRes = await UsersRepository.updateEventIDs(ctx.params.id, userID)
-    ctx.body = { res, userRes };
-  }
-
-  static async getAllByUserId(ctx: RouterContext) {
-    const res = await EventsRepository.findAllByUserId(ctx.params.id)
-    ctx.body = res
   }
 
   static async delete(ctx: RouterContext) {
@@ -78,39 +53,18 @@ export class EventsController {
         venue_url: body.venue_url,
         imgUrl: body.imgUrl,
         description: body.description,
-        lockAddress: body.lockAddress ? body.lockAddress : '',
+        rsvpDescription: body.rsvpDescription,
+        claimDescription: body.claimDescription,
+
         priceUSD: body.priceUSD,
         email_template: body.email_template,
         cardColor: body.cardColor,
 
         vendors: [],
-        ticketTiers: [],
 
-        userIDs: [],
-        promoCodeIDs: [],
       }
     )
     ctx.status = 201;
     ctx.body = event;
   }
 }
-
-//   static async create(ctx: RouterContext) {
-//     const  body = <IEventDTO>JSON.parse(ctx.request.body);
-//     const event = await EventsRepository.create(
-//       {
-//         name: body.name,
-//         date: body.date,
-//         startTime: body.startTime,
-//         endTime: body.endTime ? body.endTime : '',
-//         tz: body.tz,
-//         location: body.location,
-//         imgUrl: body.imgUrl,
-//         description: body.description,
-//         userIDs: []
-//       }
-//     )
-//     ctx.status = 201;
-//     ctx.body = event;
-//   }
-// }

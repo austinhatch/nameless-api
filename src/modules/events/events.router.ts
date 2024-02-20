@@ -41,12 +41,6 @@ eventsRouter.get(
   EventsController.detail
 )
 
-eventsRouter.get(
-  '/user/:id',
-  validateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),
-  EventsController.getAllByUserId,
-);
-
 eventsRouter.patch(
   '/:id',
   validateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),
@@ -56,20 +50,6 @@ eventsRouter.patch(
   findEventByIdMiddleware,
   // isCurrentUserMiddleware,
   EventsController.update,
-);
-
-eventsRouter.patch(
-  '/:id/addUser',
-  validateRequestParamsMiddleware<{ id: unknown }>(object({ id: objectId() })),
-  validateRequestBodyMiddleware<IUserIdUpdateDTO>(
-    userIdUpdateSchema.strict().noUnknown(),
-  ),
-  validateUniqueAssociation(
-    'events'
-  ),
-  findEventByIdMiddleware,
-  // isCurrentUserMiddleware,
-  EventsController.updateUserIDs,
 );
 
 eventsRouter.del(

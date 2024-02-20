@@ -32,29 +32,10 @@ export class EventsRepository {
     })
   }
 
-  static findAllByUserId(id: string) {
-    return prisma.event.findMany({
-      where: {
-        userIDs: {
-          has: id
-        }
-      }
-    })
-  }
-
-  static findAllByPromoId(id: string) {
-    return prisma.event.findMany({
-      where: {
-        promoCodeIDs: {
-          has: id
-        }
-      }
-    })
-  }
-
   static findAll() {
     return prisma.event.findMany();
   }
+
   static findAllLive() {
     return prisma.event.findMany({
       where: {
@@ -73,42 +54,10 @@ export class EventsRepository {
     });
   }
 
-  static updateUserIDs(id: string, userID: string) {
-    return prisma.event.update({
-      where: {
-        id
-      },
-      data: {
-        userIDs: {
-          push: userID
-        }
-      },
-      include: {
-        users: true
-      }
-    })
-  }
-
   static delete(id: string) {
     return prisma.event.delete({
       where: {
         id,
-      },
-    });
-  }
-
-  static updatePromoCodeIDs(promoCodeID: string, eventID: string) {
-    return prisma.event.update({
-      where: {
-        id: eventID,
-      },
-      data: {
-        promoCodeIDs: {
-          push: promoCodeID,
-        },
-      },
-      include: {
-        promoCodes: true,
       },
     });
   }

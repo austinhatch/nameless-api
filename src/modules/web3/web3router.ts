@@ -16,15 +16,3 @@ web3Router.post(
   '/mint-nft',
   Web3Controller.mintNFT,
 )
-
-web3Router.post(
-  '/mint-reward',
-  Web3Controller.mintReward,
-)
-
-
-// authRouter.post(
-//   '/sign-in',
-// //   validateRequestBodyMiddleware<ISignInDTO>(signInSchema.strict()),
-//   AuthController.signIn,
-// );

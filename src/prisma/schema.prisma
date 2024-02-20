@@ -61,6 +61,7 @@ model Event {
 
   rewardCollectionAddress String?
   rewardImgUrls Json?
+  rewardRedeemable Boolean @default(true)
   
   featured Boolean?
   live     Boolean @default(true)

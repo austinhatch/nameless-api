@@ -240,16 +240,19 @@ export class AuthController {
         const email = getEmailFromToken(token);
         const hashedPassword = await hashPassword(password);
         const user = await UsersRepository.findByEmail(email);
-        if (user) {
+        if (user && user.accounts) {
           // update private key
           const new_EVM_privKey = await reEncryptEVMPrivateKey(hashedPassword, user);
           const new_APTOS_privKey = await reEncryptAptosPrivateKey(hashedPassword, user)
+          let updatedAccounts: any = user.accounts
+
+          updatedAccounts["APTOS"].privateKey = new_APTOS_privKey
+          updatedAccounts["EVM"].privateKey = new_EVM_privKey
 
           const updatedUserData: Prisma.UserUpdateInput = {
             password: hashedPassword,
-            privateKey: newPrivKey,
+            accounts: updatedAccounts,
           };
-          console.log('userID', user.id);
 
           UsersRepository.update(user.id, updatedUserData)
             .then((updatedUser) => {
