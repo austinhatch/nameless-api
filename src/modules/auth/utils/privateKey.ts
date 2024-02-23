@@ -45,22 +45,26 @@ export async function createAptosPrivateKey(password: string) {
 }
 
 export async function reEncryptEVMPrivateKey(password: string, user: User) {
-  const config = {
-    strategy: 'encryptedJson',
-    password: user.password,
-    encryptedJson: user.privateKey,
-  };
-  const localWallet = new LocalWallet({
-    chain: Mumbai,
-  });
-  await localWallet.import(config);
+  const accounts:any = user.accounts
+  if( accounts !== null){
+    const evmAccount:any = accounts['EVM']
+    const privateKeyJSON:string = evmAccount.privateKey
+    const config = {
+      strategy: 'encryptedJson',
+      password: user.password,
+      encryptedJson: privateKeyJSON,
+    };
+    const localWallet = new LocalWallet({
+      chain: Mumbai,
+    });
+    await localWallet.import(config);
 
-  const privateKey = await localWallet.export({
-    strategy: 'encryptedJson',
-    password: password,
-  });
+    const privateKey = await localWallet.export({
+      strategy: 'encryptedJson',
+      password: password,
+    });
 
-  return privateKey;
+    return privateKey;
 }
 
 export async function reEncryptAptosPrivateKey(password: string, user: User) {

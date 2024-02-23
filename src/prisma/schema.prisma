@@ -13,12 +13,10 @@ datasource db {
 model User {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   email         String? @unique @default("temp@nameless.nyc")
-  phone         String? @unique
+  phone         String @unique
   username      String? @unique
   name          String?
   lastName      String?
-  walletAddress String  @unique
-  privateKey    String  @unique
   password      String
   accounts      Json?
   external_accounts   Json?
@@ -26,7 +24,6 @@ model User {
   pfpAddress    Json?
 
   eventIDs String[]
-
   rewardIDs String[]
 }
 
@@ -34,72 +31,40 @@ model Event {
   id             String @id @default(auto()) @map("_id") @db.ObjectId
   kyd_id         String? @unique
   url_endpoint   String @unique
+
   name           String
-  date           String
-  startTime      String
+  date           String?
+  startTime      String?
   endTime        String?
-  tz             String
+  tz             String?
   type           String?
-  location       String
+  location       String?
   location_url   String?
   venue          String?
   venue_url      String?
+  vendors        Json?
 
   imgUrl         String?
   imgUrl2        String?  
   imgUrl3        String?
 
   description    String
-  lockAddress    String?
-  priceUSD       Float
-  email_template String
-  cardColor      String
+  rsvpDescription String?
+  claimDescription String?
+
+  priceUSD       Float?
+  email_template String?
+  cardColor      String?
   
   ticketProvider Json?
   iframe_url    String?
 
-
-  ticketTiers    Json?
-  vendors        Vendor[]
-
-  rsvpDescription String?
-  
-  rewards        Json?
   rewardCollectionAddress String?
-  rewardImgUrls    Json?
-  rewardRedeemable Boolean @default(true)
-
-  claimDescription String?
-
-  userIDs String[]
-
-  promoCodeIDs String[]
-
+  rewardImgUrls Json?
+  rewardRedeemable Boolean @default(true) 
+  
   featured Boolean?
   live     Boolean @default(true)
-}
-
-type Ticket {
-  name String
-  available Float
-  priceUSD Float
-  lockAddress String
-}
-
-type Vendor {
-  name      String
-  instagram String
-  website   String?
-}
-
-model PromoCodes { 
-  id      String  @id @default(auto()) @map("_id") @db.ObjectId
-  code    String
-  percent Boolean
-  amount  Float
-  expiryDate String?
-
-  eventIDs String[]
 }
 
 model KYD_User {
@@ -107,20 +72,6 @@ model KYD_User {
   email   String
   phone   String
   wallet_address String
-}
-
-model Reward {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  name        String?
-  description String?
-  imgUrl      String?
-  metadataUrl String?
-
-  chain       String
-  address     String
-  collection  String?
-
-  userIDs String[]
 }
 
 model Accounts {

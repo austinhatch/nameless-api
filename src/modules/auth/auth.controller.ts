@@ -1,7 +1,7 @@
 import { RouterContext } from '@koa/router';
 import { ISignInDTO } from './dtos/sign-in.dto';
 import { ISignUpDTO } from './dtos/sign-up.dto';
-import { IUserExistsDTO, IUserPhoneExistsDTO} from './dtos/user-exists.dto';
+import { IUserExistsDTO, IUserPhoneExistsDTO } from './dtos/user-exists.dto';
 import { IVerifyTwilioDTO } from './dtos/verify-code.dto';
 import { ISendCodeDTO } from './dtos/send-code.dto';
 import {
@@ -21,7 +21,7 @@ import { startVerififcation, checkVerificationCode } from './utils/twilio-utils'
 
 
 export class AuthController {
-  
+
   static async signUp(ctx: RouterContext) {
     console.log(JSON.parse(ctx.request.body))
 
@@ -29,81 +29,60 @@ export class AuthController {
       JSON.parse(ctx.request.body)
     );
 
-
-    /* Hess 1/11/24 - Commenting for now, most likely can remove. A user's phone and email will be checked for existing before ever hitting the signup */
-
-    // const existingUser = await UsersRepository.findByEmail(email);
-    // const existingUserPhone = await UsersRepository.findByPhone(phone)
-    // if (existingUserPhone) {
-    //   ctx.throw(409, {
-    //     errors: [`user with email ${email} already exists`],
-    //   });
-    // } 
-    // if(existingUserPhone){
-    //   ctx.throw(409, {
-    //     errors: [`user with phone ${phone} already exists`],
-    //   }); 
-    // }
-    
-    // else {
-      try {
-        const hashedPassword = await hashPassword(password);
-        const { walletAddress, privateKey } = await createEVMPrivateKey(
-          hashedPassword,
-        );
-        const evmAccount = {
-          walletAddress: walletAddress,
-          privateKey: privateKey,
-        }
-
-        const { aptosAddress, aptosPublicKey, aptosPrivateKey } = await createAptosPrivateKey(
-          hashedPassword,
-        )
-        const aptosAccount = {
-          walletAddress: aptosAddress,
-          publicKey: aptosPublicKey,
-          privateKey: aptosPrivateKey
-        }
-
-        const kydAccounts = await getKYDAccountsForUser(email, phone)
-
-        const user = await UsersRepository.create({
-          email,
-          phone,
-          username: '', // Username not captured on first signup - 1/9/2024
-          walletAddress,
-          privateKey,
-          password: hashedPassword,
-          eventIDs: [],
-          rewardIDs: [],
-          accounts: {
-            "APTOS" : {...aptosAccount},
-            "EVM" : {...evmAccount}
-          },
-          external_accounts:{
-            "KYD" : kydAccounts
-          },
-          created: new Date()
-        });
-        const token = await generateToken(user);
-        ctx.status = 201;
-        ctx.body = { user, token };
+    try {
+      const hashedPassword = await hashPassword(password);
+      const { walletAddress, privateKey } = await createEVMPrivateKey(
+        hashedPassword,
+      );
+      const evmAccount = {
+        walletAddress: walletAddress,
+        privateKey: privateKey,
       }
-      catch (e) {
 
+      const { aptosAddress, aptosPublicKey, aptosPrivateKey } = await createAptosPrivateKey(
+        hashedPassword,
+      )
+      const aptosAccount = {
+        walletAddress: aptosAddress,
+        publicKey: aptosPublicKey,
+        privateKey: aptosPrivateKey
       }
-      
-    // }
+
+      const kydAccounts = await getKYDAccountsForUser(email, phone)
+
+      const user = await UsersRepository.create({
+        email,
+        phone,
+        username: '', // Username not captured on first signup - 1/9/2024
+        password: hashedPassword,
+        eventIDs: [],
+        rewardIDs: [],
+        accounts: {
+          "APTOS": { ...aptosAccount },
+          "EVM": { ...evmAccount }
+        },
+        external_accounts: {
+          "KYD": kydAccounts
+        },
+        created: new Date()
+      });
+      const token = await generateToken(user);
+      ctx.status = 201;
+      ctx.body = { user, token };
+    }
+    catch (e) {
+
+    }
   }
 
   static async getTwilioCode(ctx: RouterContext) {
-    const {phone} = <ISendCodeDTO>(JSON.parse(ctx.request.body))
+    const { phone } = <ISendCodeDTO>(JSON.parse(ctx.request.body))
     const verify = await startVerififcation(phone)
-    return ctx.body = {verify}
+    return ctx.body = { verify }
   }
 
   static async checkTwilioCode(ctx: RouterContext) {
-    const {phone, code} = <IVerifyTwilioDTO>(
+    const { phone, code } = <IVerifyTwilioDTO>(
       JSON.parse(ctx.request.body)
     );
     const res = await checkVerificationCode(phone, code)
@@ -116,38 +95,38 @@ export class AuthController {
     const user = await UsersRepository.findByEmail(email);
     if (!user) {
       ctx.status = 201;
-        ctx.body = {
-          existing: false
-        };
-    } 
-    else {
-        ctx.status = 201;
-        ctx.body = {
-          user,
-          existing: true
-        };
-      }
+      ctx.body = {
+        existing: false
+      };
     }
+    else {
+      ctx.status = 201;
+      ctx.body = {
+        user,
+        existing: true
+      };
+    }
+  }
 
-    static async userExistsPhone(ctx: RouterContext) {
-      const { phone } = <IUserPhoneExistsDTO>JSON.parse(ctx.request.body);
-      const user = await UsersRepository.findByPhone(phone);
-      console.log(phone, user)
-      if (!user) {
-        ctx.status = 201;
-          ctx.body = {
-            existing: false
-          };
-      } 
-      else {
-          ctx.status = 201;
-          ctx.body = {
-            user, // Probably shouldnt return user object here. Anyone with someone's phone could pull their user data TODO:IMPORTANT
-            existing: true
-          };
-        }
-      }
-    
+  static async userExistsPhone(ctx: RouterContext) {
+    const { phone } = <IUserPhoneExistsDTO>JSON.parse(ctx.request.body);
+    const user = await UsersRepository.findByPhone(phone);
+    console.log(phone, user)
+    if (!user) {
+      ctx.status = 201;
+      ctx.body = {
+        existing: false
+      };
+    }
+    else {
+      ctx.status = 201;
+      ctx.body = {
+        user, // Probably shouldnt return user object here. Anyone with someone's phone could pull their user data TODO:IMPORTANT
+        existing: true
+      };
+    }
+  }
+
   /* Hess - 1/11/2024. Changing sign-in logic to conform to sms OTP flow. UI will pass value of OTP and phone number to be validated on the server */
   static async signIn(ctx: RouterContext) {
     const { phone, password } = <ISignInDTO>JSON.parse(ctx.request.body);
@@ -261,15 +240,19 @@ export class AuthController {
         const email = getEmailFromToken(token);
         const hashedPassword = await hashPassword(password);
         const user = await UsersRepository.findByEmail(email);
-        if (user) {
+        if (user && user.accounts) {
           // update private key
-          const newPrivKey = await reEncryptEVMPrivateKey(hashedPassword, user);
+          const new_EVM_privKey = await reEncryptEVMPrivateKey(hashedPassword, user);
+          const new_APTOS_privKey = await reEncryptAptosPrivateKey(hashedPassword, user)
+          let updatedAccounts: any = user.accounts
+
+          updatedAccounts["APTOS"].privateKey = new_APTOS_privKey
+          updatedAccounts["EVM"].privateKey = new_EVM_privKey
 
           const updatedUserData: Prisma.UserUpdateInput = {
             password: hashedPassword,
-            privateKey: newPrivKey,
+            accounts: updatedAccounts,
           };
-          console.log('userID', user.id);
 
           UsersRepository.update(user.id, updatedUserData)
             .then((updatedUser) => {
