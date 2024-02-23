@@ -33,6 +33,15 @@ export class AccountsRepository {
     }); 
   }
 
+  static update(id: string, data: Prisma.AccountsUpdateInput) {
+    return prisma.accounts.update({
+      where: {
+        id,
+      },
+      data,
+    });
+  }
+
   static findAll() {
     return prisma.accounts.findMany();
   }

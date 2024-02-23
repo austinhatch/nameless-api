@@ -21,6 +21,7 @@ import { startVerififcation, checkVerificationCode } from './utils/twilio-utils'
 
 
 export class AuthController {
+  
   static async signUp(ctx: RouterContext) {
     console.log(JSON.parse(ctx.request.body))
 

@@ -28,8 +28,6 @@ model User {
   eventIDs String[]
 
   rewardIDs String[]
-
-
 }
 
 model Event {
@@ -130,5 +128,8 @@ model Accounts {
     name        String
     account_id  String @unique
     email       String @unique
-    scanner_pin String
+    password    String
+    created     DateTime @default(now())
+    addresses   Json?
+    scanner_pin String?
 }
