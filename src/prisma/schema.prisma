@@ -65,6 +65,8 @@ model Event {
   
   featured Boolean?
   live     Boolean @default(true)
+
+  account_id String @db.ObjectId
 }
 
 model KYD_User {

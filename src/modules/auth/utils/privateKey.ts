@@ -65,6 +65,7 @@ export async function reEncryptEVMPrivateKey(password: string, user: User) {
     });
 
     return privateKey;
+  }
 }
 
 export async function reEncryptAptosPrivateKey(password: string, user: User) {
